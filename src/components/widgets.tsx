@@ -766,7 +766,7 @@ export function ScaleBox({
   function hear(kind: "up" | "down" | "updown" | "phrase") {
     unlock();
     const path =
-      kind === "phrase" ? phraseOnBox(box, home, phrase) : scaleRun(box, kind === "phrase" ? "up" : kind);
+      kind === "phrase" ? phraseOnBox(box, home, phrase) : scaleRun(box, kind);
     setLit(path[0] ?? null);
     playWalk(
       path.map((pos) => pos.midi),
