@@ -7,7 +7,7 @@ export function ChordsPage() {
       <p className="eyebrow">Chord lab</p>
       <h1>Hear the lowest note. Then ask: bright or sad?</h1>
       <p className="lede">
-        A chord name is a letter plus a mood. If the bass is G and the chord sounds bright, it is G major. If it sounds sad, it is G minor. Do that four times and you have a loop. Number the loop from the chord that can end the chorus. Two slid shapes (the open E and the open A) cover every letter on the neck.
+        A chord name is a letter plus a mood. If the bass is G and the chord sounds bright, it is G major. If it sounds sad, it is G minor. Tap a grip below — you hear a real acoustic strum, string by string, not a piano stack. Do that four times and you have a loop. Number the loop from the chord that can end the chorus. Two slid shapes (the open E and the open A) cover every letter on the neck.
       </p>
       <ChordMethod />
       <ChordFinder />

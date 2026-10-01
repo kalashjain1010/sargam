@@ -23,7 +23,7 @@ const GROUPS: { id: string; title: string; hint: string; links: LinkItem[] }[] =
       { to: "/gym", label: "Gym", blurb: "Find letters on the neck" },
       { to: "/ear", label: "Ear", blurb: "Name the gap you hear" },
       { to: "/coach", label: "Mic", blurb: "Play one string, get a check" },
-      { to: "/practice", label: "Practice", blurb: "Home letter plus a scale" },
+      { to: "/practice", label: "Practice", blurb: "Copy the box, then drill it" },
     ],
   },
   {
@@ -33,7 +33,7 @@ const GROUPS: { id: string; title: string; hint: string; links: LinkItem[] }[] =
     links: [
       { to: "/chords", label: "Chords", blurb: "Bass first, then bright or sad" },
       { to: "/songs", label: "Songs", blurb: "Real titles, movable loops" },
-      { to: "/ragas", label: "Scales", blurb: "Major, minor, modes, blues" },
+      { to: "/ragas", label: "Scales", blurb: "Boxes, drills, make your own" },
     ],
   },
 ];

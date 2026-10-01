@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Fretboard } from "./Fretboard.tsx";
 import { Harmonium } from "./Harmonium.tsx";
 import { PitchCoach } from "./PitchCoach.tsx";
@@ -7,15 +7,32 @@ import {
   hush,
   playChord,
   playClicks,
+  playFrets,
   playInterval,
   playMidi,
   playPhrase,
   playProgression,
+  playWalk,
   saMidiFor,
   startDrone,
   stopDrone,
   unlock,
 } from "../audio.ts";
+import {
+  aRootFret,
+  boxHint,
+  boxSpan,
+  boxStartFret,
+  eRootFret,
+  fingerInBox,
+  phraseOnBox,
+  preferredBass,
+  scaleBox,
+  scaleRun,
+  stringLabel,
+  walkBlurb,
+  type BoxBass,
+} from "../guitar.ts";
 import { useProgress } from "../progress.tsx";
 import {
   BHUPALI,
@@ -36,6 +53,7 @@ import {
   nearestMidi,
   noteName,
   positionsOf,
+  jumpsOf,
   phraseLetters,
   qualityIntervals,
   scaleNoteNames,
@@ -44,6 +62,7 @@ import {
 } from "../theory.ts";
 import type { FretPos, Grip, Quality } from "../theory.ts";
 import { SCALES } from "../scales.ts";
+import { ScaleDrill } from "./ScaleLab.tsx";
 
 const STRING_MIDI: Record<string, number> = { e: 64, B: 59, G: 55, D: 50, A: 45, E: 40 };
 
@@ -650,28 +669,21 @@ export function PentatonicLink() {
         className="btn secondary"
         onClick={() => {
           unlock();
-          playPhrase(nearestMidi(sa, 60), [...steps, 12]);
+          const box = scaleBox(sa, steps);
+          playWalk(scaleRun(box, "up").map((pos) => pos.midi), 0.28);
         }}
       >
-        Play it
+        Play the box
       </button>
     </div>
   );
 }
 
-export function ScaleStudio({ startId = "lydian" }: { startId?: string }) {
+export function ScaleStudio({ startId = "major" }: { startId?: string }) {
   const [id, setId] = useState(startId);
   const [home, setHome] = useState(0);
   const scale = SCALES.find((item) => item.id === id) ?? SCALES[1];
   const flat = usesFlats(home);
-
-  function hear(kind: "up" | "down" | "phrase") {
-    unlock();
-    const root = nearestMidi(home, 60);
-    if (kind === "up") playPhrase(root, [...scale.steps, 12], 0.26);
-    else if (kind === "down") playPhrase(root, [12, ...[...scale.steps].reverse()], 0.26);
-    else playPhrase(root, scale.phrase, 0.32);
-  }
 
   return (
     <div className="widget studio">
@@ -691,7 +703,8 @@ export function ScaleStudio({ startId = "lydian" }: { startId?: string }) {
             onClick={() => {
               setId(item.id);
               unlock();
-              playPhrase(nearestMidi(home, 60), [...item.steps, 12], 0.18);
+              const box = scaleBox(home, item.steps);
+              playWalk(scaleRun(box, "up").map((pos) => pos.midi), 0.2);
             }}
           >
             {item.name}
@@ -704,6 +717,7 @@ export function ScaleStudio({ startId = "lydian" }: { startId?: string }) {
         {scale.example}
       </p>
       <p className="pitch-read">{scaleNoteNames(home, scale.steps).join("  ")}</p>
+      <p className="tiny muted">Recipe in fret gaps: {jumpsOf(scale.steps).join("  ")} · major is 2 2 1 2 2 2 1</p>
       <p className="tiny muted">Catch phrase from {noteName(home, flat)}: {phraseLetters(home, scale.phrase)}</p>
       <div className="row">
         <span className="tiny muted">Home</span>
@@ -713,12 +727,102 @@ export function ScaleStudio({ startId = "lydian" }: { startId?: string }) {
           </button>
         ))}
       </div>
+      <ScaleBox home={home} steps={scale.steps} phrase={scale.phrase} />
+      <ScaleDrill home={home} steps={scale.steps} />
+      <p className="muted">{scale.avoid}</p>
+      <p className="tiny muted">{scale.guitar}</p>
+    </div>
+  );
+}
+
+const SPEEDS = [
+  { id: "slow", label: "Slow", step: 0.46 },
+  { id: "walk", label: "Walk", step: 0.28 },
+  { id: "fast", label: "Fast", step: 0.16 },
+] as const;
+
+export function ScaleBox({
+  home,
+  steps,
+  phrase,
+}: {
+  home: number;
+  steps: number[];
+  phrase: number[];
+}) {
+  const [bass, setBass] = useState<BoxBass | "auto">("auto");
+  const [speedId, setSpeedId] = useState<(typeof SPEEDS)[number]["id"]>("walk");
+  const [lit, setLit] = useState<FretPos | null>(null);
+  const chosen = bass === "auto" ? preferredBass(home) : bass;
+  const box = useMemo(() => scaleBox(home, steps, chosen), [home, steps, chosen]);
+  const start = boxStartFret(home, chosen);
+  const speed = SPEEDS.find((item) => item.id === speedId) ?? SPEEDS[1];
+  const homePos = box.find((pos) => ((pos.midi % 12) + 12) % 12 === ((home % 12) + 12) % 12);
+
+  useEffect(() => {
+    setLit(null);
+  }, [home, steps, chosen]);
+
+  function hear(kind: "up" | "down" | "updown" | "phrase") {
+    unlock();
+    const path =
+      kind === "phrase" ? phraseOnBox(box, home, phrase) : scaleRun(box, kind === "phrase" ? "up" : kind);
+    setLit(path[0] ?? null);
+    playWalk(
+      path.map((pos) => pos.midi),
+      speed.step,
+      (index) => setLit(path[index] ?? null),
+    );
+  }
+
+  return (
+    <div className="scale-box">
+      <div className="how-card">
+        <p className="eyebrow">How to practice this</p>
+        <p>{boxHint(home, chosen, start, boxSpan(steps))}</p>
+        <ol>
+          <li>Tap <strong>Hear box</strong>. Watch the gold light. Do not play yet. Just see which frets it uses.</li>
+          <li>Put your index on that home fret. One finger per fret: 1 index, 2 middle, 3 ring, 4 pinky.</li>
+          <li>Play the same walk yourself, slowly. Say the letter out loud as you land on it.</li>
+          <li>Come back down the same frets. Then tap <strong>Up and down</strong> and copy it.</li>
+          <li>When that is easy, tap <strong>Catch phrase</strong> and copy the short tune. Then pick a new home — the shape slides, the letters change, the gaps stay.</li>
+        </ol>
+      </div>
+      <div className="row">
+        <span className="tiny muted">Box starts on</span>
+        {(["auto", "E", "A"] as const).map((id) => (
+          <button
+            key={id}
+            type="button"
+            className={`chip ${bass === id ? "on" : ""}`}
+            onClick={() => setBass(id)}
+          >
+            {id === "auto" ? `Auto (${chosen === "A" ? "A string" : "low E"})` : id === "A" ? "A string" : "low E"}
+          </button>
+        ))}
+      </div>
+      <div className="row">
+        <span className="tiny muted">Speed</span>
+        {SPEEDS.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className={`chip ${speedId === item.id ? "on" : ""}`}
+            onClick={() => setSpeedId(item.id)}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
       <div className="row play-row">
         <button type="button" className="play-btn" onClick={() => hear("up")}>
-          Play up
+          Hear box
         </button>
         <button type="button" className="play-btn ghost" onClick={() => hear("down")}>
-          Play down
+          Hear down
+        </button>
+        <button type="button" className="play-btn ghost" onClick={() => hear("updown")}>
+          Up and down
         </button>
         <button type="button" className="play-btn ghost" onClick={() => hear("phrase")}>
           Catch phrase
@@ -726,15 +830,43 @@ export function ScaleStudio({ startId = "lydian" }: { startId?: string }) {
       </div>
       <Fretboard
         saPc={home}
-        scale={scale.steps}
+        scale={steps}
+        found={box}
+        highlight={lit ? [lit] : []}
         label="note"
         onPick={(pos) => {
           unlock();
+          setLit(pos);
           playMidi(pos.midi, 0.4);
         }}
       />
-      <p className="muted">{scale.avoid}</p>
-      <p className="tiny muted">{scale.guitar}</p>
+      <p className="tiny muted">Green ring = this box. Gold = home, or the note sounding now. Tap any lit fret to hear that real guitar note.</p>
+      <div className="walk-list">
+        {box.map((pos) => {
+          const on = lit?.stringId === pos.stringId && lit.fret === pos.fret;
+          return (
+            <button
+              key={`${pos.stringId}-${pos.fret}-${pos.midi}`}
+              type="button"
+              className={`walk-pill ${on ? "on" : ""}`}
+              onClick={() => {
+                unlock();
+                setLit(pos);
+                playMidi(pos.midi, 0.55);
+              }}
+            >
+              <em>{fingerInBox(pos.fret, start)}</em>
+              <span>
+                {stringLabel(pos.stringId)} {pos.fret}
+              </span>
+              <b>{noteName(pos.midi, usesFlats(home))}</b>
+            </button>
+          );
+        })}
+      </div>
+      <p className="tiny muted">
+        Home sits here: {homePos ? walkBlurb(homePos, home, start) : noteName(home, usesFlats(home))}. The pills below are the whole box, thick string first.
+      </p>
     </div>
   );
 }
@@ -871,7 +1003,8 @@ export function PlayScale({ saPc, steps, label }: { saPc: number; steps: number[
       className="play-btn ghost"
       onClick={() => {
         unlock();
-        playPhrase(nearestMidi(saPc, 60), [...steps, 12]);
+        const box = scaleBox(saPc, steps);
+        playWalk(scaleRun(box, "up").map((pos) => pos.midi), 0.26);
       }}
     >
       {label ?? `Play ${scaleNoteNames(saPc, steps).join(" ")}`}
@@ -879,15 +1012,9 @@ export function PlayScale({ saPc, steps, label }: { saPc: number; steps: number[
   );
 }
 
-const LOW_MIDI = [40, 45, 50, 55, 59, 64];
-
 export function playGrip(grip: Grip) {
   unlock();
-  hush();
-  grip.frets.forEach((fret, index) => {
-    if (fret === null) return;
-    playMidi(LOW_MIDI[index] + fret, 0.9, index * 0.02, 0.08);
-  });
+  playFrets(grip.frets);
 }
 
 export function GripCard({ grip }: { grip: Grip }) {
@@ -1063,8 +1190,8 @@ export function CircleFifths() {
 export function OpenDictionary() {
   return (
     <div className="widget">
-      <h3>Open grips. Tap to hear.</h3>
-      <p>Numbers are frets, low E to high e. x is mute. These twelve cover most of the song lab once you add a capo.</p>
+      <h3>Open grips. Tap to hear a real strum.</h3>
+      <p>Numbers are frets, low E to high e. x is mute. Each tap strums recorded acoustic strings, not a keyboard. These twelve cover most of the song lab once you add a capo.</p>
       <div className="grip-row">
         {OPEN_GRIPS.map((grip) => (
           <GripCard key={grip.name} grip={grip} />
@@ -1076,13 +1203,19 @@ export function OpenDictionary() {
 
 export function BarreShapes() {
   const [root, setRoot] = useState(5);
-  const eShape: Grip = { name: `${noteName(root)} barre (E shape)`, q: "maj", rootPc: root, frets: [root, root + 2, root + 2, root + 1, root, root] };
-  const aShapeFret = root < 2 ? root + 12 : root;
+  const eFret = eRootFret(root) === 0 ? 12 : eRootFret(root);
+  const aFret = aRootFret(root) === 0 ? 12 : aRootFret(root);
+  const eShape: Grip = {
+    name: `${noteName(root)} barre (E shape)`,
+    q: "maj",
+    rootPc: root,
+    frets: [eFret, eFret + 2, eFret + 2, eFret + 1, eFret, eFret],
+  };
   const aShape: Grip = {
     name: `${noteName(root)} barre (A shape)`,
     q: "maj",
     rootPc: root,
-    frets: [null, aShapeFret - 2, aShapeFret, aShapeFret, aShapeFret, aShapeFret - 2],
+    frets: [null, aFret, aFret + 2, aFret + 2, aFret + 2, aFret],
   };
 
   return (
@@ -1229,7 +1362,9 @@ export function ModeClock() {
             className="chip"
             onClick={() => {
               unlock();
-              playPhrase(60 + mode.start, MAJOR, 0.28);
+              const home = mode.start;
+              const box = scaleBox(home, MAJOR);
+              playWalk(scaleRun(box, "up").map((pos) => pos.midi), 0.26);
             }}
           >
             {mode.name}
@@ -1396,9 +1531,7 @@ export function PowerShapes() {
             onClick={() => {
               setFret(n);
               unlock();
-              hush();
-              playMidi(40 + n, 0.8, 0, 0.12);
-              playMidi(45 + n + 2, 0.8, 0.02, 0.1);
+              playFrets([n, n + 2, null, null, null, null]);
             }}
           >
             {noteName(4 + n)}5

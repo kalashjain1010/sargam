@@ -1,0 +1,12 @@
+Acoustic guitar notes used by Sargam.
+
+These are real recorded steel-string notes from the University of Iowa
+Electronic Music Studios (MIS), packaged by tonejs-instruments.
+
+http://theremin.music.uiowa.edu/
+https://github.com/nbrosowsky/tonejs-instruments
+
+The app loads them from a public copy (jsDelivr). If the same files sit in
+this folder as Name.mp3 (E2.mp3, A2.mp3, …), those local files are used first.
+
+Iowa recordings: free to use. Packaged set: CC BY 3.0.

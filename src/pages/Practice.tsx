@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Harmonium } from "../components/Harmonium.tsx";
 import { PhraseCoach } from "../components/PhraseCoach.tsx";
 import { PitchCoach } from "../components/PitchCoach.tsx";
-import { Fretboard } from "../components/Fretboard.tsx";
-import { droneIsOn, playMidi, playPhrase, saMidiFor, startDrone, stopDrone, unlock } from "../audio.ts";
+import { ScaleDrill } from "../components/ScaleLab.tsx";
+import { ScaleBox } from "../components/widgets.tsx";
+import { droneIsOn, playMidi, saMidiFor, startDrone, stopDrone, unlock } from "../audio.ts";
 import { useProgress } from "../progress.tsx";
-import { GUITAR_KEYS, nearestMidi, noteName, positionsOf, scaleNoteNames, usesFlats } from "../theory.ts";
+import { GUITAR_KEYS, noteName, positionsOf, scaleNoteNames, usesFlats } from "../theory.ts";
 import { SCALES } from "../scales.ts";
 
 export function PracticePage() {
@@ -20,7 +21,7 @@ export function PracticePage() {
       <p className="eyebrow">Practice room</p>
       <h1>Pick a home letter. Pick a scale. Play one note.</h1>
       <p className="lede">
-        Home is the letter that feels like “done.” The neck lights the allowed steps of that scale, like a path of stepping stones. Play one string. The mic names the letter and whether you are a little sharp (too high) or flat (too low). A strum or a bend will look messy. That is honest: several notes, or a moving note, are not one target.
+        Home is the letter that feels like “done.” The neck lights one box — a small window of frets, not the whole guitar. Hear the box, then copy it with one finger per fret. Then run the drills: follow the gold light, walk in thirds, find a letter. Play one string into the mic if you want a check. A strum or a bend will look messy. That is honest: several notes, or a moving note, are not one target.
       </p>
       <h2>Home</h2>
       <div className="chips">
@@ -46,8 +47,6 @@ export function PracticePage() {
             className={`chip ${col === item.id ? "on" : ""}`}
             onClick={() => {
               setCol(item.id);
-              unlock();
-              playPhrase(nearestMidi(saPc, 60), [...item.steps, 12], 0.16);
             }}
           >
             {item.name}
@@ -57,16 +56,6 @@ export function PracticePage() {
       <p className="pitch-read">{scaleNoteNames(saPc, steps).join("  ")}</p>
       <p className="tiny muted">{scale.tell}</p>
       <div className="row">
-        <button
-          type="button"
-          className="play-btn"
-          onClick={() => {
-            unlock();
-            playPhrase(nearestMidi(saPc, 60), [...steps, 12]);
-          }}
-        >
-          Play the scale
-        </button>
         <button
           type="button"
           className="play-btn ghost"
@@ -84,15 +73,8 @@ export function PracticePage() {
           {drone ? "Stop drone" : "Drone home + 5th"}
         </button>
       </div>
-      <Fretboard
-        saPc={saPc}
-        scale={steps}
-        label="note"
-        onPick={(pos) => {
-          unlock();
-          playMidi(pos.midi, 0.5);
-        }}
-      />
+      <ScaleBox home={saPc} steps={steps} phrase={scale.phrase} />
+      <ScaleDrill home={saPc} steps={steps} />
       <Harmonium saPc={saPc} scale={steps} />
       <h2>What the mic hears</h2>
       <PitchCoach saPc={saPc} scale={steps} />

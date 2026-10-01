@@ -70,7 +70,7 @@ export function HomePage() {
         <Link className="lab-tile" to="/ragas">
           <em>Collections</em>
           <strong>Scales</strong>
-          <span>Major, minor, modes, blues</span>
+          <span>Hear a box, drill it, make your own</span>
         </Link>
         <Link className="lab-tile" to="/practice">
           <em>Mic optional</em>

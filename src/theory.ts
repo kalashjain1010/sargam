@@ -1487,6 +1487,21 @@ export function scaleNoteNames(tonicPc: number, steps: number[]): string[] {
   return steps.map((step) => noteName(tonicPc + step, flat));
 }
 
+/** Gaps in frets between the stairs you kept, then back to home. Major is 2 2 1 2 2 2 1. */
+export function jumpsOf(steps: number[]): number[] {
+  const uniq = [...new Set(steps.map(mod12))].sort((a, b) => a - b);
+  if (!uniq.includes(0)) uniq.unshift(0);
+  const chain = [...uniq, 12];
+  const out: number[] = [];
+  for (let i = 1; i < chain.length; i += 1) out.push(chain[i] - chain[i - 1]);
+  return out;
+}
+
+export function sameSteps(a: number[], b: number[]): boolean {
+  const key = (steps: number[]) => [...new Set(steps.map(mod12))].sort((x, y) => x - y).join(",");
+  return key(a) === key(b);
+}
+
 export function chordName(tonicPc: number, semi: number, q: Exclude<Quality, "dim">): string {
   const name = noteName(tonicPc + semi, usesFlats(tonicPc));
   if (q === "min") return `${name}m`;

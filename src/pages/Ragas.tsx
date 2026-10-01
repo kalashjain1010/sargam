@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ScaleMaker } from "../components/ScaleLab.tsx";
 import { ScaleStudio } from "../components/widgets.tsx";
 import { SCALES } from "../scales.ts";
 import type { ScaleDef } from "../scales.ts";
@@ -26,9 +27,11 @@ export function RagaPage() {
       <p className="eyebrow">Scales</p>
       <h1>A scale is a recipe of steps from home.</h1>
       <p className="lede">
-        Think of a staircase with twelve steps to the next floor (the octave). A scale picks which steps you stand on. Major is the most common recipe. Change one step and the mood changes — that changed step is the tell, like a mole that identifies a face. Tap a name, hear the walk, move home. The recipe travels.
+        Think of a staircase with twelve steps to the next floor (the octave). A scale picks which steps you stand on. On the guitar you do not play the whole staircase at once — you play a box: a few frets, all six strings, one finger per fret. Tap a name, hear the real guitar walk, then copy it with the drills. Then turn stairs on and off and{" "}
+        <a href="#make-scale">make your own recipe</a>. Move home. The gaps travel.
       </p>
       <ScaleStudio />
+      <ScaleMaker />
       <h2>All of them</h2>
       <div className="raga-list">
         {SCALES.map((scale) => {

@@ -646,7 +646,94 @@ th { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; colo
   color: #f6efe4;
   font-size: 12px;
 }
-.grip-card em { color: var(--muted); font-style: normal; font-size: 0.72rem; letter-spacing: 0.04em; }
+.walk-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 6px;
+}
+.walk-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 999px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+.walk-pill em {
+  font-style: normal;
+  font-size: 0.72rem;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--indigo);
+  color: #f6efe4;
+}
+.walk-pill b { font-family: Fraunces, Georgia, serif; font-weight: 600; }
+.walk-pill.on { border-color: var(--gold); background: var(--gold-soft); }
+.how-card {
+  background: var(--gold-soft);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 8px 0 14px;
+}
+.how-card ol { margin: 8px 0 0; padding-left: 1.2rem; }
+.how-card li { margin: 0.35rem 0; }
+.scale-box { margin-top: 8px; }
+.degree-pad { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.degree-pad .note-key {
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 4px;
+}
+.degree-pad .note-key em {
+  font-style: normal;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+.degree-pad .note-key.right em { color: inherit; }
+.degree-pad .note-key.sa-key { cursor: default; }
+.degree-pad .note-key.focus { box-shadow: 0 0 0 2px var(--gold); }
+.jump-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+.jump-pill {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 52px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+}
+.jump-pill b {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.jump-pill em {
+  font-style: normal;
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
 
 .hit-list { list-style: none; padding: 0; display: grid; gap: 8px; }
 .hit-list li { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
@@ -1108,7 +1195,7 @@ body.menu-open { overflow: hidden; }
   .page { padding: 16px 12px calc(96px + env(safe-area-inset-bottom)); }
   .coach-top { flex-direction: column; }
   .white span { display: none; }
-  .note-pad { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .note-pad, .degree-pad { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .gym-target { font-size: 1.2rem; }
   .train-compose { grid-template-columns: 1fr; }
   .chips {
