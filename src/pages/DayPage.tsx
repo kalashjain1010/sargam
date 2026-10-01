@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { DAYS } from "../theory.ts";
+import { DAY_COUNT, DAYS } from "../theory.ts";
 import { useProgress } from "../progress.tsx";
 import { DayBody } from "../lessons.tsx";
 
@@ -18,7 +18,7 @@ export function DayPage() {
     return (
       <div className="lesson">
         <h1>That day is not on the path.</h1>
-        <Link to="/path">Back to the twelve</Link>
+        <Link to="/path">Back to the path</Link>
       </div>
     );
   }
@@ -28,7 +28,7 @@ export function DayPage() {
       <div className="lesson">
         <p className="eyebrow">Locked</p>
         <h1>Day {id} opens after the day before it.</h1>
-        <p>The check is short. Songs, the gym, and the practice room are already available if you only needed a reference.</p>
+        <p>The check is short. Songs, the gym, the ear room, and practice are already available if you only needed a reference.</p>
         <Link className="btn" to={`/day/${id - 1}`}>
           Go to day {id - 1}
         </Link>
@@ -36,12 +36,12 @@ export function DayPage() {
     );
   }
 
-  const next = id < 12 && passed.includes(id) ? id + 1 : null;
+  const next = id < DAY_COUNT && passed.includes(id) ? id + 1 : null;
 
   return (
     <article className="lesson">
       <p className="eyebrow">
-        Day {id} of 12 · {meta.minutes} min · {meta.kicker}
+        Day {id} of {DAY_COUNT} · {meta.unit} · {meta.minutes} min · {meta.kicker}
         {passed.includes(id) ? " · clear" : ""}
       </p>
       <h1>{meta.title}</h1>

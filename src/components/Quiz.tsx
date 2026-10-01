@@ -53,7 +53,7 @@ export function Quiz({ day, questions, passAt = 0.75 }: { day: number; questions
     const won = correct >= need;
     return (
       <section className="widget">
-        <h3>{won ? "Day clear" : "Not yet"}</h3>
+        <h3 className={won ? "ok-line" : ""}>{won ? "Day clear" : "Not yet"}</h3>
         <p>
           {correct} of {questions.length}. The line is {need}.
         </p>
@@ -69,14 +69,17 @@ export function Quiz({ day, questions, passAt = 0.75 }: { day: number; questions
 
   return (
     <section className="widget" id="check">
-      <h3>
-        Check · {index + 1} of {questions.length}
-      </h3>
+        <div className="quiz-bar">
+          <b style={{ width: `${((index + (picked !== null ? 1 : 0)) / questions.length) * 100}%` }} />
+        </div>
+        <h3>
+          Check · {index + 1} of {questions.length}
+        </h3>
       <p>{question.prompt}</p>
       {question.listen ? (
         <button
           type="button"
-          className="btn secondary"
+          className="play-btn"
           onClick={() => {
             unlock();
             question.listen?.();

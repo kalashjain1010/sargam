@@ -1,9 +1,13 @@
 /** YIN pitch detector for a single guitar note. Returns Hz, or null when the buffer is quiet or unclear. */
+export function bufferRms(buf: Float32Array): number {
+  let rms = 0;
+  for (let i = 0; i < buf.length; i += 1) rms += buf[i] * buf[i];
+  return Math.sqrt(rms / buf.length);
+}
+
 export function detectPitch(buf: Float32Array, sampleRate: number): number | null {
   const size = buf.length;
-  let rms = 0;
-  for (let i = 0; i < size; i += 1) rms += buf[i] * buf[i];
-  rms = Math.sqrt(rms / size);
+  const rms = bufferRms(buf);
   if (rms < 0.012) return null;
 
   const half = Math.floor(size / 2);

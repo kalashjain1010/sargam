@@ -12,11 +12,14 @@ import {
   MinorCompare,
   NoteHunt,
   PentatonicLink,
-  RagaStudio,
+  ScaleStudio,
   HomeBoard,
   SameNote,
   TellButtons,
 } from "./components/widgets.tsx";
+import { laterDay } from "./lessonsMore.tsx";
+import { LessonVideos } from "./components/VideoEmbed.tsx";
+import { PhraseCoach } from "./components/PhraseCoach.tsx";
 import { playChord, playInterval, playPhrase, unlock } from "./audio.ts";
 
 function listen(run: () => void): () => void {
@@ -38,7 +41,8 @@ export function DayBody({ id }: { id: number }) {
   if (id === 9) return <Day9 />;
   if (id === 10) return <Day10 />;
   if (id === 11) return <Day11 />;
-  return <Day12 />;
+  if (id === 12) return <Day12 />;
+  return laterDay(id);
 }
 
 function Day1() {
@@ -81,6 +85,7 @@ function Day1() {
       <p>The eleven frets before that chop the octave into twelve equal multiplications, not twelve equal centimetres. Each step multiplies frequency by about 1.0595. A two-fret bend raises pitch by about 12 percent, not by a fixed number of hertz. Your ear hears those as the same musical distance.</p>
       <SameNote />
       <NoteHunt />
+      <LessonVideos topics={["notes", "foundation"]} />
       <h2>Check</h2>
       <Quiz day={1} questions={questions} />
     </>
@@ -174,6 +179,14 @@ function Day3() {
       <p>Once home is chosen, a tune is a list of fret-distances. You do not need a new theory for each song. You need to count.</p>
       <p>Four frets (major 3rd) sounds bright. Three frets (minor 3rd) sounds heavier. Six frets (tritone, the raised 4th) refuses to relax. Seven frets (5th) sounds like a pillar. Equal temperament puts the major 3rd about 14 cents sharp of a pure harmonic, and the 5th only about 2 cents flat. Fifths on a guitar sound calm. Thirds shimmer.</p>
       <IntervalTrainer />
+      <PhraseCoach
+        jobs={[
+          { id: "fifth", name: "Play a 5th", hint: "Home, then 7 frets. Mic on.", homePc: 4, offsets: [0, 7] },
+          { id: "maj3", name: "Play a major 3rd", hint: "Home, then 4 frets.", homePc: 0, offsets: [0, 4] },
+          { id: "min3", name: "Play a minor 3rd", hint: "Home, then 3 frets.", homePc: 9, offsets: [0, 3] },
+        ]}
+      />
+      <LessonVideos topics={["intervals"]} />
       <h2>Check</h2>
       <Quiz day={3} questions={questions} />
     </>
@@ -214,12 +227,11 @@ function Day4() {
         items={[
           { term: "Major scale", def: "2 2 1 2 2 2 1 from home. In C: C D E F G A B." },
           { term: "Leading tone", def: "The major 7th. One fret under home, pulling up." },
-          { term: "Bilawal", def: "Indian name for this same parent scale. Optional." },
         ]}
       />
       <p>The major scale is a commute: two frets, two, one, two, two, two, one. From C it uses the white keys. From G it uses F#. From D it uses F# and C#. The hand learns a shape. The shape is this commute.</p>
-      <p>Indian classical uses this parent as one of ten, then builds recipes on top. Today the parent is enough. Start the commute on any fret and the song is in a new key. That is the only transposition trick there is.</p>
       <BilawalWalk />
+      <LessonVideos topics={["notes"]} />
       <h2>Check</h2>
       <Quiz day={4} questions={questions} />
     </>
@@ -311,6 +323,7 @@ function Day6() {
       <p>Build it by taking a scale and jumping. From degree 1, take 1, 3, and 5. Do it again from degree 2. In a major key the qualities come out I ii iii IV V vi vii°. You have been playing that table every time you used G, Am, Bm, C, D, Em in the key of G.</p>
       <p>On a guitar you rarely have enough fingers for a 9th chord's every note. Drop the 5th first. Keep the 3rd and the 7th: those two tell you if the chord is major, minor, or dominant.</p>
       <ChordStack />
+      <LessonVideos topics={["chords", "progressions"]} />
       <h2>Check</h2>
       <Quiz day={6} questions={questions} />
     </>
@@ -433,23 +446,27 @@ function Day9() {
       why: "Minor pentatonic is 1 b3 4 5 b7. The blues scale adds the fret between 4 and 5.",
     },
     {
-      prompt: "Malkauns, compared with your minor pentatonic box, moves which note?",
+      prompt: "Compared with the minor pentatonic box, a five-note sound with no 5th (1 b3 4 b6 b7) moved which note?",
       choices: ["Home", "The 5th, up one fret to a minor 6th", "The 3rd, up to major", "The 7th, up to major"],
       answer: 1,
-      why: "Minor pentatonic has a 5th. Malkauns has no 5th and no 2nd. That 5th fret moves up to the minor 6th. One fret. Indian name for this five-note night raga: Malkauns.",
+      why: "Minor pentatonic has a 5th. This darker pentatonic has no 5th and no 2nd. That 5th fret moves up to the minor 6th. One fret.",
     },
   ];
   return (
     <>
       <Words
         items={[
-          { term: "Major pentatonic", def: "1 2 3 5 6. In C: C D E G A. Indian name: Bhupali." },
+          { term: "Major pentatonic", def: "1 2 3 5 6. In C: C D E G A." },
           { term: "Minor pentatonic", def: "1 b3 4 5 b7. In A: A C D E G. Relative of C major pentatonic." },
         ]}
       />
       <p>If you have soloed at all, you have played pentatonic. The box at the 5th fret in A minor is A C D E G. Call the note three frets higher home, and the same dots are C major pentatonic: C D E G A. Folk tunes, bhajans, and half of classic film melody live in that five-note room because the two omitted notes are the ones that clash: the 4th against the 3rd, and the 7th pulling into home.</p>
       <p>Jyoti Kalash Chhalke and Payoji Maine are the clean examples. The blues scale is the minor box plus one fret between 4 and 5.</p>
       <PentatonicLink />
+      <PhraseCoach
+        jobs={[{ id: "pent", name: "A minor pentatonic", hint: "A C D E G A. Slow. One string-box.", homePc: 9, offsets: [0, 3, 5, 7, 10, 12] }]}
+      />
+      <LessonVideos topics={["pentatonic"]} />
       <h2>Check</h2>
       <Quiz day={9} questions={questions} />
     </>
@@ -459,42 +476,48 @@ function Day9() {
 function Day10() {
   const questions: Question[] = [
     {
-      prompt: "A parent scale and a raga differ because:",
-      choices: ["A parent scale is the notes. A raga is a way of moving, with notes to lean on and notes to avoid.", "They are the same word", "A raga has only five notes always", "A parent scale cannot be played on guitar"],
-      answer: 0,
-      why: "Major is a parent. A raga inside it may skip notes, insist on a climb, and forbid a resting place. Knowing the scale is the entrance, not the performance.",
+      prompt: "A mode is:",
+      choices: ["A new set of notes unrelated to major", "The same notes as a parent scale, with a different letter feeling like home", "Always five notes", "A capo setting"],
+      answer: 1,
+      why: "C major’s notes, rest on D: Dorian. Rest on G: Mixolydian. The guitar did not gain pitches. Home moved.",
     },
     {
-      prompt: "Yaman's tell, in frets above home, is:",
+      prompt: "Lydian’s tell, in frets above home, is:",
       choices: ["Fret 1", "Fret 3", "Fret 6, instead of resting on fret 5", "Fret 10"],
       answer: 2,
-      why: "Raised 4th. Six frets. In C that is F#. The note a fret lower, F, is the one the raga does not sit on.",
+      why: "Raised 4th. Six frets. In C that is F#. The note a fret lower, F, is the one Lydian does not sit on.",
     },
     {
-      prompt: "Bhairav's famous gap is between:",
-      choices: ["Home and the 2nd", "The flat 2nd and the major 3rd", "The 4th and the 5th", "The 6th and the 7th"],
+      prompt: "Mixolydian versus major is a difference of:",
+      choices: ["The 3rd", "The 7th: Mixolydian uses the flat 7th, ten frets up", "The 2nd", "The octave"],
       answer: 1,
-      why: "Flat 2nd is 1 fret up. Major 3rd is 4. The fret in between is empty on purpose.",
+      why: "Major 3rd stays. The 7th drops one fret. That is the open-door major.",
     },
     {
-      prompt: "A film song 'based on' a raga will often:",
-      choices: ["Obey every classical rule for the whole arrangement", "Use the raga's tell, then break the recipe for the orchestra and the chorus", "Avoid the tell so the audience is surprised", "Use no home note"],
+      prompt: "Dorian versus natural minor is a difference of:",
+      choices: ["The 3rd", "The 6th: Dorian’s 6th stays major", "The 5th", "Home"],
       answer: 1,
-      why: "Listen for the tell. Do not be shocked when a bar uses a note the raga would scold. Mixed means mixed. The home sound is still the tell.",
+      why: "Both have a minor 3rd and a minor 7th. Dorian’s 6th is major. Natural minor’s 6th is minor. One fret.",
     },
   ];
   return (
     <>
       <Words
         items={[
-          { term: "Aaroh / avaroh", def: "The way up, and the way down. They are not always the scale reversed." },
-          { term: "Pakad", def: "A short catch-phrase that identifies the raga faster than the full scale." },
-          { term: "Mishra", def: "Mixed. A film treatment that keeps a raga's color and adds visitors." },
+          { term: "Ionian", def: "Major. Rest on 1 of the major scale." },
+          { term: "Dorian", def: "Rest on 2. Minor 3rd, major 6th." },
+          { term: "Phrygian", def: "Rest on 3. Flat 2nd." },
+          { term: "Lydian", def: "Rest on 4. Raised 4th." },
+          { term: "Mixolydian", def: "Rest on 5. Flat 7th." },
+          { term: "Aeolian", def: "Natural minor. Rest on 6." },
+          { term: "Locrian", def: "Rest on 7. Flat 2 and flat 5. Rare as a tonic." },
         ]}
       />
-      <p>Stop equating “raga” with “scale”. A scale is the legal notes. A raga is the recipe: which way you may climb, which note is the sun, which note you may touch but not sleep on. The hour-of-day rules are tradition, not physics. The note rules are audible.</p>
-      <p>The Scales page lists eight recipes in letters, with Indian names as a translation. Today, learn the tells well enough to hear them.</p>
-      <RagaStudio />
+      <p>
+        Stop thinking you need a new scale for every mood. Play C major, then lean on D, E, F, G, A, or B. You changed which letter is home. That is a mode. The Scales page is the atlas. Today, learn the tells: #4, b7, major 6th in a minor world, b2.
+      </p>
+      <ScaleStudio startId="mixolydian" />
+      <LessonVideos topics={["modes", "scales"]} />
       <h2>Check</h2>
       <Quiz day={10} questions={questions} />
     </>
@@ -504,10 +527,10 @@ function Day10() {
 function Day11() {
   const questions: Question[] = [
     {
-      prompt: "Abhi Na Jao Chhod Kar is taught as which raga, and what do you listen for?",
-      choices: ["Major pentatonic, no 4th", "Yaman, raised 4th", "Bhairavi, flat 2nd", "Natural minor"],
+      prompt: "Abhi Na Jao Chhod Kar is taught with which tell?",
+      choices: ["Major pentatonic, no 4th", "Lydian: raised 4th", "Phrygian: flat 2nd", "Natural minor"],
       answer: 1,
-      why: "Jaidev, Hum Dono, 1961. Yaman. The tell is the 4th one fret higher than the major scale's 4th.",
+      why: "Jaidev, Hum Dono, 1961. The tell is the 4th one fret higher than the major scale's 4th.",
     },
     {
       prompt: "Someone says Tum Hi Ho is Yaman because it is romantic. What do you check?",

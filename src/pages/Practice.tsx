@@ -1,36 +1,19 @@
 import { useState } from "react";
 import { Harmonium } from "../components/Harmonium.tsx";
+import { PhraseCoach } from "../components/PhraseCoach.tsx";
 import { PitchCoach } from "../components/PitchCoach.tsx";
 import { Fretboard } from "../components/Fretboard.tsx";
 import { droneIsOn, playMidi, playPhrase, saMidiFor, startDrone, stopDrone, unlock } from "../audio.ts";
 import { useProgress } from "../progress.tsx";
-import {
-  BLUES,
-  GUITAR_KEYS,
-  MINOR_PENT,
-  RAGAS,
-  MAJOR,
-  nearestMidi,
-  noteName,
-  positionsOf,
-  scaleNoteNames,
-  usesFlats,
-} from "../theory.ts";
-
-const EXTRAS = [
-  { id: "bilawal-scale", name: "Major", steps: MAJOR },
-  { id: "minor-pent", name: "Minor pentatonic", steps: MINOR_PENT },
-  { id: "blues", name: "Blues", steps: BLUES },
-];
+import { GUITAR_KEYS, nearestMidi, noteName, positionsOf, scaleNoteNames, usesFlats } from "../theory.ts";
+import { SCALES } from "../scales.ts";
 
 export function PracticePage() {
   const { saPc, setSa, stamp } = useProgress();
-  const [col, setCol] = useState("yaman");
+  const [col, setCol] = useState("major");
   const [drone, setDrone] = useState(false);
-  const raga = RAGAS.find((item) => item.id === col);
-  const extra = EXTRAS.find((item) => item.id === col);
-  const steps = raga?.steps ?? extra?.steps ?? MAJOR;
-  const name = raga ? `${raga.western}` : extra?.name ?? "Major";
+  const scale = SCALES.find((item) => item.id === col) ?? SCALES[0];
+  const steps = scale.steps;
 
   return (
     <div className="home wide">
@@ -54,25 +37,29 @@ export function PracticePage() {
             </button>
           ))}
       </div>
-      <h2>{raga ? raga.name : name}</h2>
+      <h2>{scale.name}</h2>
       <div className="chips">
-        {RAGAS.map((item) => (
-          <button key={item.id} type="button" className={`chip ${col === item.id ? "on" : ""}`} onClick={() => setCol(item.id)}>
-            {item.name}
-          </button>
-        ))}
-        {EXTRAS.map((item) => (
-          <button key={item.id} type="button" className={`chip ${col === item.id ? "on" : ""}`} onClick={() => setCol(item.id)}>
+        {SCALES.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className={`chip ${col === item.id ? "on" : ""}`}
+            onClick={() => {
+              setCol(item.id);
+              unlock();
+              playPhrase(nearestMidi(saPc, 60), [...item.steps, 12], 0.16);
+            }}
+          >
             {item.name}
           </button>
         ))}
       </div>
       <p className="pitch-read">{scaleNoteNames(saPc, steps).join("  ")}</p>
-      <p className="tiny muted">{raga ? `${raga.western}. Indian names are on the Scales page if you want the translation.` : null}</p>
+      <p className="tiny muted">{scale.tell}</p>
       <div className="row">
         <button
           type="button"
-          className="btn secondary"
+          className="play-btn"
           onClick={() => {
             unlock();
             playPhrase(nearestMidi(saPc, 60), [...steps, 12]);
@@ -82,7 +69,7 @@ export function PracticePage() {
         </button>
         <button
           type="button"
-          className="btn secondary"
+          className="play-btn ghost"
           onClick={() => {
             unlock();
             if (drone || droneIsOn()) {
@@ -110,6 +97,7 @@ export function PracticePage() {
       <h2>What the mic hears</h2>
       <PitchCoach saPc={saPc} scale={steps} />
       <CallBack saPc={saPc} steps={steps} onHit={() => stamp("call-response")} />
+      <PhraseCoach />
     </div>
   );
 }
@@ -138,10 +126,10 @@ function CallBack({ saPc, steps, onHit }: { saPc: number; steps: number[]; onHit
           .join(" · ");
 
   return (
-    <section className="widget">
+    <section className="widget studio">
       <h3>Call and response</h3>
       <p>The app sings a letter from this collection. You play it back and hold it. Any octave.</p>
-      <button type="button" className="btn" onClick={ask}>
+      <button type="button" className="play-btn" onClick={ask}>
         {phase === "idle" ? "Sing one" : "Another"}
       </button>
       {semi !== null ? <p className="pitch-read">Target is hidden until you want the hint. It was just played.</p> : null}

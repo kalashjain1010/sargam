@@ -1,6 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { Shell } from "./components/Shell.tsx";
 import { ProgressProvider } from "./progress.tsx";
 import { HomePage } from "./pages/Home.tsx";
@@ -10,7 +9,10 @@ import { SongListPage, SongPage } from "./pages/Songs.tsx";
 import { RagaPage } from "./pages/Ragas.tsx";
 import { GymPage } from "./pages/Gym.tsx";
 import { PracticePage } from "./pages/Practice.tsx";
-import { Link } from "react-router-dom";
+import { EarPage } from "./pages/Ear.tsx";
+import { ChordsPage } from "./pages/Chords.tsx";
+import { CoachPage } from "./pages/Coach.tsx";
+import { WatchPage } from "./pages/Watch.tsx";
 
 function ScrollUp() {
   const location = useLocation();
@@ -43,6 +45,10 @@ export default function App() {
             <Route path="/songs/:id" element={<SongPage />} />
             <Route path="/ragas" element={<RagaPage />} />
             <Route path="/gym" element={<GymPage />} />
+            <Route path="/ear" element={<EarPage />} />
+            <Route path="/coach" element={<CoachPage />} />
+            <Route path="/watch" element={<WatchPage />} />
+            <Route path="/chords" element={<ChordsPage />} />
             <Route path="/practice" element={<PracticePage />} />
             <Route path="*" element={<Missing />} />
           </Routes>

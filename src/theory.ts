@@ -12,6 +12,16 @@ export const KHAMAJ = [0, 2, 4, 5, 7, 9, 10];
 export const BHAIRAVI = [0, 1, 3, 5, 7, 8, 10];
 export const BHAIRAV = [0, 1, 4, 5, 7, 8, 11];
 export const MALKAUNS = [0, 3, 5, 8, 10];
+export const HARMONIC_MINOR = [0, 2, 3, 5, 7, 8, 11];
+export const MELODIC_MINOR = [0, 2, 3, 5, 7, 9, 11];
+export const LOCRIAN = [0, 1, 3, 5, 6, 8, 10];
+export const PHRYG_DOM = [0, 1, 4, 5, 7, 8, 10];
+export const MIXOLYDIAN = KHAMAJ;
+export const LYDIAN = YAMAN;
+export const DORIAN = KAFI;
+export const PHRYGIAN = BHAIRAVI;
+export const BYZANTINE = BHAIRAV;
+export const MAJOR_PENT = BHUPALI;
 
 export type SwaraKind = "fixed" | "shuddh" | "komal" | "tivra";
 
@@ -56,94 +66,43 @@ export type DayMeta = {
   kicker: string;
   minutes: number;
   promise: string;
+  unit: string;
 };
 
 export const DAYS: DayMeta[] = [
-  {
-    id: 1,
-    title: "Half the string",
-    kicker: "Pitch",
-    minutes: 12,
-    promise: "Fret 12 is the exact middle of the string. Same letter, double the frequency.",
-  },
-  {
-    id: 2,
-    title: "Home is a choice",
-    kicker: "Keys",
-    minutes: 14,
-    promise: "C D E F G A B are fixed letters. The home of a song can be any of them. A capo just moves home.",
-  },
-  {
-    id: 3,
-    title: "Songs are distances",
-    kicker: "Intervals",
-    minutes: 15,
-    promise: "A fifth is 7 frets. A major 3rd is 4. A minor 3rd is 3. Count, do not guess.",
-  },
-  {
-    id: 4,
-    title: "The major scale",
-    kicker: "Major",
-    minutes: 14,
-    promise: "2 2 1 2 2 2 1 from any letter. Open G, C, D, A, and E all use this walk.",
-  },
-  {
-    id: 5,
-    title: "Three different minors",
-    kicker: "Minor",
-    minutes: 16,
-    promise: "Dorian, natural minor, and Phrygian flatten different notes. One minor box cannot cover all three.",
-  },
-  {
-    id: 6,
-    title: "A chord is a stack",
-    kicker: "Harmony",
-    minutes: 15,
-    promise: "The shapes you already grab are every other note of a scale, sounded together.",
-  },
-  {
-    id: 7,
-    title: "The loop under the song",
-    kicker: "Progressions",
-    minutes: 14,
-    promise: "G–D–Em–C and Am–F–C–G are the same family with home in a different place.",
-  },
-  {
-    id: 8,
-    title: "Find the key yourself",
-    kicker: "Method",
-    minutes: 16,
-    promise: "You do not need a chart. You need the note a line can end on, then three more melody notes.",
-  },
-  {
-    id: 9,
-    title: "The box, and the pentatonic",
-    kicker: "Pentatonic",
-    minutes: 14,
-    promise: "A minor pentatonic and C major pentatonic are the same frets. Home moved three steps.",
-  },
-  {
-    id: 10,
-    title: "A raga is a recipe",
-    kicker: "Raga",
-    minutes: 18,
-    promise: "A scale is the notes. A raga is how you walk them. Letters first, Indian names as a check.",
-  },
-  {
-    id: 11,
-    title: "Three songs, slowly",
-    kicker: "Film music",
-    minutes: 16,
-    promise: "Raised 4th, flat 7th, and a minor guitar loop. One tell each, then you can test a record without a tab.",
-  },
-  {
-    id: 12,
-    title: "Play it back",
-    kicker: "Exam",
-    minutes: 15,
-    promise: "Name the distance, name the letter, and hold the note. A new song starts with a question.",
-  },
+  { id: 1, unit: "Foundation", title: "Half the string", kicker: "Pitch", minutes: 12, promise: "Fret 12 is the exact middle of the string. Same letter, double the frequency." },
+  { id: 2, unit: "Foundation", title: "Home is a choice", kicker: "Keys", minutes: 14, promise: "C D E F G A B are fixed letters. The home of a song can be any of them. A capo just moves home." },
+  { id: 3, unit: "Foundation", title: "Songs are distances", kicker: "Intervals", minutes: 15, promise: "A fifth is 7 frets. A major 3rd is 4. A minor 3rd is 3. Count, do not guess." },
+  { id: 4, unit: "Foundation", title: "The major scale", kicker: "Major", minutes: 14, promise: "2 2 1 2 2 2 1 from any letter. Open G, C, D, A, and E all use this walk." },
+  { id: 5, unit: "Foundation", title: "Three different minors", kicker: "Minor", minutes: 16, promise: "Dorian, natural minor, and Phrygian flatten different notes. One minor box cannot cover all three." },
+  { id: 6, unit: "Foundation", title: "A chord is a stack", kicker: "Harmony", minutes: 15, promise: "The shapes you already grab are every other note of a scale, sounded together." },
+  { id: 7, unit: "Songs", title: "The loop under the song", kicker: "Progressions", minutes: 14, promise: "G–D–Em–C and Am–F–C–G are the same family with home in a different place." },
+  { id: 8, unit: "Songs", title: "Find the key yourself", kicker: "Method", minutes: 16, promise: "You do not need a chart. You need the note a line can end on, then three more melody notes." },
+  { id: 9, unit: "Songs", title: "The box, and the pentatonic", kicker: "Pentatonic", minutes: 14, promise: "A minor pentatonic and C major pentatonic are the same frets. Home moved three steps." },
+  { id: 10, unit: "Songs", title: "Modes: same notes, new home", kicker: "Modes", minutes: 18, promise: "Play C major, then rest on D, E, F, G, A, or B. You did not change notes. You changed which letter feels like home." },
+  { id: 11, unit: "Songs", title: "Three songs, slowly", kicker: "Tells", minutes: 16, promise: "Raised 4th, flat 7th, and a minor guitar loop. One tell each, then you can test a record without a tab." },
+  { id: 12, unit: "Songs", title: "Play it back", kicker: "Check", minutes: 15, promise: "Name the distance, name the letter, and hold the note. A new song starts with a question." },
+  { id: 13, unit: "Harmony", title: "Find the chords", kicker: "By ear", minutes: 18, promise: "Bass first, then major or minor, then the family. Tabs are optional after this." },
+  { id: 14, unit: "Harmony", title: "Barre: two shapes, twelve keys", kicker: "Barre", minutes: 16, promise: "The open E and A shapes, slid. That is most of the neck." },
+  { id: 15, unit: "Harmony", title: "Sevenths", kicker: "Color", minutes: 15, promise: "Add one note to a triad. Dominant 7 pulls. Major 7 sits. Minor 7 smokes." },
+  { id: 16, unit: "Harmony", title: "The circle of fifths", kicker: "Keys", minutes: 16, promise: "Each step clockwise adds a sharp. Neighbors are the chords a song actually uses." },
+  { id: 17, unit: "Harmony", title: "Cadences: how a phrase ends", kicker: "Cadence", minutes: 14, promise: "V–I finishes. IV–I amen. V–vi ducks. Hear the last two chords and you hear the sentence." },
+  { id: 18, unit: "Harmony", title: "CAGED on one letter", kicker: "CAGED", minutes: 18, promise: "Five grips for the same C major chord. Connect them and the neck stops being five islands." },
+  { id: 19, unit: "Groove", title: "Count before you strum", kicker: "Rhythm", minutes: 14, promise: "4/4, 3/4, and 6/8 are different rooms. The right hand only makes sense after the count." },
+  { id: 20, unit: "Groove", title: "Harmonic minor and the V7", kicker: "Minor V", minutes: 16, promise: "Raise the 7th of a minor scale and the V chord becomes major. That is why Am songs use E or E7." },
+  { id: 21, unit: "Ear", title: "Hear the distance", kicker: "Intervals", minutes: 16, promise: "Melodic, then harmonic. Name it in frets before you name it in English." },
+  { id: 22, unit: "Ear", title: "Hear the quality", kicker: "Chords", minutes: 15, promise: "Major, minor, dominant 7, diminished. The 3rd and the 7th are the whole story." },
+  { id: 23, unit: "Ear", title: "Hear the loop", kicker: "Progressions", minutes: 16, promise: "I–V–vi–IV versus i–VI–III–VII versus I–bVII–IV. Three families cover most of the song lab." },
+  { id: 24, unit: "Ear", title: "Power chords", kicker: "Rock", minutes: 12, promise: "Root and 5th. No 3rd, so no major or minor. Move the two-fret shape." },
+  { id: 25, unit: "Mastery", title: "Suspended and add9", kicker: "Color", minutes: 14, promise: "Replace or add one note. Sus4 wants to fall. Add9 sparkles. Same grip, new vowel." },
+  { id: 26, unit: "Mastery", title: "One string, seven modes", kicker: "Modes", minutes: 16, promise: "Walk 2 2 1 2 2 2 1, then start on a different fret. That is every church mode." },
+  { id: 27, unit: "Mastery", title: "Capo as a machine", kicker: "Capo", minutes: 12, promise: "Capo 2 on G shapes is A. The song did not change. Your hands did." },
+  { id: 28, unit: "Mastery", title: "Secondary dominants", kicker: "Borrow", minutes: 16, promise: "A D major chord in C major is V of V. It is a visitor with a job: point at G." },
+  { id: 29, unit: "Mastery", title: "A new song, no chart", kicker: "By ear", minutes: 18, promise: "Home, quality, three melody notes, family, capo. That is the whole method, in order." },
+  { id: 30, unit: "Mastery", title: "Master check", kicker: "Exam", minutes: 20, promise: "Intervals, modes, loops, barre math, and a song you have never been handed." },
 ];
+
+export const DAY_COUNT = DAYS.length;
 
 export type Raga = {
   id: string;
@@ -333,13 +292,13 @@ export type Song = {
   caveat: string;
 };
 
-export const SONGS: Song[] = [
+const CORE_SONGS: Song[] = [
   {
     id: "abhi-na-jao",
     title: "Abhi Na Jao Chhod Kar",
     film: "Hum Dono",
     year: "1961",
-    family: "Yaman",
+    family: "Lydian",
     ragaId: "yaman",
     confidence: "established",
     summary: "Jaidev's duet for Rafi and Asha is a standard classroom example of Yaman. The lesson is not the lyric. It is the raised fourth.",
@@ -365,7 +324,7 @@ export const SONGS: Song[] = [
     title: "Ehsaan Tera Hoga Mujh Par",
     film: "Junglee",
     year: "1961",
-    family: "Yaman",
+    family: "Lydian",
     ragaId: "yaman",
     confidence: "commonly taught",
     summary: "Shankar–Jaikishan's Rafi song is widely taught as Yaman. Use the same tell as Abhi Na Jao: a major-scale world with the 4th raised.",
@@ -390,7 +349,7 @@ export const SONGS: Song[] = [
     title: "Jyoti Kalash Chhalke",
     film: "Bhabhi Ki Chudiyan",
     year: "1961",
-    family: "Bhupali",
+    family: "Major pentatonic",
     ragaId: "bhupali",
     confidence: "commonly taught",
     summary: "Lata, Sudhir Phadke. A clean five-note song: C D E G A when home is C. Beginners use it because there is no 4th and no 7th to worry about.",
@@ -415,7 +374,7 @@ export const SONGS: Song[] = [
     title: "Payoji Maine Ram Ratan Dhan Payo",
     film: "Traditional Meerabai bhajan",
     year: "traditional",
-    family: "Bhupali",
+    family: "Major pentatonic",
     ragaId: "bhupali",
     confidence: "established",
     summary: "The familiar bhajan tune is Bhupali: five notes, no 4th, no 7th. A traditional melody, so the raga and the song grew up together.",
@@ -440,7 +399,7 @@ export const SONGS: Song[] = [
     title: "Mohe Panghat Pe",
     film: "Mughal-e-Azam",
     year: "1960",
-    family: "Khamaj",
+    family: "Mixolydian",
     ragaId: "khamaj",
     confidence: "commonly taught",
     summary: "Naushad, Lata. Taught as Khamaj: a bright major frame with a flat 7th, and room for a major 7th in the phrase.",
@@ -465,7 +424,7 @@ export const SONGS: Song[] = [
     title: "Piya Tose Naina Lage Re",
     film: "Guide",
     year: "1965",
-    family: "Khamaj",
+    family: "Mixolydian",
     ragaId: "khamaj",
     confidence: "commonly taught",
     summary: "S.D. Burman. Another light Khamaj classic. Major home, flat 7th in the melody, the gait of a thumri more than a pop loop.",
@@ -490,7 +449,7 @@ export const SONGS: Song[] = [
     title: "Laga Chunari Mein Daag",
     film: "Dil Hi To Hai",
     year: "1963",
-    family: "Bhairavi",
+    family: "Phrygian",
     ragaId: "bhairavi",
     confidence: "commonly taught",
     summary: "S.D. Burman, Manna Dey. Widely taught as Bhairavi. The morning raga of pathos, used here as light classical.",
@@ -515,7 +474,7 @@ export const SONGS: Song[] = [
     title: "Kun Faya Kun",
     film: "Rockstar",
     year: "2011",
-    family: "Khamaj",
+    family: "Mixolydian",
     ragaId: "khamaj",
     confidence: "arrangement",
     summary: "A.R. Rahman. Lesson transcriptions often put the song in D and mark a flat 7th in the melody, over major chords D, G, and A. That combination is Khamaj's color, not a full raga performance.",
@@ -663,17 +622,810 @@ export const SONGS: Song[] = [
   },
 ];
 
+const ARR_CONFIRM = [
+  "Find the chord that can end the chorus. That rest is home.",
+  "Name whether that chord is major or minor. That is I versus i.",
+  "Map every other chord as a degree of that home. If they sit in one scale, you have the family.",
+  "Capo until the shapes are ones you can sing over. Home moved. Distances did not.",
+];
+
+function arrangement(p: {
+  id: string;
+  title: string;
+  film: string;
+  year: string;
+  family: string;
+  guitarPc: number;
+  chords: Song["chords"];
+  steps?: number[];
+  loopName: string;
+  summary: string;
+  tell: string;
+  caveat?: string;
+  ragaId?: string;
+}): Song {
+  const homeMinor = p.chords[0]?.q === "min";
+  return {
+    confidence: "arrangement",
+    confirm: ARR_CONFIRM,
+    bedNote: `${p.loopName}. Common guitar reduction. Studio key may differ. Roman numerals travel.`,
+    caveat: p.caveat ?? "Arrangement for practice, not a transcription of the record. No melody is copied here.",
+    ...p,
+    steps: p.steps ?? (homeMinor ? NATURAL_MINOR : MAJOR),
+  };
+}
+
+const I_V_vi_IV: Song["chords"] = [
+  { semi: 0, q: "maj" },
+  { semi: 7, q: "maj" },
+  { semi: 9, q: "min" },
+  { semi: 5, q: "maj" },
+];
+const I_vi_IV_V: Song["chords"] = [
+  { semi: 0, q: "maj" },
+  { semi: 9, q: "min" },
+  { semi: 5, q: "maj" },
+  { semi: 7, q: "maj" },
+];
+const i_VI_III_VII: Song["chords"] = [
+  { semi: 0, q: "min" },
+  { semi: 8, q: "maj" },
+  { semi: 3, q: "maj" },
+  { semi: 10, q: "maj" },
+];
+const i_III_VII_VI: Song["chords"] = [
+  { semi: 0, q: "min" },
+  { semi: 3, q: "maj" },
+  { semi: 10, q: "maj" },
+  { semi: 8, q: "maj" },
+];
+const I_V_IV: Song["chords"] = [
+  { semi: 0, q: "maj" },
+  { semi: 7, q: "maj" },
+  { semi: 5, q: "maj" },
+];
+
+const MORE_SONGS: Song[] = [
+  arrangement({
+    id: "agar-tum",
+    title: "Agar Tum Saath Ho",
+    film: "Tamasha",
+    year: "2015",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_VI_III_VII,
+    loopName: "Am · F · C · G",
+    summary: "Minor home, the same i–VI–III–VII family as Channa Mereya. Taught on guitar in Am.",
+    tell: "The chorus can rest on Am. F, C, and G are VI, III, and VII. Test the 3rd: C, not C#.",
+  }),
+  arrangement({
+    id: "gerua",
+    title: "Gerua",
+    film: "Dilwale",
+    year: "2015",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_V_vi_IV,
+    loopName: "G · D · Em · C",
+    summary: "Bright major. I–V–vi–IV in G. Same machine as Ilahi and Kesariya.",
+    tell: "Home chord is major. Em is a visit, not the floor. If Em feels like home, you named the relative minor by mistake.",
+  }),
+  arrangement({
+    id: "shayad",
+    title: "Shayad",
+    film: "Love Aaj Kal",
+    year: "2020",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_VI_III_VII,
+    loopName: "Am · F · C · G",
+    summary: "Modern minor ballad. Open-chord charts circle Am, F, C, G.",
+    tell: "Minor 3rd on home. The loop is diatonic natural minor as chords.",
+  }),
+  arrangement({
+    id: "khairiyat",
+    title: "Khairiyat",
+    film: "Chhichhore",
+    year: "2019",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_V_vi_IV,
+    loopName: "G · D · Em · C",
+    summary: "Major, singable, four open chords. Capo to the voice.",
+    tell: "I–V–vi–IV. The 7th of the melody usually pulls up to home, so this is major, not Mixolydian.",
+  }),
+  arrangement({
+    id: "tujhe-kitna",
+    title: "Tujhe Kitna Chahne Lage",
+    film: "Kabir Singh",
+    year: "2019",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_vi_IV_V,
+    loopName: "G · Em · C · D",
+    summary: "I–vi–IV–V in G. Same four chords as the other major loops, rotated.",
+    tell: "Home is still G. Em is vi. If you start counting from Em you will call it a minor song and the D chord will confuse you.",
+  }),
+  arrangement({
+    id: "dil-diyan",
+    title: "Dil Diyan Gallan",
+    film: "Tiger Zinda Hai",
+    year: "2017",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_vi_IV_V,
+    loopName: "G · Em · C · D",
+    summary: "Another I–vi–IV–V guitar reduction. Useful because you already have the shapes from Tujhe Kitna.",
+    tell: "Same test as Tujhe Kitna. Major home, relative minor as color.",
+  }),
+  arrangement({
+    id: "raataan",
+    title: "Raataan Lambiyan",
+    film: "Shershaah",
+    year: "2021",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_vi_IV_V,
+    loopName: "G · Em · C · D",
+    summary: "Recent, everywhere on guitar YouTube, still the same four chords.",
+    tell: "If you can play Gerua, you can play this. Only the order of vi and V changed.",
+  }),
+  arrangement({
+    id: "apna-bana",
+    title: "Apna Bana Le",
+    film: "Bhediya",
+    year: "2022",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_vi_IV_V,
+    loopName: "G · Em · C · D",
+    summary: "Major loop. Lesson charts agree on G, Em, C, D as a first pass.",
+    tell: "Major 3rd on home. Capo until G shapes match the singer.",
+  }),
+  arrangement({
+    id: "chaleya",
+    title: "Chaleya",
+    film: "Jawan",
+    year: "2023",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_VI_III_VII,
+    loopName: "Am · F · C · G",
+    summary: "A 2023 hook that still sits on the minor four-chord family.",
+    tell: "Home feels minor. F C G are the usual visitors. Not Lydian: the 3rd is minor.",
+  }),
+  arrangement({
+    id: "heeriye",
+    title: "Heeriye",
+    film: "Single",
+    year: "2023",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_vi_IV_V,
+    loopName: "G · Em · C · D",
+    summary: "Current pop, old machine. I–vi–IV–V.",
+    tell: "Same G-shape family. Use it to prove that year does not change roman numerals.",
+  }),
+  arrangement({
+    id: "satranga",
+    title: "Satranga",
+    film: "Animal",
+    year: "2023",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_vi_IV_V,
+    loopName: "G · Em · C · D",
+    summary: "Ballad in the I–vi–IV–V lane. Guitar-friendly in G.",
+    tell: "End the line on G. Em should not feel like the last word.",
+  }),
+  arrangement({
+    id: "kabira",
+    title: "Kabira",
+    film: "Yeh Jawaani Hai Deewani",
+    year: "2013",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_V_vi_IV,
+    loopName: "G · D · Em · C",
+    summary: "Folk-tinted major. Same I–V–vi–IV as Ilahi, from the same film family.",
+    tell: "Major home. The folk color is rhythm and vocal, not a new scale. Check the 4th: it is natural, not raised.",
+  }),
+  arrangement({
+    id: "iktara",
+    title: "Iktara",
+    film: "Wake Up Sid",
+    year: "2009",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_VI_III_VII,
+    loopName: "Am · F · C · G",
+    summary: "Amit Trivedi. Guitarists cut it to Am F C G. Minor home, diatonic visitors.",
+    tell: "Minor 3rd. If a phrase uses F#, mark it as a visitor, not as a new key.",
+  }),
+  arrangement({
+    id: "sunshine",
+    title: "Give Me Some Sunshine",
+    film: "3 Idiots",
+    year: "2009",
+    family: "I–IV–V",
+    guitarPc: 7,
+    chords: [
+      { semi: 0, q: "maj" },
+      { semi: 5, q: "maj" },
+      { semi: 7, q: "maj" },
+      { semi: 9, q: "min" },
+    ],
+    loopName: "G · C · D · Em",
+    summary: "Campfire I–IV–V with the relative minor. The lesson is how little you need.",
+    tell: "G, C, and D are I, IV, V. Em is vi. If you can hear those four, you can play a hundred college songs.",
+  }),
+  arrangement({
+    id: "senorita-znmd",
+    title: "Senorita",
+    film: "Zindagi Na Milegi Dobara",
+    year: "2011",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: [
+      { semi: 0, q: "min" },
+      { semi: 10, q: "maj" },
+      { semi: 8, q: "maj" },
+      { semi: 3, q: "maj" },
+    ],
+    loopName: "Am · G · F · C",
+    summary: "Am G F C. A descending bass under a minor home. Same notes as the other Am family, different order.",
+    tell: "Walking down from Am toward F is the feel. Home is still A minor.",
+  }),
+  arrangement({
+    id: "tu-jaane-na",
+    title: "Tu Jaane Na",
+    film: "Ajab Prem Ki Ghazab Kahani",
+    year: "2009",
+    family: "Minor loop",
+    guitarPc: 4,
+    chords: [
+      { semi: 0, q: "min" },
+      { semi: 8, q: "maj" },
+      { semi: 3, q: "maj" },
+      { semi: 10, q: "maj" },
+    ],
+    loopName: "Em · C · G · D",
+    summary: "i–VI–III–VII in E minor, which is just the Am family moved to open Em shapes.",
+    tell: "If you know Am F C G, capo or move to Em C G D. Same numerals. Home is E.",
+  }),
+  arrangement({
+    id: "galliyan",
+    title: "Galliyan",
+    film: "Ek Villain",
+    year: "2014",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_VI_III_VII,
+    loopName: "Am · F · C · G",
+    summary: "Another Am F C G reduction. Use it as reps, not as a new theory.",
+    tell: "Minor home. Same test as Shayad and Agar Tum Saath Ho.",
+  }),
+  arrangement({
+    id: "sunn-raha",
+    title: "Sunn Raha Hai",
+    film: "Aashiqui 2",
+    year: "2013",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_V_vi_IV,
+    loopName: "G · D · Em · C",
+    summary: "Major chorus. Same film as Tum Hi Ho, opposite quality on home. That contrast is the lesson.",
+    tell: "Tum Hi Ho's guitar home is minor. This one's is major. Romance is not a scale.",
+  }),
+  arrangement({
+    id: "bekhayali",
+    title: "Bekhayali",
+    film: "Kabir Singh",
+    year: "2019",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_VI_III_VII,
+    loopName: "Am · F · C · G",
+    summary: "Minor loop. Pair it with Tujhe Kitna from the same film: one minor home, one major home.",
+    tell: "Am can end the line. Tujhe Kitna cannot rest on Am in its usual G arrangement. Two songs, two homes, one movie.",
+  }),
+  arrangement({
+    id: "phir-bhi",
+    title: "Phir Bhi Tumko Chaahunga",
+    film: "Half Girlfriend",
+    year: "2017",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_vi_IV_V,
+    loopName: "G · Em · C · D",
+    summary: "I–vi–IV–V ballad. Capo until G shapes match.",
+    tell: "Major 3rd on G. Em is vi.",
+  }),
+  arrangement({
+    id: "ranjha",
+    title: "Ranjha",
+    film: "Shershaah",
+    year: "2021",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_VI_III_VII,
+    loopName: "Am · F · C · G",
+    summary: "Same film as Raataan Lambiyan. That one is major. This one is minor. Hear the 3rd.",
+    tell: "Minor 3rd. Do not steal the G-major loop from Raataan and force it here.",
+  }),
+  arrangement({
+    id: "ae-dil",
+    title: "Ae Dil Hai Mushkil",
+    film: "Ae Dil Hai Mushkil",
+    year: "2016",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_VI_III_VII,
+    loopName: "Am · F · C · G",
+    summary: "Title song, same family as Channa Mereya from the same film.",
+    tell: "Two songs, one movie, one minor family. The difference is melody and groove, which this lab will not copy.",
+  }),
+  arrangement({
+    id: "tera-yaar",
+    title: "Tera Yaar Hoon Main",
+    film: "Sonu Ke Titu Ki Sweety",
+    year: "2018",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_V_vi_IV,
+    loopName: "G · D · Em · C",
+    summary: "I–V–vi–IV in G. Friendship-song energy, major-scale notes.",
+    tell: "Major home. Same four chords as Ilahi.",
+  }),
+  arrangement({
+    id: "humdard",
+    title: "Humdard",
+    film: "Ek Villain",
+    year: "2014",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_VI_III_VII,
+    loopName: "Am · F · C · G",
+    summary: "Minor ballad. Pair with Galliyan: same film, same family, different song.",
+    tell: "i–VI–III–VII. Bass on A, then F, then C, then G, is a fast way to hear it.",
+  }),
+  arrangement({
+    id: "nadaan",
+    title: "Nadaan Parinde",
+    film: "Rockstar",
+    year: "2011",
+    family: "Major loop",
+    guitarPc: 2,
+    chords: I_V_vi_IV,
+    loopName: "D · A · Bm · G",
+    summary: "Same film as Kun Faya Kun. This one is a straight major loop in D. Kun Faya Kun's tell was a flat 7th over major chords.",
+    tell: "If the 7th is C# (major), you are in D major. If a vocal leans on C natural against D, that bar went Mixolydian. Kun Faya Kun does that. This song mostly does not.",
+  }),
+  arrangement({
+    id: "let-her-go",
+    title: "Let Her Go",
+    film: "Passenger",
+    year: "2012",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_VI_III_VII,
+    loopName: "Am · F · C · G",
+    summary: "The English-pop twin of the Hindi Am F C G pile. Same numerals, different language.",
+    tell: "Minor home. If you can play Agar Tum Saath Ho, you can play this. That is the point of families.",
+  }),
+  arrangement({
+    id: "perfect",
+    title: "Perfect",
+    film: "Ed Sheeran",
+    year: "2017",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_vi_IV_V,
+    loopName: "G · Em · C · D",
+    summary: "I–vi–IV–V in G. Wedding-set staple because the shapes are kind.",
+    tell: "Major 3rd on G. Capo 1 or 2 is common for the record. Numerals stay.",
+  }),
+  arrangement({
+    id: "photograph",
+    title: "Photograph",
+    film: "Ed Sheeran",
+    year: "2015",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_V_vi_IV,
+    loopName: "G · D · Em · C",
+    summary: "I–V–vi–IV. Same as Kesariya with a different starting key if you capo.",
+    tell: "Major home. Em is vi. Photograph and Kesariya are useful as a pair: two languages, one loop.",
+  }),
+  arrangement({
+    id: "wonderwall",
+    title: "Wonderwall",
+    film: "Oasis",
+    year: "1995",
+    family: "Minor loop",
+    guitarPc: 4,
+    steps: NATURAL_MINOR,
+    chords: [
+      { semi: 0, q: "min" },
+      { semi: 3, q: "maj" },
+      { semi: 10, q: "maj" },
+      { semi: 7, q: "maj" },
+    ],
+    loopName: "Em · G · D · A",
+    summary: "Usually capo 2 with Em shapes. The lesson chart here is the shape key, not the sounding pitch.",
+    tell: "Home feels like Em. G, D, and A are III, VII, and IV in E minor, or a Mixolydian-ish rock bed. First map: minor home.",
+    caveat: "Oasis voicings are sus-heavy. The four letters are the map. The record adds extra fingers. Arrangement, not a transcription.",
+  }),
+  arrangement({
+    id: "riptide",
+    title: "Riptide",
+    film: "Vance Joy",
+    year: "2013",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: [
+      { semi: 0, q: "min" },
+      { semi: 10, q: "maj" },
+      { semi: 3, q: "maj" },
+      { semi: 8, q: "maj" },
+    ],
+    loopName: "Am · G · C · F",
+    summary: "Am G C F. Ukulele-famous, guitar-identical. Minor home, diatonic majors.",
+    tell: "Same Am family, shuffled. Hear G as VII, not as a new key.",
+  }),
+  arrangement({
+    id: "shape-of-you",
+    title: "Shape of You",
+    film: "Ed Sheeran",
+    year: "2017",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: [
+      { semi: 0, q: "min" },
+      { semi: 5, q: "min" },
+      { semi: 8, q: "maj" },
+      { semi: 10, q: "maj" },
+    ],
+    loopName: "Am · Dm · F · G",
+    summary: "i–iv–VI–VII. Common guitar teaching puts a capo at 4 and uses Am shapes. Sounding key is then C# minor.",
+    tell: "Home is minor. iv (Dm) is the extra color versus the usual Am F C G. Capo 4 if you want the record pitch with these shapes.",
+  }),
+  arrangement({
+    id: "someone-like-you",
+    title: "Someone Like You",
+    film: "Adele",
+    year: "2011",
+    family: "Major loop",
+    guitarPc: 9,
+    chords: I_V_vi_IV,
+    loopName: "A · E · F#m · D",
+    summary: "I–V–vi–IV in A. Piano song, guitar-legal. Same numerals as Ilahi.",
+    tell: "Major home on A. F#m is vi. The piano figure is arpeggio, not a new harmony.",
+  }),
+  arrangement({
+    id: "let-it-be",
+    title: "Let It Be",
+    film: "The Beatles",
+    year: "1970",
+    family: "Major loop",
+    guitarPc: 0,
+    chords: [
+      { semi: 0, q: "maj" },
+      { semi: 7, q: "maj" },
+      { semi: 9, q: "min" },
+      { semi: 5, q: "maj" },
+    ],
+    loopName: "C · G · Am · F",
+    summary: "I–V–vi–IV in C, the open-chord textbook.",
+    tell: "C can end the hymn-like chorus. F is IV. This is the cleanest I–V–vi–IV you will play.",
+  }),
+  arrangement({
+    id: "zombie",
+    title: "Zombie",
+    film: "The Cranberries",
+    year: "1994",
+    family: "Minor loop",
+    guitarPc: 4,
+    chords: [
+      { semi: 0, q: "min" },
+      { semi: 8, q: "maj" },
+      { semi: 3, q: "maj" },
+      { semi: 10, q: "maj" },
+    ],
+    loopName: "Em · C · G · D",
+    summary: "i–VI–III–VII in E minor. Same numerals as Tu Jaane Na.",
+    tell: "Em is home. Power-chord versions omit the 3rd. The vocal still sings a minor 3rd.",
+  }),
+  arrangement({
+    id: "creep",
+    title: "Creep",
+    film: "Radiohead",
+    year: "1992",
+    family: "Chromatic",
+    guitarPc: 7,
+    steps: MAJOR,
+    chords: [
+      { semi: 0, q: "maj" },
+      { semi: 4, q: "maj" },
+      { semi: 5, q: "maj" },
+      { semi: 5, q: "min" },
+    ],
+    loopName: "G · B · C · Cm",
+    summary: "I–III–IV–iv. The B major is a secondary dominant color, and Cm is borrowed from G minor. This is how pop leaves the scale on purpose.",
+    tell: "G and C are diatonic. B major contains D#, which is not in G major. Cm contains Eb, also not in G major. Those two visitors are the song.",
+    caveat: "The last chord is C minor, same root as C major. Quality changed, root did not. Listen for the 3rd dropping one fret.",
+  }),
+  arrangement({
+    id: "seven-nation",
+    title: "Seven Nation Army",
+    film: "The White Stripes",
+    year: "2003",
+    family: "Power riff",
+    guitarPc: 4,
+    steps: MINOR_PENT,
+    chords: [
+      { semi: 0, q: "maj" },
+      { semi: 3, q: "maj" },
+      { semi: 10, q: "maj" },
+      { semi: 8, q: "maj" },
+    ],
+    loopName: "E5 · G5 · D5 · C5",
+    summary: "A riff of roots. Power chords, no 3rd. The famous line is 1, 1, b3, 1, b7, b6, 5 in E.",
+    tell: "Play roots only first: E G E D C B. Then add the 5th on the next string, two frets up from the A-shape or two frets down on the E-shape... Root plus 7 frets, same fret on the next lower-pitched? On guitar a power chord is root and the 5th: same fret next string (E to A, A to D, D to G) except G to B.",
+    caveat: "No 3rd means you cannot hear major vs minor from the guitar part. The riff lives in E minor pentatonic / blues. Arrangement of roots, not a tab of the octave pedal.",
+  }),
+  arrangement({
+    id: "all-of-me",
+    title: "All of Me",
+    film: "John Legend",
+    year: "2013",
+    family: "Minor loop",
+    guitarPc: 4,
+    chords: [
+      { semi: 0, q: "min" },
+      { semi: 8, q: "maj" },
+      { semi: 3, q: "maj" },
+      { semi: 10, q: "maj" },
+    ],
+    loopName: "Em · C · G · D",
+    summary: "i–VI–III–VII piano song. Guitar in Em shapes.",
+    tell: "Em can end a phrase. Same family as Zombie and Tu Jaane Na.",
+  }),
+  arrangement({
+    id: "thinking-out-loud",
+    title: "Thinking Out Loud",
+    film: "Ed Sheeran",
+    year: "2014",
+    family: "I–IV–V",
+    guitarPc: 2,
+    chords: I_V_IV,
+    loopName: "D · A · G",
+    summary: "I–V–IV in D, with a walking bass in the record. Three chords do the job.",
+    tell: "D is home. A is V. G is IV. If you hear a B note in the bass, that is still a D chord with a moving bass, not a new key.",
+  }),
+  arrangement({
+    id: "stay-with-me",
+    title: "Stay With Me",
+    film: "Sam Smith",
+    year: "2014",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: [
+      { semi: 0, q: "min" },
+      { semi: 8, q: "maj" },
+      { semi: 3, q: "maj" },
+    ],
+    loopName: "Am · F · C",
+    summary: "Three chords. i–VI–III. The gospel plagal feel is F to C, which is IV to I in the relative major.",
+    tell: "Am still feels like home. C feels like a lift, not like the final word, until the arrangement wants a picardy-ish rest.",
+  }),
+  arrangement({
+    id: "counting-stars",
+    title: "Counting Stars",
+    film: "OneRepublic",
+    year: "2013",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: i_III_VII_VI,
+    loopName: "Am · C · G · F",
+    summary: "i–III–VII–VI, the Tum Hi Ho order, in English pop.",
+    tell: "Same numerals as Tum Hi Ho. Play both. The theory is identical. The song is not.",
+  }),
+  arrangement({
+    id: "yellow",
+    title: "Yellow",
+    film: "Coldplay",
+    year: "2000",
+    family: "Major loop",
+    guitarPc: 7,
+    chords: I_V_vi_IV,
+    loopName: "G · D · Em · C",
+    summary: "I–V–vi–IV. Capo 2 is common, sounding A. Shapes stay G.",
+    tell: "Major home. If you capo 2, say 'G shapes, sounding A' — that sentence is capo literacy.",
+  }),
+  arrangement({
+    id: "scientist",
+    title: "The Scientist",
+    film: "Coldplay",
+    year: "2002",
+    family: "Minor loop",
+    guitarPc: 2,
+    chords: [
+      { semi: 0, q: "min" },
+      { semi: 8, q: "maj" },
+      { semi: 3, q: "maj" },
+      { semi: 10, q: "maj" },
+    ],
+    loopName: "Dm · Bb · F · C",
+    summary: "i–VI–III–VII in D minor. Same family as Am F C G, moved.",
+    tell: "If Am F C G is comfortable, this is that loop with home on D. Fret the barre, or capo and use Am shapes.",
+  }),
+  arrangement({
+    id: "ho-hey",
+    title: "Ho Hey",
+    film: "The Lumineers",
+    year: "2012",
+    family: "Major loop",
+    guitarPc: 0,
+    chords: [
+      { semi: 0, q: "maj" },
+      { semi: 5, q: "maj" },
+      { semi: 9, q: "min" },
+      { semi: 7, q: "maj" },
+    ],
+    loopName: "C · F · Am · G",
+    summary: "I–IV–vi–V in C. Stomp and clap are rhythm, not harmony.",
+    tell: "C is home. Count 4. The extra 'hey' is still inside the bar.",
+  }),
+  arrangement({
+    id: "im-yours",
+    title: "I'm Yours",
+    film: "Jason Mraz",
+    year: "2008",
+    family: "Major loop",
+    guitarPc: 0,
+    chords: [
+      { semi: 0, q: "maj" },
+      { semi: 7, q: "maj" },
+      { semi: 9, q: "min" },
+      { semi: 5, q: "maj" },
+    ],
+    loopName: "C · G · Am · F",
+    summary: "I–V–vi–IV, often with a capo. The island strum is 1 2& 3& 4&.",
+    tell: "Same loop as Let It Be. If you know one, you know the other. Strum pattern is the remaining work.",
+  }),
+  arrangement({
+    id: "drivers-license",
+    title: "drivers license",
+    film: "Olivia Rodrigo",
+    year: "2021",
+    family: "Major loop",
+    guitarPc: 0,
+    chords: I_V_vi_IV,
+    loopName: "C · G · Am · F",
+    summary: "Modern piano-pop, still I–V–vi–IV. Proof that the loop did not retire.",
+    tell: "Major home. The drama is lyric and production. The numerals are old.",
+  }),
+  arrangement({
+    id: "as-it-was",
+    title: "As It Was",
+    film: "Harry Styles",
+    year: "2022",
+    family: "Minor loop",
+    guitarPc: 9,
+    chords: [
+      { semi: 0, q: "min" },
+      { semi: 10, q: "maj" },
+      { semi: 8, q: "maj" },
+      { semi: 3, q: "maj" },
+    ],
+    loopName: "Am · G · F · C",
+    summary: "A 2022 hit that still walks a minor-family bass. Guitarists cut it to Am shapes.",
+    tell: "Minor home. G as VII is the rock-leaning step. Same letters as Senorita in a different groove.",
+  }),
+];
+
+export const SONGS: Song[] = [...CORE_SONGS, ...MORE_SONGS];
+
 export const KEY_STEPS: string[] = [
   "Find the note or chord the line can end on. That rest is home. Its chord is I, or i if it is minor.",
   "Hum it and match it on the low E or the A string. That letter is the key for this song.",
   "Pick three more melody notes. Count frets up from home on one string.",
-  "Frets 0, 2, 4, 7, 9 only: major pentatonic. Indian name: Bhupali.",
-  "Fret 6 instead of fret 5, in an otherwise major scale: Lydian / Yaman. The tell is the raised 4th.",
-  "Fret 10 instead of fret 11, with a major 3rd: Mixolydian / Khamaj. The tell is the flat 7th.",
-  "Fret 3 as the 3rd: some kind of minor. Then test fret 8 against fret 9. Fret 8 is natural minor. Fret 9 is Dorian / Kafi.",
-  "Fret 1 as the 2nd, under a minor 3rd: Phrygian / Bhairavi.",
+  "Frets 0, 2, 4, 7, 9 only: major pentatonic.",
+  "Fret 6 instead of fret 5, in an otherwise major scale: Lydian. The tell is the raised 4th.",
+  "Fret 10 instead of fret 11, with a major 3rd: Mixolydian. The tell is the flat 7th.",
+  "Fret 3 as the 3rd: some kind of minor. Then test fret 8 against fret 9. Fret 8 is natural minor. Fret 9 is Dorian.",
+  "Fret 1 as the 2nd, under a minor 3rd: Phrygian.",
   "Capo, or slide the whole shape, until the chords land on shapes you can sing. Home moved. The distances did not.",
 ];
+
+export const CHORD_STEPS: string[] = [
+  "Find the bass. In most pop and film guitar, the bass is the root of the chord.",
+  "Ask whether the 3rd is major (4 frets up) or minor (3 frets up). That is the quality.",
+  "Name the chord: letter plus major or minor. G or G major. Em or E minor.",
+  "Write the next bass the same way. You now have a loop in letters.",
+  "Turn the letters into roman numerals from the chord that can end the chorus. That chord is I or i.",
+  "If every chord sits in one major or natural-minor scale, you have the family. If one chord does not, it is a visitor: secondary dominant, borrowed minor, or a mode color.",
+  "Capo until the shapes are comfortable. The numerals travel.",
+];
+
+export const CIRCLE: { name: string; pc: number }[] = [
+  { name: "C", pc: 0 },
+  { name: "G", pc: 7 },
+  { name: "D", pc: 2 },
+  { name: "A", pc: 9 },
+  { name: "E", pc: 4 },
+  { name: "B", pc: 11 },
+  { name: "F#", pc: 6 },
+  { name: "Db", pc: 1 },
+  { name: "Ab", pc: 8 },
+  { name: "Eb", pc: 3 },
+  { name: "Bb", pc: 10 },
+  { name: "F", pc: 5 },
+];
+
+export type Grip = {
+  name: string;
+  q: Quality;
+  rootPc: number;
+  // frets low E → high e. null = muted.
+  frets: (number | null)[];
+};
+
+export const OPEN_GRIPS: Grip[] = [
+  { name: "G", q: "maj", rootPc: 7, frets: [3, 2, 0, 0, 0, 3] },
+  { name: "C", q: "maj", rootPc: 0, frets: [null, 3, 2, 0, 1, 0] },
+  { name: "D", q: "maj", rootPc: 2, frets: [null, null, 0, 2, 3, 2] },
+  { name: "A", q: "maj", rootPc: 9, frets: [null, 0, 2, 2, 2, 0] },
+  { name: "E", q: "maj", rootPc: 4, frets: [0, 2, 2, 1, 0, 0] },
+  { name: "Em", q: "min", rootPc: 4, frets: [0, 2, 2, 0, 0, 0] },
+  { name: "Am", q: "min", rootPc: 9, frets: [null, 0, 2, 2, 1, 0] },
+  { name: "Dm", q: "min", rootPc: 2, frets: [null, null, 0, 2, 3, 1] },
+  { name: "E7", q: "7", rootPc: 4, frets: [0, 2, 0, 1, 0, 0] },
+  { name: "A7", q: "7", rootPc: 9, frets: [null, 0, 2, 0, 2, 0] },
+  { name: "D7", q: "7", rootPc: 2, frets: [null, null, 0, 2, 1, 2] },
+  { name: "G7", q: "7", rootPc: 7, frets: [3, 2, 0, 0, 0, 1] },
+  { name: "Cadd9", q: "maj", rootPc: 0, frets: [null, 3, 2, 0, 3, 0] },
+  { name: "Dsus4", q: "maj", rootPc: 2, frets: [null, null, 0, 2, 3, 3] },
+];
+
+export const QUALITY_TONES: { id: Quality | "maj7" | "min7" | "sus2" | "sus4"; name: string; intervals: number[] }[] = [
+  { id: "maj", name: "major", intervals: [0, 4, 7] },
+  { id: "min", name: "minor", intervals: [0, 3, 7] },
+  { id: "7", name: "dominant 7", intervals: [0, 4, 7, 10] },
+  { id: "dim", name: "diminished", intervals: [0, 3, 6] },
+  { id: "maj7", name: "major 7", intervals: [0, 4, 7, 11] },
+  { id: "min7", name: "minor 7", intervals: [0, 3, 7, 10] },
+  { id: "sus2", name: "sus2", intervals: [0, 2, 7] },
+  { id: "sus4", name: "sus4", intervals: [0, 5, 7] },
+];
+
+export function qualityIntervals(q: Quality): number[] {
+  if (q === "min") return [0, 3, 7];
+  if (q === "7") return [0, 4, 7, 10];
+  if (q === "dim") return [0, 3, 6];
+  return [0, 4, 7];
+}
+
+export function chordsFromNotes(pcs: number[]): { rootPc: number; quality: string; label: string; extra: number }[] {
+  const uniq = [...new Set(pcs.map(mod12))];
+  if (uniq.length === 0) return [];
+  const hits: { rootPc: number; quality: string; label: string; extra: number }[] = [];
+  for (let root = 0; root < 12; root += 1) {
+    for (const q of QUALITY_TONES) {
+      const tones = q.intervals.map((semi) => mod12(root + semi));
+      if (uniq.every((pc) => tones.includes(pc))) {
+        hits.push({
+          rootPc: root,
+          quality: q.name,
+          label: `${noteName(root, usesFlats(root))}${q.id === "maj" ? "" : q.id === "min" ? "m" : q.id === "7" ? "7" : q.id === "dim" ? "dim" : q.id === "maj7" ? "maj7" : q.id === "min7" ? "m7" : q.id}`,
+          extra: tones.length - uniq.length,
+        });
+      }
+    }
+  }
+  return hits.sort((a, b) => a.extra - b.extra || a.label.localeCompare(b.label)).slice(0, 8);
+}
 
 export function usesFlats(tonicPc: number): boolean {
   return [1, 3, 5, 8, 10].includes(mod12(tonicPc));

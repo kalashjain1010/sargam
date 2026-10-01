@@ -4,8 +4,12 @@ import type { ReactNode } from "react";
 const LINKS = [
   { to: "/path", label: "Path" },
   { to: "/gym", label: "Gym" },
+  { to: "/ear", label: "Ear" },
+  { to: "/coach", label: "Mic" },
+  { to: "/chords", label: "Chords" },
   { to: "/songs", label: "Songs" },
   { to: "/ragas", label: "Scales" },
+  { to: "/watch", label: "Videos" },
   { to: "/practice", label: "Practice" },
 ];
 
@@ -26,7 +30,7 @@ export function Shell({ children }: { children: ReactNode }) {
       </header>
       <main className="page">{children}</main>
       <footer className="foot">
-        Twelve letters. Twelve frets to the octave. A scale is a set of distances. A raga is a recipe for walking them. The neck only knows the distances.
+        Twelve letters. Twelve frets to the octave. A scale is a set of distances. A chord is a stack. A song is a loop with a home. The neck only knows the distances.
       </footer>
     </>
   );

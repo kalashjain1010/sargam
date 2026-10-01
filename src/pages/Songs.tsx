@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ChordBed, HarmoniumBlock, KeyPicker, PlayScale, ReferenceBoard } from "../components/widgets.tsx";
-import { chordName, noteName, scaleNoteNames, songById, SONGS, usesFlats } from "../theory.ts";
+import { playProgression, unlock } from "../audio.ts";
+import { chordName, nearestMidi, noteName, qualityIntervals, scaleNoteNames, songById, SONGS, usesFlats } from "../theory.ts";
 
 export function SongListPage() {
   const [filter, setFilter] = useState("All");
@@ -9,11 +10,11 @@ export function SongListPage() {
   const songs = useMemo(() => (filter === "All" ? SONGS : SONGS.filter((song) => song.family === filter)), [filter]);
 
   return (
-    <div className="home">
-      <p className="eyebrow">Song lab</p>
+    <div className="home wide">
+      <p className="eyebrow">Song lab · {SONGS.length} beds</p>
       <h1>Find the scale. Then move home until the guitar is comfortable.</h1>
       <p className="lede">
-        Raga songs are named when the association is a real teaching tradition. The pop songs are named as guitar arrangements: the roman numerals travel, the studio key might not. Nothing here is a copied melody. The tell is the thing you take to the record.
+        Established songs keep a real teaching tradition. Everything else is a guitar arrangement: the roman numerals travel, the studio key might not. Nothing here is a copied melody. Hear the loop, then take the tell to the record.
       </p>
       <div className="chips">
         {families.map((family) => (
@@ -24,14 +25,28 @@ export function SongListPage() {
       </div>
       <ul className="song-grid">
         {songs.map((song) => (
-          <li key={song.id}>
+          <li key={song.id} className="song-card">
             <Link to={`/songs/${song.id}`}>
               <em>{song.family}</em>
               <strong>{song.title}</strong>
               <span>
                 {song.film} · {song.year}
               </span>
+              <span className="tiny muted">{song.loopName}</span>
             </Link>
+            <button
+              type="button"
+              className="play-btn mini"
+              onClick={() => {
+                unlock();
+                playProgression(
+                  nearestMidi(song.guitarPc, 52),
+                  song.chords.map((chord) => ({ semi: chord.semi, intervals: qualityIntervals(chord.q) })),
+                );
+              }}
+            >
+              Hear loop
+            </button>
           </li>
         ))}
       </ul>

@@ -4,36 +4,46 @@ import { useProgress } from "../progress.tsx";
 
 export function PathPage() {
   const { passed, isOpen, reset } = useProgress();
+  const units = [...new Set(DAYS.map((day) => day.unit))];
   return (
     <div className="home">
       <p className="eyebrow">The path</p>
-      <h1>One idea a day. The neck stays in the lesson.</h1>
-      <p className="lede">Pass the check to open the next day. Songs, the gym, and the practice room are unlocked from the start, so you can look something up without skipping ahead.</p>
-      <ol className="path-rows">
-        {DAYS.map((day) => {
-          const open = isOpen(day.id);
-          const clear = passed.includes(day.id);
-          return (
-            <li key={day.id}>
-              {open ? (
-                <Link to={`/day/${day.id}`} className="path-card">
-                  <span className="num">{clear ? "Clear" : `Day ${day.id}`}</span>
-                  <strong>{day.title}</strong>
-                  <em>{day.minutes} min · {day.kicker}</em>
-                  <p>{day.promise}</p>
-                </Link>
-              ) : (
-                <div className="path-card shut">
-                  <span className="num">Day {day.id}</span>
-                  <strong>{day.title}</strong>
-                  <em>Locked</em>
-                  <p>{day.promise}</p>
-                </div>
-              )}
-            </li>
-          );
-        })}
-      </ol>
+      <h1>One idea a day. Stay as long as you want.</h1>
+      <p className="lede">
+        Pass the check to open the next day. Songs, gym, ear, chords, and practice are unlocked from the start. There is no prize for rushing.
+      </p>
+      {units.map((unit) => (
+        <section key={unit} className="unit-block">
+          <p className="eyebrow">{unit}</p>
+          <ol className="path-rows">
+            {DAYS.filter((day) => day.unit === unit).map((day) => {
+              const open = isOpen(day.id);
+              const clear = passed.includes(day.id);
+              return (
+                <li key={day.id}>
+                  {open ? (
+                    <Link to={`/day/${day.id}`} className={`path-card lift ${clear ? "is-clear" : ""}`}>
+                      <span className="num">{clear ? "Clear" : `Day ${day.id}`}</span>
+                      <strong>{day.title}</strong>
+                      <em>
+                        {day.minutes} min · {day.kicker}
+                      </em>
+                      <p>{day.promise}</p>
+                    </Link>
+                  ) : (
+                    <div className="path-card shut">
+                      <span className="num">Day {day.id}</span>
+                      <strong>{day.title}</strong>
+                      <em>Locked</em>
+                      <p>{day.promise}</p>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      ))}
       <button
         type="button"
         className="btn ghost"

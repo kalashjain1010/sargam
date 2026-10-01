@@ -1,44 +1,55 @@
 import { Link } from "react-router-dom";
-import { RagaStudio } from "../components/widgets.tsx";
-import { phraseLetters, RAGAS, SONGS, THAATS, scaleNoteNames } from "../theory.ts";
+import { ScaleStudio } from "../components/widgets.tsx";
+import { SCALES } from "../scales.ts";
+import type { ScaleDef } from "../scales.ts";
+import { SONGS, scaleNoteNames } from "../theory.ts";
+
+const SCALE_FAMILIES: Record<string, string[]> = {
+  major: ["Major loop", "I–IV–V"],
+  minor: ["Minor loop"],
+  lydian: ["Lydian"],
+  mixolydian: ["Mixolydian"],
+  phrygian: ["Phrygian"],
+  "major-pent": ["Major pentatonic"],
+  "minor-pent": ["Power riff"],
+  dorian: ["Dorian"],
+};
+
+function songsForScale(scale: ScaleDef) {
+  const families = SCALE_FAMILIES[scale.id] ?? [];
+  return SONGS.filter((song) => families.includes(song.family)).slice(0, 6);
+}
 
 export function RagaPage() {
   return (
     <div className="home wide">
       <p className="eyebrow">Scales</p>
-      <h1>Ten parent scales. Eight recipes worth hearing.</h1>
+      <h1>The collections guitarists actually name.</h1>
       <p className="lede">
-        Letters first. A parent scale is the set of notes. A raga is how you are allowed to walk them. Film music borrows the walk and then invites other notes in. Listen for the tell.
+        Major, minor, the church modes, pentatonics, blues, harmonic minor. Tap a name, hear the walk, see it on the neck. Move home. The tell is the one note that the neighbor scale does not have.
       </p>
-      <RagaStudio />
-      <h2>The eight</h2>
+      <ScaleStudio />
+      <h2>All of them</h2>
       <div className="raga-list">
-        {RAGAS.map((raga) => {
-          const songs = SONGS.filter((song) => song.ragaId === raga.id);
+        {SCALES.map((scale) => {
+          const songs = songsForScale(scale);
           return (
-            <article key={raga.id} className="raga-card">
+            <article key={scale.id} className="raga-card lift">
               <p className="muted">
-                {raga.western}
-                {raga.dev ? ` · ${raga.name}` : ""}
+                {scale.aka} · {scale.family}
               </p>
-              <h3>{raga.name}</h3>
-              <p className="pitch-read">{scaleNoteNames(0, raga.steps).join("  ")}</p>
-              <p>{raga.rule}</p>
-              <p>
-                <strong>Catch phrase. </strong>
-                {phraseLetters(0, raga.pakad)}
-              </p>
-              <p className="tiny muted">Indian names: {raga.pakadText}</p>
+              <h3>{scale.name}</h3>
+              <p className="pitch-read">{scaleNoteNames(0, scale.steps).join("  ")}</p>
+              <p>{scale.tell}</p>
+              <p>{scale.rule}</p>
               <p>
                 <strong>Leave alone. </strong>
-                {raga.avoid}
+                {scale.avoid}
               </p>
-              <p className="tiny muted">
-                {raga.time}. {raga.feel}.
-              </p>
+              <p className="tiny muted">{scale.guitar}</p>
               {songs.length > 0 ? (
                 <p className="song-links">
-                  {songs.map((song) => (
+                  {songs.slice(0, 6).map((song) => (
                     <Link key={song.id} to={`/songs/${song.id}`}>
                       {song.title}
                     </Link>
@@ -49,27 +60,53 @@ export function RagaPage() {
           );
         })}
       </div>
-      <h2>Ten parent scales</h2>
-      <p>Parent scales only. The raga of the same name is usually stricter.</p>
+      <h2>Modes from C major</h2>
+      <p>Same seven notes. New home. That is all a mode is.</p>
       <div className="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Notes from C</th>
-              <th>Western sketch</th>
-              <th>Where you meet it</th>
+              <th>Mode</th>
+              <th>Home in C major</th>
+              <th>Tell</th>
             </tr>
           </thead>
           <tbody>
-            {THAATS.map((thaat) => (
-              <tr key={thaat.name}>
-                <td>{thaat.name}</td>
-                <td>{scaleNoteNames(0, thaat.steps).join(" ")}</td>
-                <td>{thaat.western}</td>
-                <td>{thaat.raga}</td>
-              </tr>
-            ))}
+            <tr>
+              <td>Ionian (major)</td>
+              <td>C D E F G A B</td>
+              <td>Major 3rd, major 7th</td>
+            </tr>
+            <tr>
+              <td>Dorian</td>
+              <td>D E F G A B C</td>
+              <td>Minor 3rd, major 6th</td>
+            </tr>
+            <tr>
+              <td>Phrygian</td>
+              <td>E F G A B C D</td>
+              <td>Flat 2nd</td>
+            </tr>
+            <tr>
+              <td>Lydian</td>
+              <td>F G A B C D E</td>
+              <td>Raised 4th</td>
+            </tr>
+            <tr>
+              <td>Mixolydian</td>
+              <td>G A B C D E F</td>
+              <td>Flat 7th</td>
+            </tr>
+            <tr>
+              <td>Aeolian (natural minor)</td>
+              <td>A B C D E F G</td>
+              <td>Minor 3rd, minor 6th</td>
+            </tr>
+            <tr>
+              <td>Locrian</td>
+              <td>B C D E F G A</td>
+              <td>Flat 2nd and flat 5th</td>
+            </tr>
           </tbody>
         </table>
       </div>

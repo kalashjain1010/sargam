@@ -127,6 +127,28 @@ export function startDrone(saMidi: number): void {
   };
 }
 
+export function playProgression(
+  rootMidi: number,
+  chords: { semi: number; intervals: number[] }[],
+  chordDur = 0.62,
+): void {
+  hush();
+  chords.forEach((chord, index) => {
+    chord.intervals.forEach((semi, n) => {
+      playMidi(rootMidi + chord.semi + semi, chordDur, index * chordDur + n * 0.018, semi === 0 ? 0.12 : 0.08);
+    });
+  });
+}
+
+export function playClicks(count: number, bpm: number, accentEvery: number): void {
+  hush();
+  const step = 60 / bpm;
+  for (let i = 0; i < count; i += 1) {
+    const accent = i % accentEvery === 0;
+    playMidi(accent ? 92 : 80, 0.07, i * step, accent ? 0.14 : 0.07);
+  }
+}
+
 export function saMidiFor(pc: number, around = 48): number {
   const want = ((pc % 12) + 12) % 12;
   const base = around - ((((around % 12) - want) + 12) % 12);

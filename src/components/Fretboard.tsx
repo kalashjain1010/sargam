@@ -1,5 +1,6 @@
 import { degreeOf, noteName, STRINGS, usesFlats } from "../theory.ts";
 import type { FretPos } from "../theory.ts";
+import { useState } from "react";
 
 export type BoardLabel = "note" | "scale" | "degree" | "none";
 
@@ -36,6 +37,7 @@ export function Fretboard({
 }: Props) {
   const flat = usesFlats(saPc);
   const inlays = [3, 5, 7, 9, 12];
+  const [tapped, setTapped] = useState("");
 
   return (
     <div className="neck-wrap">
@@ -61,6 +63,7 @@ export function Fretboard({
               const isLive = activePcs.includes(pc);
               const showText = label === "note" || (label === "scale" && inScale) || (label === "degree" && inScale);
               const text = label === "degree" ? degreeOf(interval) : noteName(pc, flat);
+              const isTap = tapped === cellKey(string.id, fret);
               return (
                 <button
                   key={cellKey(string.id, fret)}
@@ -75,8 +78,12 @@ export function Fretboard({
                     isGlow ? "glow" : "",
                     isMiss ? "miss" : "",
                     isLive ? "live" : "",
+                    isTap ? "tap" : "",
                   ].join(" ")}
-                  onClick={() => onPick?.({ stringId: string.id, fret, midi, pc })}
+                  onClick={() => {
+                    setTapped(cellKey(string.id, fret));
+                    onPick?.({ stringId: string.id, fret, midi, pc });
+                  }}
                   aria-label={`${string.name} fret ${fret}, ${noteName(pc)}`}
                 >
                   {showText ? <span>{text}</span> : <i />}
