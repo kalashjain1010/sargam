@@ -158,10 +158,10 @@ export function TrainPage() {
 
   return (
     <div className="home wide">
-      <p className="eyebrow">Trainer</p>
-      <h1>Ask like you would ask a patient teacher.</h1>
+      <p className="eyebrow">AI trainer</p>
+      <h1>Yes — there is an AI coach. It is this page.</h1>
       <p className="lede">
-        Type a question in ordinary words: “what is a fifth?”, “how do I find chords?”, “train me.” The coach answers with one idea and one drill. Chat cannot hear your guitar — use the mic button for that. Auto uses a free cloud model with no key. Built-in always works even offline. Optional Gemini or Groq keys live only in this browser.
+        Type in ordinary words: “what is a fifth?”, “how do I find chords?”, “train me.” Auto uses a free cloud model — no key. Built-in always works if the cloud is sleepy. Optional Gemini or Groq keys stay in this browser only. Chat cannot hear your acoustic guitar; tap Use microphone for that.
       </p>
       <div className="chips">
         {provider.map((item) => (

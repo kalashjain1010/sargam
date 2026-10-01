@@ -38,9 +38,9 @@ export function HomePage() {
       )}
       <div className="lab-grid">
         <Link className="lab-tile" to="/train">
-          <em>Coach</em>
+          <em>AI</em>
           <strong>Train</strong>
-          <span>Ask in plain English. Get a drill.</span>
+          <span>Free AI coach. Ask anything.</span>
         </Link>
         <Link className="lab-tile" to="/gym">
           <em>Fretboard</em>

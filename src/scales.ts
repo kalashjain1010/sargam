@@ -39,7 +39,7 @@ export const SCALES: ScaleDef[] = [
     steps: MAJOR,
     phrase: [0, 2, 4, 5, 7, 4, 2, 0],
     tell: "Bright 3rd (4 frets) and a 7th that leans up into home (11 frets).",
-    example: "Happy birthday, Let It Be, most campfire songs. In C the letters are C D E F G A B — all the white keys if you imagine a piano.",
+    example: "Happy birthday, Let It Be, most campfire songs. In C the letters are C D E F G A B — the same walk as the open C, G, and D shapes.",
     rule: "Walk 2 2 1 2 2 2 1 frets. In C: C D E F G A B. Open G, C, D, A, and E all use this walk.",
     avoid: "Nothing inside the scale is forbidden. It goes pale if you never let the 7th resolve.",
     guitar: "Open G, C, D, A, E. The major-scale box you already half-know is this.",

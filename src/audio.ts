@@ -55,84 +55,184 @@ function clamp(n: number, lo: number, hi: number): number {
   return Math.min(hi, Math.max(lo, n));
 }
 
+let bodyBus: GainNode | null = null;
+
+/** One wooden box every note rings into — steel-string acoustic, not a pickup. */
+function acousticBox(): GainNode {
+  if (bodyBus) return bodyBus;
+  const context = getCtx();
+  const input = context.createGain();
+  const hp = context.createBiquadFilter();
+  hp.type = "highpass";
+  hp.frequency.value = 70;
+  hp.Q.value = 0.65;
+  const air = context.createBiquadFilter();
+  air.type = "peaking";
+  air.frequency.value = 98;
+  air.Q.value = 2.5;
+  air.gain.value = 7.2;
+  const top = context.createBiquadFilter();
+  top.type = "peaking";
+  top.frequency.value = 215;
+  top.Q.value = 1.55;
+  top.gain.value = 5.4;
+  const wood = context.createBiquadFilter();
+  wood.type = "peaking";
+  wood.frequency.value = 440;
+  wood.Q.value = 1.05;
+  wood.gain.value = 2.6;
+  const scoop = context.createBiquadFilter();
+  scoop.type = "peaking";
+  scoop.frequency.value = 1350;
+  scoop.Q.value = 0.75;
+  scoop.gain.value = -3.4;
+  const sparkle = context.createBiquadFilter();
+  sparkle.type = "peaking";
+  sparkle.frequency.value = 3100;
+  sparkle.Q.value = 0.7;
+  sparkle.gain.value = 1.6;
+  const shelf = context.createBiquadFilter();
+  shelf.type = "highshelf";
+  shelf.frequency.value = 4200;
+  shelf.gain.value = -5.5;
+  const lp = context.createBiquadFilter();
+  lp.type = "lowpass";
+  lp.frequency.value = 5400;
+  lp.Q.value = 0.45;
+  const glue = context.createDynamicsCompressor();
+  glue.threshold.value = -16;
+  glue.knee.value = 14;
+  glue.ratio.value = 2.1;
+  glue.attack.value = 0.005;
+  glue.release.value = 0.16;
+  input.connect(hp);
+  hp.connect(air);
+  air.connect(top);
+  top.connect(wood);
+  wood.connect(scoop);
+  scoop.connect(sparkle);
+  sparkle.connect(shelf);
+  shelf.connect(lp);
+  lp.connect(glue);
+  glue.connect(context.destination);
+  bodyBus = input;
+  return input;
+}
+
 function fillPluck(data: Float32Array, pick: number): void {
   const n = data.length;
   const cut = clamp(Math.floor(n * pick), 2, n - 2);
+  const rest = n - cut;
   for (let i = 0; i < n; i += 1) {
-    const raw = Math.random() * 2 - 1;
-    const window = i < cut ? i / cut : 1;
-    data[i] = raw * window * (1 - (i / n) * 0.4);
+    const tri = i < cut ? i / cut : (n - 1 - i) / rest;
+    const nail = Math.random() * 2 - 1;
+    const nailMix = i < cut ? 0.34 : 0.12;
+    data[i] = tri * 0.78 + nail * nailMix;
   }
 }
 
-/** Karplus–Strong plucked string. This is a guitar, not a keyboard. */
+function knock(when: number, gain: number): void {
+  const context = getCtx();
+  const n = Math.max(24, Math.floor(context.sampleRate * 0.028));
+  const buffer = context.createBuffer(1, n, context.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < n; i += 1) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (n * 0.2));
+  const src = context.createBufferSource();
+  src.buffer = buffer;
+  const bp = context.createBiquadFilter();
+  bp.type = "bandpass";
+  bp.frequency.value = 102;
+  bp.Q.value = 2.6;
+  const amp = context.createGain();
+  amp.gain.setValueAtTime(Math.max(0.0001, gain), when);
+  amp.gain.exponentialRampToValueAtTime(0.0001, when + 0.14);
+  src.connect(bp);
+  bp.connect(amp);
+  amp.connect(acousticBox());
+  src.start(when);
+  src.stop(when + 0.16);
+}
+
+/** Karplus–Strong into a guitar body. Steel-string acoustic, not electric, not piano. */
 function pluck(midi: number, dur: number, when: number, gain: number): void {
   const context = getCtx();
   const freq = midiHz(midi);
   const period = 1 / freq;
   const samples = Math.max(8, Math.round(context.sampleRate / freq));
   const burst = context.createBuffer(1, samples, context.sampleRate);
-  fillPluck(burst.getChannelData(0), midi < 50 ? 0.22 : 0.14);
+  fillPluck(burst.getChannelData(0), midi < 52 ? 0.2 : 0.13);
 
   const noise = context.createBufferSource();
   noise.buffer = burst;
 
   const delay = context.createDelay(0.06);
-  delay.delayTime.setValueAtTime(period, when);
+  delay.delayTime.setValueAtTime(period * 0.998, when);
+
+  const stiff = context.createBiquadFilter();
+  stiff.type = "allpass";
+  stiff.frequency.value = clamp(freq * 6, 400, 2800);
+  stiff.Q.value = 0.4;
 
   const damp = context.createBiquadFilter();
   damp.type = "lowpass";
-  const brightness = clamp(700 + (freq - 70) * 14, 650, 6200);
-  damp.frequency.setValueAtTime(brightness, when);
-  damp.frequency.exponentialRampToValueAtTime(clamp(freq * 2.4, 280, 2400), when + dur);
-  damp.Q.value = 0.35;
+  const startBright = clamp(900 + (freq - 80) * 9, 700, 3800);
+  const endBright = clamp(freq * (midi < 52 ? 3.1 : 2.1), 240, 1600);
+  damp.frequency.setValueAtTime(startBright, when);
+  damp.frequency.exponentialRampToValueAtTime(endBright, when + dur);
+  damp.Q.value = 0.32;
 
   const feedback = context.createGain();
-  const fb = clamp(Math.pow(0.0012, period / Math.max(0.14, dur)), 0.86, 0.986);
+  const ring = midi < 52 ? 0.28 : midi < 64 ? 0.2 : 0.14;
+  const fb = clamp(Math.pow(0.004, period / Math.max(0.16, dur + ring)), 0.84, 0.978);
   feedback.gain.setValueAtTime(fb, when);
   feedback.gain.setValueAtTime(fb, when + dur);
-  feedback.gain.linearRampToValueAtTime(0, when + dur + 0.08);
+  feedback.gain.linearRampToValueAtTime(0, when + dur + 0.1);
 
   const hip = context.createBiquadFilter();
   hip.type = "highpass";
-  hip.frequency.value = clamp(freq * 0.55, 55, 180);
-
-  const body = context.createBiquadFilter();
-  body.type = "peaking";
-  body.frequency.value = 165;
-  body.Q.value = 1.1;
-  body.gain.value = 4.5;
-
-  const presence = context.createBiquadFilter();
-  presence.type = "peaking";
-  presence.frequency.value = 920;
-  presence.Q.value = 0.7;
-  presence.gain.value = 2.2;
+  hip.frequency.value = clamp(freq * 0.42, 60, 140);
 
   const out = context.createGain();
+  const attack = midi < 50 ? 0.004 : 0.0025;
   out.gain.setValueAtTime(0.0001, when);
-  out.gain.exponentialRampToValueAtTime(gain, when + 0.003);
-  out.gain.exponentialRampToValueAtTime(gain * 0.58, when + Math.min(0.11, dur * 0.22));
+  out.gain.exponentialRampToValueAtTime(gain, when + attack);
+  out.gain.exponentialRampToValueAtTime(gain * 0.52, when + Math.min(0.16, dur * 0.28));
   out.gain.exponentialRampToValueAtTime(0.0001, when + dur);
 
-  const pick = context.createGain();
-  pick.gain.setValueAtTime(gain * 0.22, when);
-  pick.gain.exponentialRampToValueAtTime(0.0001, when + 0.012);
+  const nail = context.createBiquadFilter();
+  nail.type = "bandpass";
+  nail.frequency.value = midi < 55 ? 1800 : 2600;
+  nail.Q.value = 1.1;
+  const nailGain = context.createGain();
+  nailGain.gain.setValueAtTime(gain * 0.18, when);
+  nailGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.018);
 
+  const thump = context.createBiquadFilter();
+  thump.type = "bandpass";
+  thump.frequency.value = 95;
+  thump.Q.value = 2.2;
+  const thumpGain = context.createGain();
+  thumpGain.gain.setValueAtTime(gain * (midi < 55 ? 0.2 : 0.08), when);
+  thumpGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.07);
+
+  const box = acousticBox();
   noise.connect(delay);
-  noise.connect(pick);
-  delay.connect(damp);
+  noise.connect(nail);
+  noise.connect(thump);
+  delay.connect(stiff);
+  stiff.connect(damp);
   damp.connect(feedback);
   feedback.connect(delay);
   damp.connect(hip);
-  hip.connect(body);
-  body.connect(presence);
-  presence.connect(out);
-  pick.connect(out);
-  out.connect(context.destination);
+  hip.connect(out);
+  nail.connect(nailGain);
+  thump.connect(thumpGain);
+  out.connect(box);
+  nailGain.connect(box);
+  thumpGain.connect(box);
 
   noise.start(when);
-  noise.stop(when + period * 1.6);
+  noise.stop(when + period * 1.8);
 
   const voice = { out, feedback };
   voices.push(voice);
@@ -141,15 +241,16 @@ function pluck(midi: number, dur: number, when: number, gain: number): void {
     if (mine !== token) return;
     const index = voices.indexOf(voice);
     if (index >= 0) voices.splice(index, 1);
-  }, (dur + 0.2) * 1000);
+  }, (dur + 0.25) * 1000);
 }
 
-export function playMidi(midi: number, dur = 0.85, delay = 0, gain = 0.18): void {
+export function playMidi(midi: number, dur = 0.85, delay = 0, gain = 0.2): void {
   const context = getCtx();
   const when = context.currentTime + delay;
   const note = clamp(midi, 40, 88);
-  const length = Math.max(0.12, dur);
-  const level = gain * (note < 48 ? 1.12 : note > 72 ? 0.82 : 1);
+  const extra = note < 52 ? 0.38 : note < 64 ? 0.12 : 0;
+  const length = Math.max(0.14, dur + extra);
+  const level = gain * (note < 48 ? 0.95 : note > 72 ? 0.78 : 1);
   pluck(note, length, when, level);
 }
 
@@ -167,8 +268,10 @@ export function playPhrase(startMidi: number, offsets: number[], step = 0.32): v
 }
 
 export function playChord(rootMidi: number, intervals: number[], dur = 1.05): void {
+  const context = getCtx();
+  knock(context.currentTime, 0.07);
   intervals.forEach((semi, index) => {
-    playMidi(rootMidi + semi, dur, index * 0.028, semi === 0 ? 0.15 : 0.1);
+    playMidi(rootMidi + semi, dur + 0.18, index * 0.032, semi === 0 ? 0.16 : 0.1);
   });
 }
 
@@ -187,7 +290,7 @@ export function startDrone(saMidi: number): void {
   hum.gain.value = 6;
   master.connect(hum);
   hum.connect(body);
-  body.connect(context.destination);
+  body.connect(acousticBox());
 
   const layers = [
     { midi: saMidi - 12, type: "sawtooth" as const, amount: 0.55 },
@@ -223,6 +326,7 @@ export function playProgression(
   chordDur = 0.72,
 ): void {
   hush();
+  knock(getCtx().currentTime, 0.05);
   chords.forEach((chord, index) => {
     chord.intervals.forEach((semi, n) => {
       playMidi(rootMidi + chord.semi + semi, chordDur * 1.05, index * chordDur + n * 0.024, semi === 0 ? 0.14 : 0.09);
@@ -248,7 +352,7 @@ function click(when: number, accent: boolean): void {
   amp.gain.exponentialRampToValueAtTime(0.0001, when + 0.04);
   src.connect(bp);
   bp.connect(amp);
-  amp.connect(context.destination);
+  amp.connect(acousticBox());
   src.start(when);
   src.stop(when + 0.05);
 }
