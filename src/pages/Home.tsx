@@ -42,6 +42,11 @@ export function HomePage() {
           <strong>Train</strong>
           <span>Free AI coach. Ask anything.</span>
         </Link>
+        <Link className="lab-tile" to="/tune">
+          <em>Strings</em>
+          <strong>Tune</strong>
+          <span>Standard, drop, open, DADGAD</span>
+        </Link>
         <Link className="lab-tile" to="/gym">
           <em>Fretboard</em>
           <strong>Gym</strong>

@@ -1471,7 +1471,7 @@ export function analyzeFreq(freq: number): {
   pc: number;
   name: string;
 } | null {
-  if (!Number.isFinite(freq) || freq < 65 || freq > 1400) return null;
+  if (!Number.isFinite(freq) || freq < 55 || freq > 1400) return null;
   const midiFloat = 69 + 12 * Math.log2(freq / 440);
   const midi = Math.round(midiFloat);
   return {

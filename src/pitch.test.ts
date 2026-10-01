@@ -1,5 +1,6 @@
 import { detectPitch, estimatePitch, PitchTracker } from "./pitch.ts";
 import { analyzeFreq, nearestMidi } from "./theory.ts";
+import { nearestOpen, patternOf, TUNINGS } from "./tunings.ts";
 
 function tone(freq: number, sampleRate: number, length: number, harmonics: number[]): Float32Array {
   const buf = new Float32Array(length);
@@ -44,6 +45,12 @@ assert(quiet === null, "silence should be null");
 
 const info = analyzeFreq(110);
 assert(info?.name === "A" && Math.abs(info.cents) < 1, `110 Hz should be A, got ${info?.name} ${info?.cents}`);
+const dropC = analyzeFreq(65.41);
+assert(dropC?.name === "C" && Math.abs(dropC.cents) < 8, `Drop C C2 should read C, got ${dropC?.name} ${dropC?.cents}`);
+const standard = TUNINGS.find((item) => item.id === "standard");
+assert(standard !== undefined && patternOf(standard) === "E  A  D  G  B  E", `standard pattern, got ${standard && patternOf(standard)}`);
+const nearD = nearestOpen(73.4, TUNINGS.find((item) => item.id === "drop-d") ?? TUNINGS[0]);
+assert(nearD.string.slot === 6 && Math.abs(nearD.cents) < 8, `Drop D low string should be D, got slot ${nearD.string.slot} ${nearD.cents}`);
 assert(nearestMidi(9, 60) === 57, `nearest A to 60 should be 57, got ${nearestMidi(9, 60)}`);
 assert(nearestMidi(0, 57) === 60, `nearest C to 57 should be 60, got ${nearestMidi(0, 57)}`);
 

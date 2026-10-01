@@ -64,7 +64,7 @@ function acousticBox(): GainNode {
   const input = context.createGain();
   const hp = context.createBiquadFilter();
   hp.type = "highpass";
-  hp.frequency.value = 70;
+  hp.frequency.value = 48;
   hp.Q.value = 0.65;
   const air = context.createBiquadFilter();
   air.type = "peaking";
@@ -190,7 +190,7 @@ function pluck(midi: number, dur: number, when: number, gain: number): void {
 
   const hip = context.createBiquadFilter();
   hip.type = "highpass";
-  hip.frequency.value = clamp(freq * 0.42, 60, 140);
+  hip.frequency.value = clamp(freq * 0.42, 42, 140);
 
   const out = context.createGain();
   const attack = midi < 50 ? 0.004 : 0.0025;
@@ -247,7 +247,7 @@ function pluck(midi: number, dur: number, when: number, gain: number): void {
 export function playMidi(midi: number, dur = 0.85, delay = 0, gain = 0.2): void {
   const context = getCtx();
   const when = context.currentTime + delay;
-  const note = clamp(midi, 40, 88);
+  const note = clamp(midi, 35, 88);
   const extra = note < 52 ? 0.38 : note < 64 ? 0.12 : 0;
   const length = Math.max(0.14, dur + extra);
   const level = gain * (note < 48 ? 0.95 : note > 72 ? 0.78 : 1);

@@ -63,7 +63,7 @@ async function startEngine(): Promise<void> {
   const source = actx.createMediaStreamSource(next);
   const hip = actx.createBiquadFilter();
   hip.type = "highpass";
-  hip.frequency.value = 65;
+  hip.frequency.value = 48;
   hip.Q.value = 0.7;
   analyser = actx.createAnalyser();
   analyser.fftSize = 4096;

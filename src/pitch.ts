@@ -1,6 +1,6 @@
 import { analyzeFreq } from "./theory.ts";
 
-const MIN_HZ = 70;
+const MIN_HZ = 55;
 const MAX_HZ = 1320;
 const CLARITY_OK = 0.62;
 const HOLD_MS = 240;
