@@ -3,8 +3,8 @@ import { DAY_COUNT, DAYS } from "../theory.ts";
 import { useProgress } from "../progress.tsx";
 
 export function HomePage() {
-  const { passed, stamps, isOpen, gym, ear } = useProgress();
-  const next = DAYS.find((day) => isOpen(day.id) && !passed.includes(day.id)) ?? null;
+  const { passed, stamps, gym, ear } = useProgress();
+  const next = DAYS.find((day) => !passed.includes(day.id)) ?? null;
   const done = passed.length;
   const pct = Math.round((done / DAY_COUNT) * 100);
 
@@ -72,6 +72,11 @@ export function HomePage() {
           <strong>Scales</strong>
           <span>Hear a box, drill it, make your own</span>
         </Link>
+        <Link className="lab-tile" to="/tests">
+          <em>Train more</em>
+          <strong>Tests</strong>
+          <span>Fail it. Read why. Take it again.</span>
+        </Link>
         <Link className="lab-tile" to="/practice">
           <em>Mic optional</em>
           <strong>Practice</strong>
@@ -97,29 +102,18 @@ export function HomePage() {
       ) : null}
       <ol className="day-list">
         {DAYS.map((day) => {
-          const open = isOpen(day.id);
           const clear = passed.includes(day.id);
           return (
-            <li key={day.id} className={clear ? "clear" : open ? "open" : "shut"}>
-              {open ? (
-                <Link to={`/day/${day.id}`}>
-                  <span className="num">{day.id}</span>
-                  <span>
-                    <strong>{day.title}</strong>
-                    <em>
-                      {day.unit} · {day.kicker}
-                    </em>
-                  </span>
-                </Link>
-              ) : (
-                <div>
-                  <span className="num">{day.id}</span>
-                  <span>
-                    <strong>{day.title}</strong>
-                    <em>Opens after day {day.id - 1}</em>
-                  </span>
-                </div>
-              )}
+            <li key={day.id} className={clear ? "clear" : "open"}>
+              <Link to={`/day/${day.id}`}>
+                <span className="num">{day.id}</span>
+                <span>
+                  <strong>{day.title}</strong>
+                  <em>
+                    {day.unit} · {day.kicker}
+                  </em>
+                </span>
+              </Link>
             </li>
           );
         })}

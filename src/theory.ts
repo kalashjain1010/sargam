@@ -1502,6 +1502,19 @@ export function sameSteps(a: number[], b: number[]): boolean {
   return key(a) === key(b);
 }
 
+/** 1 then 3, 2 then 4, wrapping an octave. The thirds drill walks this. */
+export function thirdsOf(steps: number[]): number[] {
+  const uniq = [...new Set(steps.map(mod12))];
+  if (!uniq.includes(0)) uniq.push(0);
+  uniq.sort((a, b) => a - b);
+  const out: number[] = [];
+  for (let i = 0; i < uniq.length; i += 1) {
+    const skip = uniq[(i + 2) % uniq.length] ?? 0;
+    out.push(uniq[i] ?? 0, skip + (i + 2 >= uniq.length ? 12 : 0));
+  }
+  return out;
+}
+
 export function chordName(tonicPc: number, semi: number, q: Exclude<Quality, "dim">): string {
   const name = noteName(tonicPc + semi, usesFlats(tonicPc));
   if (q === "min") return `${name}m`;

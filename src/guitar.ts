@@ -111,11 +111,9 @@ function shaped(rootPc: number, kind: ChordKind): Voicing {
   const aFret = aRootFret(rootPc);
   const useE = eFret > 0 && eFret <= 4 ? true : aFret === 0 || aFret > 5 ? true : eFret <= 4;
   if (useE) {
-    const fret = eFret === 0 ? 12 : eFret;
-    return { name: `${noteName(rootPc)} ${kind} (E shape)`, kind, rootPc, frets: eShape(fret, kind) };
+    return { name: `${noteName(rootPc)} ${kind} (E shape)`, kind, rootPc, frets: eShape(eFret, kind) };
   }
-  const fret = aFret === 0 ? 12 : aFret;
-  return { name: `${noteName(rootPc)} ${kind} (A shape)`, kind, rootPc, frets: aShape(fret, kind) };
+  return { name: `${noteName(rootPc)} ${kind} (A shape)`, kind, rootPc, frets: aShape(aFret, kind) };
 }
 
 export function voicingFor(rootPc: number, intervals: number[]): Voicing {

@@ -13,13 +13,14 @@ type Save = {
   saPc: number;
   gym: GymSave;
   ear: EarSave;
+  drills: Record<string, number>;
 };
 
 const KEY = "sargam-course-v1";
 
 const blankGym = (): GymSave => ({ hunt: 0, flash: 0, jump: 0, strings: 0, blitz: 0, hits: 0 });
 const blankEar = (): EarSave => ({ interval: 0, scale: 0, quality: 0, loop: 0, degree: 0, hits: 0 });
-const blank = (): Save => ({ passed: [], stamps: [], saPc: 9, gym: blankGym(), ear: blankEar() });
+const blank = (): Save => ({ passed: [], stamps: [], saPc: 9, gym: blankGym(), ear: blankEar(), drills: {} });
 
 function load(): Save {
   try {
@@ -32,6 +33,12 @@ function load(): Save {
       saPc: typeof parsed.saPc === "number" ? parsed.saPc : 9,
       gym: { ...blankGym(), ...(parsed.gym ?? {}) },
       ear: { ...blankEar(), ...(parsed.ear ?? {}) },
+      drills:
+        parsed.drills && typeof parsed.drills === "object"
+          ? Object.fromEntries(
+              Object.entries(parsed.drills).filter((entry): entry is [string, number] => typeof entry[1] === "number"),
+            )
+          : {},
     };
   } catch {
     return blank();
@@ -44,13 +51,14 @@ type ProgressApi = {
   saPc: number;
   gym: GymSave;
   ear: EarSave;
+  drills: Record<string, number>;
   pass: (day: number) => void;
   stamp: (id: string) => void;
   setSa: (pc: number) => void;
-  isOpen: (day: number) => boolean;
   reset: () => void;
   recordGym: (id: GymId, score: number, hits?: number) => void;
   recordEar: (id: EarId, score: number, hits?: number) => void;
+  recordDrill: (id: string, percent: number) => void;
 };
 
 const ProgressContext = createContext<ProgressApi | null>(null);
@@ -69,6 +77,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       saPc: save.saPc,
       gym: save.gym,
       ear: save.ear,
+      drills: save.drills,
       pass: (day) =>
         setSave((current) =>
           current.passed.includes(day) ? current : { ...current, passed: [...current.passed, day].sort((a, b) => a - b) },
@@ -76,7 +85,6 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       stamp: (id) =>
         setSave((current) => (current.stamps.includes(id) ? current : { ...current, stamps: [...current.stamps, id] })),
       setSa: (pc) => setSave((current) => ({ ...current, saPc: pc })),
-      isOpen: (day) => day === 1 || save.passed.includes(day - 1),
       reset: () => setSave(blank()),
       recordGym: (id, score, hits = 0) =>
         setSave((current) => ({
@@ -95,6 +103,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
             [id]: Math.max(current.ear[id], score),
             hits: current.ear.hits + hits,
           },
+        })),
+      recordDrill: (id, percent) =>
+        setSave((current) => ({
+          ...current,
+          drills: { ...current.drills, [id]: Math.max(current.drills[id] ?? 0, percent) },
         })),
     };
   }, [save]);

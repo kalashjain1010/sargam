@@ -13,6 +13,7 @@ import {
   noteName,
   sameSteps,
   scaleNoteNames,
+  thirdsOf,
   usesFlats,
   type FretPos,
 } from "../theory.ts";
@@ -54,16 +55,6 @@ function namedFor(steps: number[]): { kind: "exact"; scale: ScaleDef } | { kind:
     }
   }
   return { kind: "other", near };
-}
-
-function thirdsPhrase(steps: number[]): number[] {
-  const s = sortedSteps(steps);
-  const out: number[] = [];
-  for (let i = 0; i < s.length; i += 1) {
-    const skip = s[(i + 2) % s.length] ?? 0;
-    out.push(s[i] ?? 0, skip + (i + 2 >= s.length ? 12 : 0));
-  }
-  return out;
 }
 
 function gapLabel(gap: number): string {
@@ -266,7 +257,7 @@ export function ScaleDrill({
   }
 
   function startThirds() {
-    const next = phraseOnBox(box, home, thirdsPhrase(steps));
+    const next = phraseOnBox(box, home, thirdsOf(steps));
     setPath(next);
     setAt(0);
     setPhase(next.length ? "go" : "idle");

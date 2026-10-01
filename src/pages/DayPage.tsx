@@ -8,7 +8,7 @@ export function DayPage() {
   const params = useParams();
   const id = Number(params.id);
   const meta = DAYS.find((day) => day.id === id);
-  const { isOpen, passed } = useProgress();
+  const { passed } = useProgress();
 
   useEffect(() => {
     document.title = meta ? `${meta.title} · Sargam` : "Sargam";
@@ -23,20 +23,7 @@ export function DayPage() {
     );
   }
 
-  if (!isOpen(id)) {
-    return (
-      <div className="lesson">
-        <p className="eyebrow">Locked</p>
-        <h1>Day {id} opens after the day before it.</h1>
-        <p>The check is short. Songs, the gym, the ear room, and practice are already available if you only needed a reference.</p>
-        <Link className="btn" to={`/day/${id - 1}`}>
-          Go to day {id - 1}
-        </Link>
-      </div>
-    );
-  }
-
-  const next = id < DAY_COUNT && passed.includes(id) ? id + 1 : null;
+  const next = id < DAY_COUNT ? id + 1 : null;
 
   return (
     <article className="lesson">

@@ -15,6 +15,7 @@ import { CoachPage } from "./pages/Coach.tsx";
 import { WatchPage } from "./pages/Watch.tsx";
 import { TrainPage } from "./pages/Train.tsx";
 import { TunePage } from "./pages/Tune.tsx";
+import { TestsPage } from "./pages/Tests.tsx";
 
 function ScrollUp() {
   const location = useLocation();
@@ -54,6 +55,7 @@ export default function App() {
             <Route path="/tune" element={<TunePage />} />
             <Route path="/chords" element={<ChordsPage />} />
             <Route path="/practice" element={<PracticePage />} />
+            <Route path="/tests" element={<TestsPage />} />
             <Route path="*" element={<Missing />} />
           </Routes>
         </Shell>

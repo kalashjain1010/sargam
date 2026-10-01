@@ -10,7 +10,19 @@ export type Question = {
   listen?: () => void;
 };
 
-export function Quiz({ day, questions, passAt = 0.75 }: { day: number; questions: Question[]; passAt?: number }) {
+export function Quiz({
+  day,
+  questions,
+  passAt = 0.75,
+  heading = "Check",
+  onFinish,
+}: {
+  day?: number;
+  questions: Question[];
+  passAt?: number;
+  heading?: string;
+  onFinish?: (correct: number, total: number) => void;
+}) {
   const { pass, passed } = useProgress();
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
@@ -31,9 +43,10 @@ export function Quiz({ day, questions, passAt = 0.75 }: { day: number; questions
     const score = correct;
     if (index + 1 >= questions.length) {
       setDone(true);
-      if (score >= need && !reported.current) {
+      if (!reported.current) {
         reported.current = true;
-        pass(day);
+        if (day !== undefined && score >= need) pass(day);
+        onFinish?.(score, questions.length);
       }
       return;
     }
@@ -42,7 +55,7 @@ export function Quiz({ day, questions, passAt = 0.75 }: { day: number; questions
   }
 
   function retry() {
-    reported.current = passed.includes(day);
+    reported.current = day !== undefined && passed.includes(day);
     setIndex(0);
     setPicked(null);
     setCorrect(0);
@@ -53,13 +66,21 @@ export function Quiz({ day, questions, passAt = 0.75 }: { day: number; questions
     const won = correct >= need;
     return (
       <section className="widget">
-        <h3 className={won ? "ok-line" : ""}>{won ? "Day clear" : "Not yet"}</h3>
+        <h3 className={won ? "ok-line" : ""}>{won ? (day !== undefined ? "Day clear" : "That's a pass") : "Not yet"}</h3>
         <p>
           {correct} of {questions.length}. The line is {need}.
         </p>
-        {won ? <p className="ok-line">The next day is open. Replay this one whenever the idea gets foggy.</p> : <p>The explanations are the lesson. Read the one you missed, then run it again.</p>}
+        {won ? (
+          <p className="ok-line">
+            {day !== undefined
+              ? "Marked clear on this browser. Any other day is already open — another phone will not remember this mark."
+              : "Run it again until the answers feel boring. That is the point of training."}
+          </p>
+        ) : (
+          <p>The explanations are the lesson. Read the one you missed, then run it again.</p>
+        )}
         <button type="button" className="btn secondary" onClick={retry}>
-          Try the check again
+          {day !== undefined ? "Try the check again" : "Train this set again"}
         </button>
       </section>
     );
@@ -73,7 +94,7 @@ export function Quiz({ day, questions, passAt = 0.75 }: { day: number; questions
           <b style={{ width: `${((index + (picked !== null ? 1 : 0)) / questions.length) * 100}%` }} />
         </div>
         <h3>
-          Check · {index + 1} of {questions.length}
+          {heading} · {index + 1} of {questions.length}
         </h3>
       <p>{question.prompt}</p>
       {question.listen ? (
@@ -107,3 +128,4 @@ export function Quiz({ day, questions, passAt = 0.75 }: { day: number; questions
     </section>
   );
 }
+

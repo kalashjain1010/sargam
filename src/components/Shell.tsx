@@ -24,6 +24,7 @@ const GROUPS: { id: string; title: string; hint: string; links: LinkItem[] }[] =
       { to: "/ear", label: "Ear", blurb: "Name the gap you hear" },
       { to: "/coach", label: "Mic", blurb: "Play one string, get a check" },
       { to: "/practice", label: "Practice", blurb: "Copy the box, then drill it" },
+      { to: "/tests", label: "Tests", blurb: "Quizzes you can fail and repeat" },
     ],
   },
   {
@@ -39,7 +40,7 @@ const GROUPS: { id: string; title: string; hint: string; links: LinkItem[] }[] =
 ];
 
 const FLAT = GROUPS.flatMap((group) => group.links);
-const BAR = ["/path", "/train", "/tune", "/gym", "/ear", "/coach", "/chords", "/songs", "/ragas", "/watch", "/practice"];
+const BAR = ["/path", "/train", "/tune", "/gym", "/ear", "/tests", "/coach", "/chords", "/songs", "/ragas", "/watch", "/practice"];
 const BAR_LINKS = BAR.map((to) => FLAT.find((link) => link.to === to)).filter((link): link is LinkItem => Boolean(link));
 const DOCK = [
   { to: "/path", label: "Path" },

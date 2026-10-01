@@ -64,7 +64,7 @@ Rules:
 Reply with JSON only, no extra text:
 {"say":"string","action":{"kind":"none"}}
 action.kind is one of none, link, quiz, phrase, mic.
-link needs to (in-app path: /day/N /path /ear /coach /chords /songs /ragas /watch /gym /practice) and label.
+link needs to (in-app path: /day/N /path /ear /coach /chords /songs /ragas /watch /gym /practice /tests) and label.
 quiz needs prompt, choices (3 or 4 short strings), answer (0-based index), why.
 phrase job is one of: fifth, maj3, min3, triad, minor-triad, major-walk, pent, lydian.
 mic means they should hold one letter on the in-app tuner.`;
@@ -395,6 +395,13 @@ export function opening(snap: StudentSnap): TutorReply {
 export function offlineReply(message: string, snap: StudentSnap): TutorReply {
   const q = message.toLowerCase();
   if (/\b(train|coach|practice|session|what should i)\b/.test(q)) return opening(snap);
+  if (/\b(tests?|exam|train more)\b/.test(q)) {
+    return {
+      say: "The Tests page is a pile you can fail on purpose. Mixed exam, or neck, gaps, scales, chords, loops. Hear the ones with Play. Best percent sticks on this browser only.",
+      action: { kind: "link", to: "/tests", label: "Open training tests" },
+      source: "offline",
+    };
+  }
   if (/\b(quiz|test|check me|question)\b/.test(q)) {
     const quiz = pickQuiz((snap.next?.id ?? 12) + message.length);
     return { say: "No guitar yet. Name this.", action: { kind: "quiz", quiz }, source: "offline" };
