@@ -397,7 +397,7 @@ export function offlineReply(message: string, snap: StudentSnap): TutorReply {
   if (/\b(train|coach|practice|session|what should i)\b/.test(q)) return opening(snap);
   if (/\b(tests?|exam|train more)\b/.test(q)) {
     return {
-      say: "The Tests page is a pile you can fail on purpose. Mixed exam, or neck, gaps, scales, chords, loops. Hear the ones with Play. Best percent sticks on this browser only.",
+      say: "Open Tests and pick a real song. Hear the guitar loop — not the hit melody — then find home, the scale, the clothes, and another title that wears the same loop. Skills quizzes are still there if you want a mixed exam. Best percent sticks on this browser only.",
       action: { kind: "link", to: "/tests", label: "Open training tests" },
       source: "offline",
     };

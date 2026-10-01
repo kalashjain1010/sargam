@@ -24,7 +24,7 @@ const GROUPS: { id: string; title: string; hint: string; links: LinkItem[] }[] =
       { to: "/ear", label: "Ear", blurb: "Name the gap you hear" },
       { to: "/coach", label: "Mic", blurb: "Play one string, get a check" },
       { to: "/practice", label: "Practice", blurb: "Copy the box, then drill it" },
-      { to: "/tests", label: "Tests", blurb: "Quizzes you can fail and repeat" },
+      { to: "/tests", label: "Tests", blurb: "Find the scale in a real song" },
     ],
   },
   {

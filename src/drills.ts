@@ -1,6 +1,7 @@
-import { playChord, playInterval, playPhrase, playProgression } from "./audio.ts";
+import { playChord, playInterval, playPhrase } from "./audio.ts";
 import type { Question } from "./components/Quiz.tsx";
-import { KAFI, KHAMAJ, MAJOR, NATURAL_MINOR, YAMAN } from "./theory.ts";
+import { homeLetter, loopLabel, playSongLoop, playSongScale, scaleLabel } from "./hunt.ts";
+import { KAFI, KHAMAJ, MAJOR, NATURAL_MINOR, SONGS as CATALOG, YAMAN } from "./theory.ts";
 
 export type DrillPack = {
   id: string;
@@ -246,7 +247,41 @@ const CHORDS: Question[] = [
   },
 ];
 
-const SONGS: Question[] = [
+function four(correct: string, pool: string[]): string[] {
+  const rest = shuffle([...new Set(pool)].filter((item) => item !== correct));
+  return shuffle([correct, ...rest.slice(0, 3)]);
+}
+
+function catalogLoops(): Question[] {
+  const families = CATALOG.map((song) => song.family);
+  return CATALOG.map((song) => {
+    const choices = four(song.family, families);
+    return {
+      prompt: `${song.title} (${song.film}, ${song.year}). Hear the guitar loop — not the hit melody. Which family?`,
+      choices,
+      answer: choices.indexOf(song.family),
+      why: `${loopLabel(song)}. ${scaleLabel(song.steps)} from ${homeLetter(song)}. ${song.tell}`,
+      listen: () => playSongLoop(song),
+    };
+  });
+}
+
+function catalogScales(): Question[] {
+  const names = CATALOG.map((song) => scaleLabel(song.steps));
+  return CATALOG.map((song) => {
+    const correct = scaleLabel(song.steps);
+    const choices = four(correct, names);
+    return {
+      prompt: `${song.title}. Hear the walk from ${homeLetter(song)}. Which scale is the bed?`,
+      choices,
+      answer: choices.indexOf(correct),
+      why: `${correct}. ${song.tell}`,
+      listen: () => playSongScale(song),
+    };
+  });
+}
+
+const SONG_SKILL: Question[] = [
   {
     prompt: "Let It Be and I'm Yours share which loop?",
     choices: ["i–VI–III–VII (Am F C G)", "I–V–vi–IV (C G Am F)", "I–IV–V", "A raga unique to each song"],
@@ -270,29 +305,6 @@ const SONGS: Question[] = [
     choices: ["G C D", "G Em C", "Am F C", "C G Am F"],
     answer: 0,
     why: "Home, the next-door 4th, the pointing 5th. Campfire spine. Sunshine. Blues.",
-  },
-  {
-    prompt: "A D major chord in the key of C is not a mistake. It is:",
-    choices: ["Proof there is no key", "V of V — it points at G, which points at C", "Lydian proof", "Always wrong"],
-    answer: 1,
-    why: "A visitor with a job. Secondary dominant. Name it, then ask what it points at.",
-  },
-  {
-    prompt: "Play this four-chord loop. Which family?",
-    choices: ["I–V–vi–IV", "i–VI–III–VII", "I–IV–V", "I–bVII–IV"],
-    answer: 0,
-    why: "Major home, then 5th, sad 6th, 4th. Let It Be clothes.",
-    listen: () =>
-      playProgression(
-        60,
-        [
-          { semi: 0, intervals: [0, 4, 7] },
-          { semi: 7, intervals: [0, 4, 7] },
-          { semi: 9, intervals: [0, 3, 7] },
-          { semi: 5, intervals: [0, 4, 7] },
-        ],
-        0.65,
-      ),
   },
 ];
 
@@ -347,16 +359,16 @@ export const DRILLS: DrillPack[] = [
   {
     id: "songs",
     title: "Loops under songs",
-    blurb: "I–V–vi–IV versus the minor loop. Real titles. Same clothes, different singers.",
-    size: 6,
-    build: () => take(SONGS, 6),
+    blurb: "Real titles. Hear the loop, name the family or the scale. Same clothes, different singers.",
+    size: 8,
+    build: () => take([...catalogLoops(), ...catalogScales(), ...SONG_SKILL], 8),
   },
   {
     id: "mixed",
     title: "Mixed exam",
-    blurb: "Twelve questions pulled from every pile. This is the training test. Replay until it is boring.",
+    blurb: "Twelve questions pulled from every pile, including real songs. Replay until it is boring.",
     size: 12,
-    build: () => take([...NECK, ...GAPS, ...SCALES, ...CHORDS, ...SONGS, ...listenScales()], 12),
+    build: () => take([...NECK, ...GAPS, ...SCALES, ...CHORDS, ...SONG_SKILL, ...catalogLoops(), ...listenScales()], 12),
   },
 ];
 

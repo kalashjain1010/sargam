@@ -75,7 +75,7 @@ export function HomePage() {
         <Link className="lab-tile" to="/tests">
           <em>Train more</em>
           <strong>Tests</strong>
-          <span>Fail it. Read why. Take it again.</span>
+          <span>Real songs. Find the scale.</span>
         </Link>
         <Link className="lab-tile" to="/practice">
           <em>Mic optional</em>
