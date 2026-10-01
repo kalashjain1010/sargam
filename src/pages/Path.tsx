@@ -10,7 +10,7 @@ export function PathPage() {
       <p className="eyebrow">The path</p>
       <h1>One idea a day. Stay as long as you want.</h1>
       <p className="lede">
-        Pass the check to open the next day. Songs, gym, ear, chords, and practice are unlocked from the start. There is no prize for rushing.
+        Each day is one idea, then a short check. Pass the check to open the next day. Songs, gym, ear, chords, videos, and practice are open from day one — like a library next to the classroom. There is no prize for rushing.
       </p>
       {units.map((unit) => (
         <section key={unit} className="unit-block">

@@ -1,6 +1,6 @@
 import { Quiz } from "./components/Quiz.tsx";
 import type { Question } from "./components/Quiz.tsx";
-import { Words } from "./components/Shell.tsx";
+import { Explain, Words } from "./components/Shell.tsx";
 import {
   BilawalWalk,
   ChordStack,
@@ -76,13 +76,15 @@ function Day1() {
     <>
       <Words
         items={[
-          { term: "Pitch", def: "How fast the string vibrates, in hertz." },
-          { term: "Octave", def: "Double the frequency. Same letter. Fret 12." },
-          { term: "Pitch class", def: "The letter, ignoring octave. Every A on the neck is one pitch class." },
+          { term: "Pitch", def: "How high or low a note sounds. Faster vibration = higher pitch. Like a tighter rubber band snapping faster." },
+          { term: "Octave", def: "Same letter, one floor up. Fret 12. Like the same word spoken by a child and an adult." },
+          { term: "Pitch class", def: "Just the letter. Every A on the guitar is the same family, different height." },
         ]}
       />
-      <p>You already move your hand and a note changes. A fret is a new length. Frequency goes up when the speaking length goes down. At the 12th fret the speaking length is exactly half, so the frequency is exactly double, so the letter comes back.</p>
-      <p>The eleven frets before that chop the octave into twelve equal multiplications, not twelve equal centimetres. Each step multiplies frequency by about 1.0595. A two-fret bend raises pitch by about 12 percent, not by a fixed number of hertz. Your ear hears those as the same musical distance.</p>
+      <Explain
+        idea="A fret shortens the string. Shorter string = higher note. At fret 12 the speaking length is exactly half, so the letter comes back one floor up."
+        example="Open low E, then press fret 12 on that same string. Both are E. The second one is the same name in a higher voice. Gauge and tension change the open pitch. They do not move the octave fret."
+      />
       <SameNote />
       <NoteHunt />
       <LessonVideos topics={["notes", "foundation"]} />
@@ -123,14 +125,16 @@ function Day2() {
     <>
       <Words
         items={[
-          { term: "Home", def: "The letter a line can end on. Movable. Not glued to C." },
-          { term: "Key", def: "Home plus a scale. Capo 2 on a G song makes it A." },
-          { term: "Natural notes", def: "C D E F G A B. The other five letters take a sharp or a flat." },
-          { term: "Indian names", def: "Optional labels from home: Sa Re Ga Ma Pa Dha Ni. This course uses the letters you already know." },
+          { term: "Home", def: "The letter a line can end on — like the last word of a sentence. Not glued to C." },
+          { term: "Key", def: "Home plus a scale. Capo 2 on a G song makes it A: same shapes, two stairs higher." },
+          { term: "Natural notes", def: "C D E F G A B. The other five letters need a sharp (#, one fret up) or a flat (b, one fret down)." },
+          { term: "Indian names", def: "Optional labels counted from home. This course uses the letters you already know." },
         ]}
       />
-      <p>If you can play a song in G and the same shapes with a capo at fret 2, you already move home. You called it a capo. The distances stay. The letters change.</p>
-      <p>Indian singers do the same trick with different words. They pick a home and count from it. You do not need those names to play. When a raga page mentions them, they are a translation of the same 12 frets.</p>
+      <Explain
+        idea="The letters never move. You choose which letter feels like “done.” A capo is just starting the same song two stairs higher."
+        example="Play a song with G, C, D, Em. Clamp a capo at fret 2 and use the same shapes. Now it sounds in A. Indian singers do the same trick with different words: they pick a home and count from it."
+      />
       <HomeBoard />
       <h2>Check</h2>
       <Quiz day={2} questions={questions} />
@@ -171,13 +175,15 @@ function Day3() {
     <>
       <Words
         items={[
-          { term: "Semitone", def: "One fret. The smallest step this guitar can fret." },
-          { term: "Interval", def: "The distance between two notes, counted in semitones." },
-          { term: "Fifth", def: "Seven semitones. After the octave, the calmest jump on the neck." },
+          { term: "Semitone", def: "One fret. The smallest step this guitar can fret. Like one stair." },
+          { term: "Interval", def: "The gap between two notes, counted in stairs (frets). The English name is a nickname for the count." },
+          { term: "Fifth", def: "Seven frets. After the octave, the calmest jump. Power chords live here." },
         ]}
       />
-      <p>Once home is chosen, a tune is a list of fret-distances. You do not need a new theory for each song. You need to count.</p>
-      <p>Four frets (major 3rd) sounds bright. Three frets (minor 3rd) sounds heavier. Six frets (tritone, the raised 4th) refuses to relax. Seven frets (5th) sounds like a pillar. Equal temperament puts the major 3rd about 14 cents sharp of a pure harmonic, and the 5th only about 2 cents flat. Fifths on a guitar sound calm. Thirds shimmer.</p>
+      <Explain
+        idea="Once home is chosen, a tune is a list of fret-distances. You do not need a new theory for each song. You need to count stairs on one string."
+        example="From C: 4 frets lands on E (bright 3rd, a smile). 3 frets lands on Eb (sad 3rd). 7 frets lands on G (a fifth, a pillar). 6 frets lands on F# (the uneasy jump). Those numbers never change."
+      />
       <IntervalTrainer />
       <PhraseCoach
         jobs={[
@@ -225,11 +231,14 @@ function Day4() {
     <>
       <Words
         items={[
-          { term: "Major scale", def: "2 2 1 2 2 2 1 from home. In C: C D E F G A B." },
-          { term: "Leading tone", def: "The major 7th. One fret under home, pulling up." },
+          { term: "Major scale", def: "The common “happy” walk: skip, skip, next, skip, skip, skip, next. In C: C D E F G A B." },
+          { term: "Leading tone", def: "The 7th of major. One fret under home, pulling up — like a door that wants to close." },
         ]}
       />
-      <p>The major scale is a commute: two frets, two, one, two, two, two, one. From C it uses the white keys. From G it uses F#. From D it uses F# and C#. The hand learns a shape. The shape is this commute.</p>
+      <Explain
+        idea="The major scale is a commute on one string: two frets, two, one, two, two, two, one. Move the whole walk up a fret and the song is in a new key."
+        example="From C it uses no sharps: C D E F G A B. From G the same walk hits F# instead of F. That is why G songs use F#."
+      />
       <BilawalWalk />
       <LessonVideos topics={["notes"]} />
       <h2>Check</h2>
@@ -270,13 +279,15 @@ function Day5() {
     <>
       <Words
         items={[
-          { term: "Relative minor", def: "Same notes as a major scale, home on the 6th. C major ↔ A minor." },
-          { term: "Dorian", def: "Minor 3rd, major 6th. In A: A B C D E F# G." },
-          { term: "Natural minor", def: "Minor 3rd, minor 6th, minor 7th. In A: A B C D E F G." },
+          { term: "Relative minor", def: "Same seven letters as a major scale, different front door. C major and A minor share C D E F G A B." },
+          { term: "Dorian", def: "Sad 3rd, bright 6th. In A: A B C D E F# G. The F# is the smile." },
+          { term: "Natural minor", def: "Sad 3rd, sad 6th, sad 7th. In A: A B C D E F G. The pop-sad default." },
         ]}
       />
-      <p>Guitarists say “minor” and mean one box. The box is usually minor pentatonic, which is not even a seven-note minor. When a Hindi melody feels sad, it might be natural minor, or Dorian, or Phrygian, and those three disagree about the 2nd and the 6th.</p>
-      <p>Test in A, because you know these frets. Natural minor wants F. Dorian wants F#. Phrygian wants Bb as the 2nd, one fret above A, where your finger usually refuses to go because the minor scale taught you B.</p>
+      <Explain
+        idea="“Minor” is not one box. Three common minors disagree about the 2nd and the 6th. Test those two stairs. One fret changes the whole mood."
+        example="In A, natural minor wants F. Dorian wants F#. Phrygian wants Bb as the 2nd (one fret above A) where your finger usually puts B. Same home, three different rooms."
+      />
       <MinorCompare />
       <h2>Check</h2>
       <Quiz day={5} questions={questions} />
@@ -315,13 +326,14 @@ function Day6() {
     <>
       <Words
         items={[
-          { term: "Triad", def: "Three notes, every other scale degree: 1, 3, 5." },
-          { term: "Roman numeral", def: "The chord's job in the key. Capitals are major. Lowercase are minor. vii° is diminished." },
+          { term: "Triad", def: "Three letters stacked: 1, 3, and 5 of a scale. That is a chord. A grip is just one way to grab them." },
+          { term: "Roman numeral", def: "The chord’s job in the key. Capitals = bright (major). Lowercase = sad (minor). I is home." },
         ]}
       />
-      <p>A chord is not a grip. A grip is one way to put a chord on six strings. C major is C, E, and G, whether you play the open cowboy shape, a barre at fret 8, or two notes and let the bass hold the root.</p>
-      <p>Build it by taking a scale and jumping. From degree 1, take 1, 3, and 5. Do it again from degree 2. In a major key the qualities come out I ii iii IV V vi vii°. You have been playing that table every time you used G, Am, Bm, C, D, Em in the key of G.</p>
-      <p>On a guitar you rarely have enough fingers for a 9th chord's every note. Drop the 5th first. Keep the 3rd and the 7th: those two tell you if the chord is major, minor, or dominant.</p>
+      <Explain
+        idea="A chord is not a hand shape. A hand shape is one photo of three letters. C major is always C, E, and G — cowboy shape, barre, or two notes plus bass."
+        example="In G major you already play G, Am, Bm, C, D, Em. Those are I, ii, iii, IV, V, vi of G. Same furniture, numbered from home. Keep the 3rd: 4 frets = major, 3 frets = minor."
+      />
       <ChordStack />
       <LessonVideos topics={["chords", "progressions"]} />
       <h2>Check</h2>
@@ -365,13 +377,15 @@ function Day7() {
     <>
       <Words
         items={[
-          { term: "I V vi IV", def: "The major pop loop. In G: G D Em C." },
-          { term: "i VI III VII", def: "The minor film loop. In A: Am F C G." },
-          { term: "Capo", def: "A clamp that moves home up the neck without new shapes." },
+          { term: "I V vi IV", def: "The major pop loop. In G: G D Em C. Home is bright." },
+          { term: "i VI III VII", def: "The minor film loop. In A: Am F C G. Home is sad, even though three chords are bright." },
+          { term: "Capo", def: "A clamp that moves home up the neck without new shapes. Same furniture, new floor." },
         ]}
       />
-      <p>A huge amount of guitar-arranged Hindi film music is four diatonic chords. In a major key they are I, V, vi, and IV. In a minor key they are i, VI, III, and VII. Learn both loops from one home note and you can busk a shocking number of songs.</p>
-      <p>Ilahi, the Kal Ho Naa Ho chorus, and Kesariya sit in the major family in the arrangements guitarists teach. Tum Hi Ho and Channa Mereya sit in the minor family. The studio recording may be in another letter. That does not change the family. It changes the capo.</p>
+      <Explain
+        idea="A huge number of songs are four chords in a family. Learn two families from one home and you can busk a shocking number of titles."
+        example="Let It Be, Photograph, and many G-shape tutorials are G D Em C. Tum Hi Ho and Channa Mereya tutorials are Am F C G. If the record sounds higher, capo. The family did not change."
+      />
       <LoopPlayer />
       <h2>Check</h2>
       <Quiz day={7} questions={questions} />
@@ -412,10 +426,13 @@ function Day8() {
       <Words
         items={[
           { term: "Tonic", def: "Home. The note that can end the line without asking a question." },
-          { term: "Tell", def: "The single scale degree that distinguishes two similar collections." },
+          { term: "Tell", def: "The one step that separates two similar recipes — like a mole that identifies a face." },
         ]}
       />
-      <p>Tabs are someone else's home. The skill is recovering home from the sound, then naming the distances. Do it in this order. A wrong home note makes a correct melody look like the wrong raga.</p>
+      <Explain
+        idea="Tabs are someone else’s home. The skill is recovering home from the sound, then counting three melody notes in frets."
+        example="A wrong home makes a correct melody look like the wrong scale — like starting a story from the wrong sentence. Find the rest note first. Then count."
+      />
       <MethodList />
       <MelodyId />
       <HoldSa />
@@ -456,12 +473,14 @@ function Day9() {
     <>
       <Words
         items={[
-          { term: "Major pentatonic", def: "1 2 3 5 6. In C: C D E G A." },
-          { term: "Minor pentatonic", def: "1 b3 4 5 b7. In A: A C D E G. Relative of C major pentatonic." },
+          { term: "Major pentatonic", def: "Five notes: 1 2 3 5 6. In C: C D E G A. No 4th, no 7th." },
+          { term: "Minor pentatonic", def: "Five notes: 1, sad 3rd, 4, 5, sad 7th. In A: A C D E G. Same dots as C major pentatonic." },
         ]}
       />
-      <p>If you have soloed at all, you have played pentatonic. The box at the 5th fret in A minor is A C D E G. Call the note three frets higher home, and the same dots are C major pentatonic: C D E G A. Folk tunes, bhajans, and half of classic film melody live in that five-note room because the two omitted notes are the ones that clash: the 4th against the 3rd, and the 7th pulling into home.</p>
-      <p>Jyoti Kalash Chhalke and Payoji Maine are the clean examples. The blues scale is the minor box plus one fret between 4 and 5.</p>
+      <Explain
+        idea="If you have soloed at all, you have played this box. One shape, two names. Home moved three frets."
+        example="Index on low E fret 5: A C D E G. Call A home = minor pentatonic (rock). Call C home = major pentatonic (folk). The blues scale is this box plus one fret between 4 and 5."
+      />
       <PentatonicLink />
       <PhraseCoach
         jobs={[{ id: "pent", name: "A minor pentatonic", hint: "A C D E G A. Slow. One string-box.", homePc: 9, offsets: [0, 3, 5, 7, 10, 12] }]}
@@ -504,18 +523,19 @@ function Day10() {
     <>
       <Words
         items={[
-          { term: "Ionian", def: "Major. Rest on 1 of the major scale." },
-          { term: "Dorian", def: "Rest on 2. Minor 3rd, major 6th." },
-          { term: "Phrygian", def: "Rest on 3. Flat 2nd." },
-          { term: "Lydian", def: "Rest on 4. Raised 4th." },
-          { term: "Mixolydian", def: "Rest on 5. Flat 7th." },
+          { term: "Ionian", def: "Major. Rest on 1. Bright 3rd and bright 7th." },
+          { term: "Dorian", def: "Rest on 2. Sad 3rd, bright 6th." },
+          { term: "Phrygian", def: "Rest on 3. The 2nd is only one fret above home." },
+          { term: "Lydian", def: "Rest on 4. Raised 4th (six frets)." },
+          { term: "Mixolydian", def: "Rest on 5. Flat 7th (ten frets)." },
           { term: "Aeolian", def: "Natural minor. Rest on 6." },
-          { term: "Locrian", def: "Rest on 7. Flat 2 and flat 5. Rare as a tonic." },
+          { term: "Locrian", def: "Rest on 7. Unstable home. Rare as a song’s front door." },
         ]}
       />
-      <p>
-        Stop thinking you need a new scale for every mood. Play C major, then lean on D, E, F, G, A, or B. You changed which letter is home. That is a mode. The Scales page is the atlas. Today, learn the tells: #4, b7, major 6th in a minor world, b2.
-      </p>
+      <Explain
+        idea="A mode is not a new pile of notes. It is the same seven letters with a different chair as home — the same room photographed from another seat."
+        example="Play C D E F G A B. Rest on C = major. Rest on D = Dorian. Rest on G = Mixolydian (F is now the flat 7th of G). The guitar did not gain pitches. Home moved. Learn the tells: #4, b7, bright 6th in a minor world, b2."
+      />
       <ScaleStudio startId="mixolydian" />
       <LessonVideos topics={["modes", "scales"]} />
       <h2>Check</h2>
@@ -555,17 +575,20 @@ function Day11() {
     <>
       <Words
         items={[
-          { term: "Arrangement key", def: "The letter a guitar lesson picked so the chords fall on open shapes. Not always the record's key." },
-          { term: "Tell", def: "One note that confirms or kills a guess." },
+          { term: "Arrangement key", def: "The letter a guitar lesson picked so the chords fall on easy shapes. Not always the record’s key." },
+          { term: "Tell", def: "One note that confirms or kills a guess. Romance is not a scale." },
         ]}
       />
-      <p>Three cases, slowly. Do not memorize thirteen songs. Memorize the test, then use the song pages as a workbook.</p>
-      <h2>Raised 4th · Yaman</h2>
-      <p>Abhi Na Jao Chhod Kar is a real Yaman composition, Jaidev, 1961. Set home. The note four frets up should fit, that is the major 3rd. The note six frets up should fit better than the note five frets up. That is the whole test. In C the dangerous chord is F, because F is the natural 4th.</p>
-      <h2>Flat 7th · Khamaj</h2>
-      <p>Mohe Panghat Pe and Piya Tose: major home, flat 7th. Kun Faya Kun is the modern case. Lesson charts in D use D, G, and A, and a melody that dips to C. A contains C#. The voice uses C. Both 7ths. Do not call that a wrong note. Call it the tell.</p>
-      <h2>Minor, and the false Yaman</h2>
-      <p>Tum Hi Ho in the usual guitar key is Am, C, G, F. Channa Mereya is Am, F, C, G. Home is minor. Yaman's 3rd is major and its 4th is sharp. A romantic lyric does not change the 3rd.</p>
+      <Explain
+        idea="Three cases, slowly. Do not memorize thirteen songs. Memorize the test, then use the song pages as a workbook."
+        example="If someone says a song is Lydian because it is romantic, check the 3rd. Lydian’s 3rd is bright (4 frets). Tum Hi Ho guitar charts start on Am — sad 3rd. The lyric did not change the 3rd."
+      />
+      <h2>Raised 4th (Lydian)</h2>
+      <p>Abhi Na Jao Chhod Kar is a real Lydian composition (Jaidev, 1961). Set home. Four frets up should fit (bright 3rd). Six frets up should fit better than five. That is the whole test. In C the dangerous chord is F, because F is the ordinary 4th.</p>
+      <h2>Flat 7th (Mixolydian)</h2>
+      <p>Major home, 7th one fret low. Kun Faya Kun is the modern case. Lesson charts in D use D, G, and A, and a melody that dips to C. A contains C#. The voice uses C. Both 7ths. Do not call that a wrong note. Call it the tell.</p>
+      <h2>Minor, and the false Lydian</h2>
+      <p>Tum Hi Ho in the usual guitar key is Am, C, G, F. Channa Mereya is Am, F, C, G. Home is minor. Lydian’s 3rd is major and its 4th is sharp. A romantic lyric does not change the 3rd.</p>
       <TellButtons />
       <p>The song atlas has the rest, each with a guitar home you can move.</p>
       <h2>Check</h2>
@@ -641,8 +664,10 @@ function Day12() {
   ];
   return (
     <>
-      <p>Ten questions. Eight is a pass. Then, if you want the stamp, hold three notes in the practice room: home, the 5th, and the major 3rd, any octave, one string at a time. The exam does not lock if you have no microphone.</p>
-      <p>After this, the way into a new song is fixed. Find the note that can end the line. Count three melody notes in frets. Match them to major, Dorian, natural minor, major pentatonic, Lydian, or Mixolydian. Move home with a capo until your hands are comfortable.</p>
+      <Explain
+        idea="Ten questions. Eight is a pass. Then, if you want the stamp, hold three notes: home, the 5th, and the bright 3rd, any octave, one string at a time. No microphone? The exam still unlocks."
+        example="After this, a new song is a question: which note can end the line? Count three melody notes in frets. Match them to major, Dorian, natural minor, pentatonic, Lydian, or Mixolydian. Capo until your hands are comfortable."
+      />
       <h2>Check</h2>
       <Quiz day={12} questions={questions} passAt={0.8} />
     </>

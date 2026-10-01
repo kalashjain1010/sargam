@@ -10,10 +10,10 @@ export function HomePage() {
 
   return (
     <div className="home">
-      <p className="eyebrow">{DAY_COUNT} days · guitar in your lap · letters on the neck</p>
-      <h1>You can play the song. Now the letters stop being a mystery.</h1>
+      <p className="eyebrow">{DAY_COUNT} days · guitar in your lap · letters A to G</p>
+      <h1>You can already play songs. This site teaches why the shapes work.</h1>
       <p className="lede">
-        C D E F G A B, counted in frets. A path you can actually finish, then a gym, an ear room, a chord lab, and a pile of real songs as practice beds. Hindi film songs sit next to English pop because they share loops, not because they share a secret alphabet.
+        Think of the neck as a ruler. Each fret is one step. The letters C D E F G A B never move. A song picks one letter as home — the note that feels finished, like the last word of a sentence. A scale is which steps you are allowed to walk. A chord is three letters sounded together. Hindi film songs and English pop sit next to each other because they reuse the same loops, not because they speak a secret language.
       </p>
       {next ? (
         <Link className="hero-card" to={`/day/${next.id}`}>
@@ -37,52 +37,57 @@ export function HomePage() {
         </Link>
       )}
       <div className="lab-grid">
+        <Link className="lab-tile" to="/train">
+          <em>Coach</em>
+          <strong>Train</strong>
+          <span>Ask in plain English. Get a drill.</span>
+        </Link>
         <Link className="lab-tile" to="/gym">
           <em>Fretboard</em>
           <strong>Gym</strong>
-          <span>{gym.hits ? `${gym.hits} hits` : "Find every letter"}</span>
+          <span>{gym.hits ? `${gym.hits} hits` : "Find every A, then every B…"}</span>
         </Link>
         <Link className="lab-tile" to="/ear">
           <em>Listening</em>
           <strong>Ear</strong>
-          <span>{ear.hits ? `${ear.hits} hits` : "Name scales and chords"}</span>
+          <span>{ear.hits ? `${ear.hits} hits` : "Hear two notes. Name the gap."}</span>
         </Link>
         <Link className="lab-tile" to="/chords">
           <em>Harmony</em>
           <strong>Chords</strong>
-          <span>Find them from notes</span>
+          <span>Bass first, then happy or sad</span>
         </Link>
         <Link className="lab-tile" to="/songs">
           <em>Repertoire</em>
           <strong>Songs</strong>
-          <span>Modern beds, real titles</span>
+          <span>Real titles. Loops you can move.</span>
         </Link>
         <Link className="lab-tile" to="/ragas">
           <em>Collections</em>
           <strong>Scales</strong>
-          <span>Major through blues</span>
+          <span>Major, minor, modes, blues</span>
         </Link>
         <Link className="lab-tile" to="/practice">
           <em>Mic optional</em>
           <strong>Practice</strong>
-          <span>{stamps.includes("held-sa") ? "Home held in tune" : "Play one note"}</span>
+          <span>{stamps.includes("held-sa") ? "Home held in tune" : "Pick a home. Play one note."}</span>
         </Link>
         <Link className="lab-tile" to="/coach">
           <em>Microphone</em>
           <strong>Mic</strong>
-          <span>Hear you, name the mistake</span>
+          <span>Play one string. See the letter.</span>
         </Link>
         <Link className="lab-tile" to="/watch">
           <em>Teachers</em>
           <strong>Videos</strong>
-          <span>YouTube inside the app</span>
+          <span>Watch, then tap the neck</span>
         </Link>
       </div>
       {done === DAY_COUNT ? (
         <aside className="certificate">
           <p className="eyebrow">Path complete</p>
-          <h2>You can find home, name the distance, hear a loop, and barre it in any letter.</h2>
-          <p>A new song starts with the resting note, then three melody frets, then a capo. Keep the gym and the ear room warm.</p>
+          <h2>You can find home, name a gap in frets, hear a four-chord loop, and slide a shape to any letter.</h2>
+          <p>A new song starts with the note that feels finished. Then three melody notes. Then a capo if the shapes are hard. Keep the gym and the ear room warm.</p>
         </aside>
       ) : null}
       <ol className="day-list">

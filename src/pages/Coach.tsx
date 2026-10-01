@@ -9,9 +9,9 @@ export function CoachPage() {
   return (
     <div className="home wide">
       <p className="eyebrow">Microphone lab</p>
-      <h1>Play. I will name the letter, and tell you what went wrong.</h1>
+      <h1>Play one string. I will name the letter and say why it missed.</h1>
       <p className="lede">
-        One string at a time. The detector is honest about chords and bends: they look unstable because the pitch is moving. Written days still work if you leave the mic off.
+        Hold the guitar near the mic. Pluck one string and let it ring — like talking clearly, not shouting over a crowd. A full strum looks like noise because several notes arrive at once. A bend looks “out” in the middle because the pitch is still travelling. Judge the landing. Written days still work if you leave the mic off.
       </p>
       <PitchCoach
         saPc={saPc}
@@ -19,7 +19,7 @@ export function CoachPage() {
         onStable={() => stamp("held-sa")}
       />
       <h2>Hold a target</h2>
-      <p className="muted">Home is whatever you last set in Practice. Change it there if you want a different letter.</p>
+      <p className="muted">Home is whatever you last set in Practice, like a bookmark. Change it there if you want a different letter.</p>
       <PitchCoach saPc={saPc} targetPc={saPc} />
       <PhraseCoach />
       <p className="muted">

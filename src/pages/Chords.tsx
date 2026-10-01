@@ -5,9 +5,9 @@ export function ChordsPage() {
   return (
     <div className="home wide">
       <p className="eyebrow">Chord lab</p>
-      <h1>Bass first. Quality second. Family third.</h1>
+      <h1>Hear the lowest note. Then ask: bright or sad?</h1>
       <p className="lede">
-        You already grab shapes. This room names them, finds them from notes, and shows how two barre grips cover twelve keys. Nothing here is a copied song melody. The loops in Songs are the homework.
+        A chord name is a letter plus a mood. If the bass is G and the chord sounds bright, it is G major. If it sounds sad, it is G minor. Do that four times and you have a loop. Number the loop from the chord that can end the chorus. Two slid shapes (the open E and the open A) cover every letter on the neck.
       </p>
       <ChordMethod />
       <ChordFinder />

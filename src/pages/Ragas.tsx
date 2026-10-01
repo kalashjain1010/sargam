@@ -24,9 +24,9 @@ export function RagaPage() {
   return (
     <div className="home wide">
       <p className="eyebrow">Scales</p>
-      <h1>The collections guitarists actually name.</h1>
+      <h1>A scale is a recipe of steps from home.</h1>
       <p className="lede">
-        Major, minor, the church modes, pentatonics, blues, harmonic minor. Tap a name, hear the walk, see it on the neck. Move home. The tell is the one note that the neighbor scale does not have.
+        Think of a staircase with twelve steps to the next floor (the octave). A scale picks which steps you stand on. Major is the most common recipe. Change one step and the mood changes — that changed step is the tell, like a mole that identifies a face. Tap a name, hear the walk, move home. The recipe travels.
       </p>
       <ScaleStudio />
       <h2>All of them</h2>
@@ -41,6 +41,10 @@ export function RagaPage() {
               <h3>{scale.name}</h3>
               <p className="pitch-read">{scaleNoteNames(0, scale.steps).join("  ")}</p>
               <p>{scale.tell}</p>
+              <p className="example">
+                <strong>Example. </strong>
+                {scale.example}
+              </p>
               <p>{scale.rule}</p>
               <p>
                 <strong>Leave alone. </strong>

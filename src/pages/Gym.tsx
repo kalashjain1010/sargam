@@ -17,10 +17,10 @@ import type { FretPos } from "../theory.ts";
 type Mode = "hunt" | "flash" | "jump" | "strings" | "blitz";
 
 const MODES: { id: Mode; title: string; blurb: string }[] = [
-  { id: "hunt", title: "Hunt", blurb: "Find every copy of a letter on the neck." },
-  { id: "flash", title: "Flash", blurb: "A fret lights up. Name the letter." },
-  { id: "jump", title: "Jump", blurb: "From this fret, tap a 4th, 5th, or octave." },
-  { id: "strings", title: "Strings", blurb: "Name the six open strings, low to high." },
+  { id: "hunt", title: "Hunt", blurb: "Find every copy of one letter. Like spotting every A on a map." },
+  { id: "flash", title: "Flash", blurb: "A fret lights up. Name the letter before you think too hard." },
+  { id: "jump", title: "Jump", blurb: "From this fret, tap 5 frets (4th), 7 frets (5th), or 12 (octave)." },
+  { id: "strings", title: "Strings", blurb: "Name the six open strings, thick to thin: E A D G B e." },
   { id: "blitz", title: "60s blitz", blurb: "Flash round against the clock." },
 ];
 
@@ -50,9 +50,9 @@ export function GymPage() {
   return (
     <div className="home wide">
       <p className="eyebrow">Fretboard gym</p>
-      <h1>Make the neck boring. Then songs get interesting.</h1>
+      <h1>Make the neck as boring as a keyboard’s letter row.</h1>
       <p className="lede">
-        Letters only. No looking at a chart. Easy shows the names. Hard hides them. Best scores stick on this browser.
+        The goal is not speed for its own sake. It is being able to point at a fret and know the letter, the way you know where W is on a keyboard. Easy shows the names. Hard hides them. Best scores stick on this browser.
       </p>
       <div className="gym-bests">
         {MODES.map((item) => (

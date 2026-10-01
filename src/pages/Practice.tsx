@@ -20,7 +20,7 @@ export function PracticePage() {
       <p className="eyebrow">Practice room</p>
       <h1>Pick a home letter. Pick a scale. Play one note.</h1>
       <p className="lede">
-        The neck is labeled in C D E F G A B from your home. The mic names whatever single note it hears, in cents, and says whether that letter belongs. Chords and bends will look unstable. That is the detector telling the truth about a moving pitch.
+        Home is the letter that feels like “done.” The neck lights the allowed steps of that scale, like a path of stepping stones. Play one string. The mic names the letter and whether you are a little sharp (too high) or flat (too low). A strum or a bend will look messy. That is honest: several notes, or a moving note, are not one target.
       </p>
       <h2>Home</h2>
       <div className="chips">

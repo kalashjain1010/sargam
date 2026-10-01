@@ -7,11 +7,11 @@ import { INTERVAL_NAMES, MAJOR, NATURAL_MINOR, YAMAN, KHAMAJ, KAFI, nearestMidi,
 type Mode = EarId;
 
 const MODES: { id: Mode; title: string; blurb: string }[] = [
-  { id: "interval", title: "Intervals", blurb: "Two notes. Name the distance in English, which is a fret count." },
-  { id: "scale", title: "Scales", blurb: "A walk from home. Name the collection." },
-  { id: "quality", title: "Quality", blurb: "One chord. Major, minor, dominant 7, or diminished." },
-  { id: "loop", title: "Loops", blurb: "Four chords. Name the family." },
-  { id: "degree", title: "Degrees", blurb: "Drone on home, then one extra note. Which scale degree?" },
+  { id: "interval", title: "Intervals", blurb: "Two notes. Count the gap in frets, then use the English name (5th = 7 frets)." },
+  { id: "scale", title: "Scales", blurb: "A walk from home. Name the recipe: major, Dorian, pentatonic…" },
+  { id: "quality", title: "Quality", blurb: "One chord. Bright (major), sad (minor), extra pull (dominant 7), or unstable (diminished)." },
+  { id: "loop", title: "Loops", blurb: "Four chords in a row. Name the family, like G–D–Em–C versus Am–F–C–G." },
+  { id: "degree", title: "Degrees", blurb: "Home keeps ringing. Then one extra note. Which step of the scale was it?" },
 ];
 
 function randomOf<T>(list: T[]): T {
@@ -25,9 +25,9 @@ export function EarPage() {
   return (
     <div className="home wide">
       <p className="eyebrow">Ear gym</p>
-      <h1>Hear it, then name it. The neck is optional.</h1>
+      <h1>Close your eyes. Name what you heard.</h1>
       <p className="lede">
-        Five listening games. Play as many rounds as you want. Best scores stick on this browser. The path teaches the same skills slowly. This room is for reps.
+        Like a spelling test, but for sound. Two notes = how many frets apart. One chord = happy, sad, or extra-note. Four chords = which family. You do not need the guitar in your hands. Best scores stick on this browser.
       </p>
       <div className="gym-bests">
         {MODES.map((item) => (

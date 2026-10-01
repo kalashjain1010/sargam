@@ -13,6 +13,7 @@ import { EarPage } from "./pages/Ear.tsx";
 import { ChordsPage } from "./pages/Chords.tsx";
 import { CoachPage } from "./pages/Coach.tsx";
 import { WatchPage } from "./pages/Watch.tsx";
+import { TrainPage } from "./pages/Train.tsx";
 
 function ScrollUp() {
   const location = useLocation();
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/ear" element={<EarPage />} />
             <Route path="/coach" element={<CoachPage />} />
             <Route path="/watch" element={<WatchPage />} />
+            <Route path="/train" element={<TrainPage />} />
             <Route path="/chords" element={<ChordsPage />} />
             <Route path="/practice" element={<PracticePage />} />
             <Route path="*" element={<Missing />} />

@@ -12,7 +12,7 @@ export function WatchPage() {
       <p className="eyebrow">Video desk · {VIDEOS.length} lessons</p>
       <h1>Watch a teacher, then come back and tap the neck.</h1>
       <p className="lede">
-        These are public YouTube lessons, loaded inside Sargam when you ask. Nothing is copied. The path still works if you never press play. Pick the topic you are stuck on.
+        These are public YouTube lessons. Press play and they load here. Nothing is copied into the site. The 30-day path still works if you never watch a video. Pick the topic you are stuck on — like asking a friend to show the same idea again.
       </p>
       <div className="chips">
         {topics.map((topic) => (

@@ -15,7 +15,7 @@ type Props = {
 export function PitchCoach({ saPc, targetPc, scale, conceal = false, onStable }: Props) {
   const [listening, setListening] = useState(false);
   const [held, setHeld] = useState(false);
-  const { freq, rms, error } = useMic(listening);
+  const { freq, rms, error, clarity, chordish } = useMic(listening);
   const onStableRef = useRef(onStable);
   onStableRef.current = onStable;
   const hold = useRef({ n: 0, fired: false });
@@ -44,7 +44,7 @@ export function PitchCoach({ saPc, targetPc, scale, conceal = false, onStable }:
   const info = freq ? analyzeFreq(freq) : null;
   const cents = info?.cents ?? 0;
   const targetName = targetPc === undefined ? null : noteName(targetPc);
-  const verdict = diagnosePitch({ freq, rms, saPc, targetPc, scale, listening });
+  const verdict = diagnosePitch({ freq, rms, saPc, targetPc, scale, listening, clarity, chordish });
 
   return (
     <div className="coach">
@@ -52,7 +52,7 @@ export function PitchCoach({ saPc, targetPc, scale, conceal = false, onStable }:
         <div>
           <p className="eyebrow">{targetName ? "Hold this letter" : "Live listen"}</p>
           <strong className="coach-target">{conceal && !held ? "Listen, then match it" : targetName ? targetName : (info?.name ?? "—")}</strong>
-          {targetName ? <p className="muted">Any octave. One string. Let it ring.</p> : null}
+          {targetName ? <p className="muted">Any octave. One string. Let it ring, like saying a name clearly.</p> : null}
         </div>
         <button
           type="button"
@@ -81,6 +81,7 @@ export function PitchCoach({ saPc, targetPc, scale, conceal = false, onStable }:
             {info.name}
             {octaveOf(info.midi)} · {freq?.toFixed(1)} Hz ·{" "}
             {cents > 0 ? `${cents.toFixed(0)} cents sharp` : cents < 0 ? `${Math.abs(cents).toFixed(0)} cents flat` : "centered"}
+            {clarity ? ` · lock ${Math.round(clarity * 100)}%` : ""}
           </>
         ) : listening ? (
           "Waiting for a single note."

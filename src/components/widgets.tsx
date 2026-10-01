@@ -63,7 +63,7 @@ export function SameNote() {
   return (
     <div className="widget">
       <h3>Tap the open low E, then fret 12 on the same string</h3>
-      <p>Those two should come back as the same letter. The second is twice the frequency, because the string is half as long.</p>
+      <p>Those two should come back as the same letter. The second is the same name, one floor up — because the string is now half as long.</p>
       <Fretboard
         saPc={4}
         label="note"
@@ -171,7 +171,7 @@ export function HomeBoard() {
           {drone ? "Stop drone" : "Drone home + 5th"}
         </button>
       </div>
-      <p className="muted tiny">Gold is home. A drone of home plus the 5th is the oldest accompaniment on earth. On guitar that pair is open E and B, or A and E, depending on where you put home.</p>
+      <p className="muted tiny">Gold is home. A drone of home plus the 5th is the oldest accompaniment on earth — two pillars. On guitar that pair is open E and B, or A and E, depending on where you put home.</p>
     </div>
   );
 }
@@ -291,7 +291,7 @@ export function BilawalWalk() {
   return (
     <div className="widget">
       <h3>Walk a major scale on one string</h3>
-      <p>Home is fret 0 on this diagram. Whole, whole, half, whole, whole, whole, half. A whole step is 2 frets. A half step is 1. The half steps sit between 3–4 and 7–home.</p>
+      <p>Home is fret 0. Skip two, skip two, next (one), skip two, skip two, skip two, next. A skip is 2 frets. Next is 1. The short steps sit between 3–4 and 7–home.</p>
       <div className="one-string">
         {Array.from({ length: 13 }, (_, index) => (
           <i key={index} className={index === 0 || places.includes(index) ? "on" : ""}>
@@ -320,10 +320,10 @@ export function BilawalWalk() {
 export function MinorCompare() {
   const [id, setId] = useState("kafi");
   const sets = [
-    { id: "bilawal", name: "Major", steps: MAJOR, line: "All natural degrees. The reference major scale." },
-    { id: "kafi", name: "Dorian", steps: KAFI, line: "b3 and b7. The 6th stays major. That major 6th is the tell." },
-    { id: "minor", name: "Natural minor", steps: NATURAL_MINOR, line: "b3, b6, and b7. The pop minor." },
-    { id: "bhairavi", name: "Phrygian", steps: [0, 1, 3, 5, 7, 8, 10], line: "b2, b3, b6, and b7. The 2nd is one fret above home." },
+    { id: "bilawal", name: "Major", steps: MAJOR, line: "All natural degrees. The reference “happy” walk. In C: C D E F G A B." },
+    { id: "kafi", name: "Dorian", steps: KAFI, line: "Sad 3rd, bright 6th. That bright 6th is the tell. In C: C D Eb F G A Bb." },
+    { id: "minor", name: "Natural minor", steps: NATURAL_MINOR, line: "Sad 3rd, sad 6th, sad 7th. The pop-sad default." },
+    { id: "bhairavi", name: "Phrygian", steps: [0, 1, 3, 5, 7, 8, 10], line: "The 2nd is only one fret above home. That tiny step is the mood." },
   ];
   const current = sets.find((item) => item.id === id) ?? sets[1];
 
@@ -376,6 +376,10 @@ export function ChordStack() {
   return (
     <div className="widget">
       <h3>Stack every other scale note</h3>
+      <p className="example">
+        <strong>Example. </strong>
+        From C, take C, skip D, take E, skip F, take G. That stack is C major. Do it from D and you get D F A — D minor. Same staircase, different starting stair.
+      </p>
       <div className="chips">
         {GUITAR_KEYS.map((key) => (
           <button
@@ -411,7 +415,7 @@ export function ChordStack() {
         })}
       </div>
       <p>
-        I is major. ii, iii, and vi are minor. IV and V are major. vii° is diminished, two minor thirds, and it does not want to be home. In {noteName(pc, flat)}, the notes of the selected chord are{" "}
+        I is bright (home). ii, iii, and vi are sad. IV and V are bright. vii° is unstable and does not want to be home. In {noteName(pc, flat)}, the selected chord’s letters are{" "}
         {diatonicTriad(degree).intervals.map((semi) => noteName(pc + diatonicTriad(degree).rootSemi + semi, flat)).join(" ")}.
       </p>
     </div>
@@ -695,6 +699,10 @@ export function ScaleStudio({ startId = "lydian" }: { startId?: string }) {
         ))}
       </div>
       <p>{scale.rule}</p>
+      <p className="example">
+        <strong>Example. </strong>
+        {scale.example}
+      </p>
       <p className="pitch-read">{scaleNoteNames(home, scale.steps).join("  ")}</p>
       <p className="tiny muted">Catch phrase from {noteName(home, flat)}: {phraseLetters(home, scale.phrase)}</p>
       <div className="row">
@@ -910,7 +918,11 @@ export function ChordFinder() {
     <div className="widget studio">
       <h3>Tap notes. The chord names itself.</h3>
       <p>
-        Two or three letters are enough. The app lists every triad or seventh that contains them. The tightest match is first. This is how you find chords from a melody: collect the notes that are sounding, then pick the name that also matches the bass.
+        Two or three letters are enough. Collect the notes that are sounding, then pick the name that also matches the bass.
+      </p>
+      <p className="example">
+        <strong>Example. </strong>
+        You hear C, E, and G, and the bass is C → C major. Same three letters with bass E can be Em with an extra C, or C/E. Start from the lowest note you hear.
       </p>
       <div className="note-pad">
         {["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"].map((name, pc) => (
@@ -1002,7 +1014,13 @@ export function CircleFifths() {
   return (
     <div className="widget studio">
       <h3>Circle of fifths</h3>
-      <p>Clockwise is up a 5th (add a sharp). Counter-clockwise is up a 4th (add a flat). Neighbors are I, IV, and V.</p>
+      <p>
+        Clockwise is 7 frets up (add a sharp). Counter-clockwise is 5 frets up (add a flat). Neighbors are the chords a song actually uses.
+      </p>
+      <p className="example">
+        <strong>Example. </strong>
+        From G, clockwise is D, counterclockwise is C, relative minor is Em. That neighborhood is G D Em C.
+      </p>
       <div className="circle">
         {CIRCLE.map((key, index) => (
           <button
@@ -1093,10 +1111,10 @@ export function BarreShapes() {
 
 export function CadencePlayer() {
   const rows = [
-    { name: "Authentic V–I", a: 7, aq: [0, 4, 7, 10] as number[], b: 0, bq: [0, 4, 7] as number[], line: "The period at the end of a sentence. G7 to C in C major." },
-    { name: "Plagal IV–I", a: 5, aq: [0, 4, 7] as number[], b: 0, bq: [0, 4, 7] as number[], line: "Amen. F to C. Softer landing." },
-    { name: "Deceptive V–vi", a: 7, aq: [0, 4, 7, 10] as number[], b: 9, bq: [0, 3, 7] as number[], line: "You expected home. You got the relative minor. G7 to Am." },
-    { name: "Half cadence to V", a: 0, aq: [0, 4, 7] as number[], b: 7, bq: [0, 4, 7] as number[], line: "A comma. The phrase is not done. C to G." },
+    { name: "Period V–I", a: 7, aq: [0, 4, 7, 10] as number[], b: 0, bq: [0, 4, 7] as number[], line: "The period at the end of a sentence. G7 to C in C major." },
+    { name: "Amen IV–I", a: 5, aq: [0, 4, 7] as number[], b: 0, bq: [0, 4, 7] as number[], line: "A softer landing. F to C. Church and some ballads." },
+    { name: "Fake-out V–vi", a: 7, aq: [0, 4, 7, 10] as number[], b: 9, bq: [0, 3, 7] as number[], line: "You expected home. You got the sad cousin. G7 to Am." },
+    { name: "Comma to V", a: 0, aq: [0, 4, 7] as number[], b: 7, bq: [0, 4, 7] as number[], line: "A comma. The phrase is not done. C to G." },
   ];
   return (
     <div className="widget">
@@ -1137,7 +1155,11 @@ export function CagedMap() {
   return (
     <div className="widget studio">
       <h3>Five grips, one C major</h3>
-      <p>CAGED is not a religion. It is five photographs of the same chord, laid along the neck. Learn two well. Then the third.</p>
+      <p>CAGED is five photographs of the same chord, laid along the neck. Learn two well. Then the third.</p>
+      <p className="example">
+        <strong>Example. </strong>
+        Open C, and the E-shape barre at fret 8, are both C–E–G. Same people, two neighborhoods of the neck.
+      </p>
       <div className="grip-row">
         {shapes.map((shape) => (
           <div key={shape.name}>
@@ -1195,6 +1217,10 @@ export function ModeClock() {
     <div className="widget studio">
       <h3>One walk. Seven homes.</h3>
       <p>The notes of C major: C D E F G A B. Rest on a different letter and the mood changes. That is a mode. The guitar did not gain notes. Home moved.</p>
+      <p className="example">
+        <strong>Example. </strong>
+        Same seven letters. Rest on C = major. Rest on D = Dorian. Rest on G = Mixolydian. Like the same room photographed from another chair.
+      </p>
       <div className="chips">
         {modes.map((mode) => (
           <button
@@ -1231,7 +1257,11 @@ export function CapoMath() {
     <div className="widget studio">
       <h3>Capo is addition</h3>
       <p>
-        Shape letter + capo frets = sounding letter. G shapes, capo 2, sounding A. The roman numerals do not change.
+        Shape letter + capo frets = sounding letter. The numbers of the song (I V vi IV) do not change. Only the floor of the building changes.
+      </p>
+      <p className="example">
+        <strong>Example. </strong>
+        G shapes, capo 2, sounding A. Same hands, two stairs higher.
       </p>
       <div className="row">
         <span className="tiny muted">Shape</span>
@@ -1269,9 +1299,13 @@ export function CapoMath() {
 export function SecondaryDom() {
   return (
     <div className="widget">
-      <h3>V of V</h3>
+      <h3>A visitor that points</h3>
       <p>
-        In C major, G is V. The V of G is D major. D major contains F#, which is not in C major. That visitor exists to point at G. Creep’s B major in G is V of vi (or a chromatic III). Same idea: a major chord a 5th above a target.
+        In C major, G is the chord that pulls home. The chord that pulls to G is D major. D major contains F#, which is not in C. That visitor exists to point at G.
+      </p>
+      <p className="example">
+        <strong>Example. </strong>
+        C then D then G then C. The D is the surprise. Creep’s B major in G is the same idea: a bright chord that does not “belong,” with a job.
       </p>
       <div className="row">
         <button
@@ -1311,11 +1345,11 @@ export function SecondaryDom() {
 
 export function SeventhColors() {
   const colors = [
-    { name: "Major", iv: [0, 4, 7], line: "1 3 5. The triad." },
-    { name: "Dominant 7", iv: [0, 4, 7, 10], line: "Add the flat 7th. It wants to resolve down. This is V7." },
-    { name: "Major 7", iv: [0, 4, 7, 11], line: "Add the major 7th. It sits. Jazz and quiet pop." },
-    { name: "Minor 7", iv: [0, 3, 7, 10], line: "Minor triad plus flat 7. The default jazz minor. Also ii7 in major." },
-    { name: "Diminished", iv: [0, 3, 6], line: "Minor 3rd and a flat 5th. Unstable. Often vii°." },
+    { name: "Major", iv: [0, 4, 7], line: "Three letters: 1, bright 3rd, 5th. The plain chord." },
+    { name: "Dominant 7", iv: [0, 4, 7, 10], line: "Add the 7th one fret low. It wants to fall. Like a sentence that is not done. This is G7 in C." },
+    { name: "Major 7", iv: [0, 4, 7, 11], line: "Add the 7th one fret under home. It sits. Quiet pop and jazz." },
+    { name: "Minor 7", iv: [0, 3, 7, 10], line: "Sad triad plus a low 7th. Smoky. Also the ii chord in a major key (Dm7 in C)." },
+    { name: "Diminished", iv: [0, 3, 6], line: "Sad 3rd and a 5th one fret low. Unstable. Often wants to move." },
   ];
   return (
     <div className="widget">

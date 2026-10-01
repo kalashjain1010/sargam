@@ -12,9 +12,9 @@ export function SongListPage() {
   return (
     <div className="home wide">
       <p className="eyebrow">Song lab · {SONGS.length} beds</p>
-      <h1>Find the scale. Then move home until the guitar is comfortable.</h1>
+      <h1>Find the loop. Then move home until your hands are comfortable.</h1>
       <p className="lede">
-        Established songs keep a real teaching tradition. Everything else is a guitar arrangement: the roman numerals travel, the studio key might not. Nothing here is a copied melody. Hear the loop, then take the tell to the record.
+        A song here is a practice bed, not a copied melody. You hear the chord loop (the repeating furniture), then look for one tell-note on the real record. If the tutorial is in G and the singer is higher, put a capo on — same furniture, new floor of the building.
       </p>
       <div className="chips">
         {families.map((family) => (
@@ -89,7 +89,7 @@ export function SongPage() {
         ))}
       </ol>
       <h2>Guitar home</h2>
-      <p className="muted">The lesson starts in {noteName(song.guitarPc, usesFlats(song.guitarPc))}. Move it. The scale degrees do not change.</p>
+      <p className="muted">The lesson starts in {noteName(song.guitarPc, usesFlats(song.guitarPc))} because those shapes are easy. Move home. The distances stay. Like singing the same song starting on a different letter.</p>
       <KeyPicker value={sa} onChange={setPc} />
       <p className="pitch-read">{scaleNoteNames(sa, song.steps).join("  ")}</p>
       <div className="row">

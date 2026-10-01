@@ -1,6 +1,6 @@
 import { Quiz } from "./components/Quiz.tsx";
 import type { Question } from "./components/Quiz.tsx";
-import { Words } from "./components/Shell.tsx";
+import { Explain, Words } from "./components/Shell.tsx";
 import {
   BarreShapes,
   CadencePlayer,
@@ -73,9 +73,10 @@ function Day13() {
   ];
   return (
     <>
-      <p>
-        Tabs skip the part that makes you independent. The method is short: bass, quality, numerals, family, capo. The Chord lab is the sandbox. Today you learn the order so you never grab four random shapes again.
-      </p>
+      <Explain
+        idea="Tabs skip the part that makes you independent. The method is short: lowest note, bright or sad, then number the loop from the chord that can end the chorus."
+        example="Chorus bass is G, then D, then E, then C. First chord sounds bright → G. Second bright → D. Third sad → Em. Fourth bright → C. If G can end the chorus, you just found G D Em C — the same family as Let It Be."
+      />
       <ChordMethod />
       <ChordFinder />
       <LessonVideos topics={["chords", "progressions", "ear"]} />
@@ -111,9 +112,10 @@ function Day14() {
   ];
   return (
     <>
-      <p>
-        Open E and open A, moved up the neck, are most of the chords you still think of as “hard.” The nut was a capo at fret 0. A barre is a movable nut.
-      </p>
+      <Explain
+        idea="Open E and open A, slid up the neck, are most of the chords you still think of as “hard.” The nut was already a capo at fret 0. A barre is a movable nut."
+        example="Open E slid to fret 3 is G. Open A slid to fret 3 is C. Same photo, new floor of the building. Fret 1 on the E shape is F — that is why F felt new."
+      />
       <BarreShapes />
       <OpenDictionary />
       <LessonVideos topics={["barre", "caged"]} />
@@ -147,7 +149,10 @@ function Day15() {
   ];
   return (
     <>
-      <p>A triad is three notes. A seventh is four. The extra note is a job description, not decoration.</p>
+      <Explain
+        idea="A triad is three notes. A seventh is four. The extra note is a job, not decoration — like adding a period, a question mark, or a sigh to a sentence."
+        example="G is G B D. Add F (ten frets up) and it becomes G7, which wants to fall to C. Add F# (eleven frets) and it becomes Gmaj7, which sits. Same G shape neighborhood, different extra finger."
+      />
       <SeventhColors />
       <h2>Check</h2>
       <Quiz day={15} questions={questions} />
@@ -178,9 +183,10 @@ function Day16() {
   ];
   return (
     <>
-      <p>
-        The circle is a map of neighborhoods. Songs live with I, IV, V, and vi. Those four are next-door keys. Distant keys sound like a plane change.
-      </p>
+      <Explain
+        idea="The circle is a map of neighborhoods. Songs live with I, IV, V, and the relative minor (vi). Those four are next-door keys. Distant keys sound like a plane change."
+        example="From G, clockwise is D (V), counterclockwise is C (IV), and the relative minor is Em. That is G D Em C. Clockwise always means 7 frets up — a fifth."
+      />
       <CircleFifths />
       <LessonVideos topics={["circle", "keys"]} />
       <h2>Check</h2>
@@ -218,7 +224,10 @@ function Day17() {
   ];
   return (
     <>
-      <p>A phrase is a sentence. Cadences are punctuation. Hear the last two chords and you know whether the line ended, paused, or lied.</p>
+      <Explain
+        idea="A phrase is a sentence. The last two chords are punctuation. Hear them and you know whether the line ended, paused, or lied."
+        example="G7 to C is a period. F to C is a softer “amen.” G7 to Am is a fake-out — you expected home and got the sad cousin. C to G is a comma: not done yet."
+      />
       <CadencePlayer />
       <h2>Check</h2>
       <Quiz day={17} questions={questions} />
@@ -249,7 +258,10 @@ function Day18() {
   ];
   return (
     <>
-      <p>The neck is not five islands. CAGED is a way to see the same chord in five neighborhoods. Two is enough to start connecting scale boxes to grips.</p>
+      <Explain
+        idea="The neck is not five islands. CAGED is five photographs of the same chord, laid along the neck. Two is enough to start."
+        example="Open C, then the E-shape barre at fret 8, are both C major. Same three letters (C E G), two neighborhoods. Add the A-shape at fret 3 when those two are boring."
+      />
       <CagedMap />
       <LessonVideos topics={["caged", "barre"]} />
       <h2>Check</h2>
@@ -282,9 +294,10 @@ function Day19() {
   ];
   return (
     <>
-      <p>
-        Harmony without pulse is a list of chords. Count first. Then the right hand has a job. 4/4, 3/4, and 6/8 are the three rooms you will live in.
-      </p>
+      <Explain
+        idea="Chords without a pulse are a shopping list. Count first. Then the right hand has a job. 4/4, 3/4, and 6/8 are the three rooms you will live in."
+        example="4/4 is walking: 1 2 3 4. 3/4 is a waltz: 1 2 3. 6/8 is two big steps, each split in three: 1-la-li 2-la-li. If your strum is rushing, count out loud and only hit the numbers you can still say."
+      />
       <RhythmPad />
       <h2>Check</h2>
       <Quiz day={19} questions={questions} />
@@ -318,12 +331,15 @@ function Day20() {
     <>
       <Words
         items={[
-          { term: "Natural minor", def: "b3 b6 b7. Pop default." },
-          { term: "Harmonic minor", def: "b3 b6, major 7. V becomes major." },
-          { term: "Melodic minor", def: "b3, major 6, major 7. Jazz often keeps it both ways." },
+          { term: "Natural minor", def: "Sad 3rd, sad 6th, sad 7th. Pop default. In A: A B C D E F G." },
+          { term: "Harmonic minor", def: "Sad 3rd, sad 6th, but a bright 7th. That raised 7th makes V a bright chord." },
+          { term: "Melodic minor", def: "Sad 3rd, bright 6th, bright 7th. Jazz often keeps this both ways." },
         ]}
       />
-      <p>This is why so many Am songs grab E7. It is not a random bright chord. It is the raised 7th, stacked.</p>
+      <Explain
+        idea="This is why so many Am songs grab E7. It is not a random bright chord. It is the raised 7th, stacked into a chord that points home."
+        example="In A minor, Em is the “by the book” fifth chord. Raise G to G# and Em becomes E or E7. That G# is one fret under A — it wants to close the door to Am."
+      />
       <ScaleStudio startId="harmonic-minor" />
       <h2>Check</h2>
       <Quiz day={20} questions={questions} />
@@ -360,9 +376,10 @@ function Day21() {
   ];
   return (
     <>
-      <p>
-        The Ear room has an interval game with more rounds than this check. Today is the idea: name it in frets first. The English word is a nickname.
-      </p>
+      <Explain
+        idea="The English word (fifth, major 3rd) is a nickname. The real name is a fret count. Name the stairs first."
+        example="From any letter, 7 frets is a fifth (C to G). 4 frets is a bright 3rd (C to E). 3 frets is a sad 3rd (C to Eb). Open Ear → Intervals and do ten in a row."
+      />
       <p>
         Open <Link to="/ear">Ear → Intervals</Link> and do ten in a row. Come back. Then try <Link to="/coach">Mic</Link> and play the distances yourself.
       </p>
@@ -398,9 +415,10 @@ function Day22() {
   ];
   return (
     <>
-      <p>
-        Chord quality is almost only the 3rd, plus the 7th when it is there. The Ear room’s Quality game is the gym for this.
-      </p>
+      <Explain
+        idea="Chord quality is almost only the 3rd, plus the 7th when it is there. Mute extra strings if you have to. Isolate that one stair."
+        example="G to B is 4 frets = G major (bright). G to Bb is 3 frets = G minor (sad). Add F and it pulls (G7). The Ear room’s Quality game is the gym for this."
+      />
       <SeventhColors />
       <h2>Check</h2>
       <Quiz day={22} questions={questions} />
@@ -447,9 +465,10 @@ function Day23() {
   ];
   return (
     <>
-      <p>
-        Three families cover most of the song lab. Hear which chord can end the chorus. If it is major, you are in the I–V–vi–IV world or I–IV–V. If it is minor, you are in i–VI–III–VII. Mixolydian adds a bVII major.
-      </p>
+      <Explain
+        idea="Three families cover most of the song lab. Hear which chord can end the chorus. That chord names the family."
+        example="If the rest chord is bright, you are in G D Em C world (or the three-chord G C D). If it is sad, you are in Am F C G world. Mixolydian adds a bright chord on the flat 7th — in G that is F major."
+      />
       <p>
         Drill this in <Link to="/ear">Ear → Loops</Link>, then play two songs from the same family in the song lab and notice they share hands.
       </p>
@@ -523,9 +542,10 @@ function Day24() {
   ];
   return (
     <>
-      <p>
-        Rock’s movable grip: root and 5th. On the E or A string, that is this fret plus two frets higher on the next string. No 3rd, so the guitar does not argue with a minor vocal.
-      </p>
+      <Explain
+        idea="A power chord is two notes: the root and the 5th. No 3rd, so the guitar does not argue about happy vs sad. The vocal will decide."
+        example="On the low E string, fret 3 is G. Add the A string two frets higher (fret 5) for D, the 5th. That pair is G5. Slide it. Seven Nation Army is this idea with roots E G D C B."
+      />
       <PowerShapes />
       <LessonVideos topics={["power", "rock"]} />
       <h2>Check</h2>
@@ -558,7 +578,10 @@ function Day25() {
   ];
   return (
     <>
-      <p>You do not always need a new chord name from a new root. Sometimes you change one finger on the chord you already have.</p>
+      <Explain
+        idea="You do not always need a new chord name from a new root. Sometimes you change one finger on the chord you already have."
+        example="D is D F# A. Lift the F# to G and you have Dsus4 — it wants to fall back. Add E on top of C and you have Cadd9, a sparkle, not a new family. Wonderwall lives on these one-finger changes."
+      />
       <SusAdd />
       <h2>Check</h2>
       <Quiz day={25} questions={questions} />
@@ -589,9 +612,10 @@ function Day26() {
   ];
   return (
     <>
-      <p>
-        You already know one major scale. Modes are that scale, starting on a different step. The Ear scale game and the Scales page are the same seven names.
-      </p>
+      <Explain
+        idea="You already know one major scale. Modes are that scale, starting on a different step. Same letters, new chair."
+        example="C D E F G A B. Rest on D and you are in D Dorian (sad 3rd, bright 6th). Rest on G and you are in G Mixolydian (F is now the open-door 7th). The Ear scale game and the Scales page are the same seven names."
+      />
       <ModeClock />
       <ScaleStudio startId="dorian" />
       <LessonVideos topics={["modes"]} />
@@ -624,7 +648,10 @@ function Day27() {
   ];
   return (
     <>
-      <p>Capo is not cheating. It is transposing without new shapes. The sounding letter is shape plus fret number.</p>
+      <Explain
+        idea="A capo is not cheating. It is transposing without new shapes. Sounding letter = shape letter plus capo fret number."
+        example="G shapes, capo 2, sounding A. Like singing the same song two stairs higher. The roman numerals stay: I is still I, just in a new letter."
+      />
       <CapoMath />
       <LessonVideos topics={["capo", "transpose"]} />
       <h2>Check</h2>
@@ -664,9 +691,10 @@ function Day28() {
   ];
   return (
     <>
-      <p>
-        Not every major chord in a major key is diatonic. When ii shows up as major, it is usually V of V. Name the visitor. Ask what it points at. Then you are done being scared of “weird chords.”
-      </p>
+      <Explain
+        idea="Not every bright chord in a bright key “belongs.” When a visitor shows up, name it, then ask what it points at. You are done being scared of weird chords."
+        example="In C major, Dm is the by-the-book ii. If you hear D major instead, it contains F#, which is not in C. That F# is the leading tone of G — so D is pointing at G. Creep’s B major in G is the same idea: a visitor with a job."
+      />
       <SecondaryDom />
       <LessonVideos topics={["secondary", "harmony"]} />
       <h2>Check</h2>
@@ -698,10 +726,11 @@ function Day29() {
   ];
   return (
     <>
+      <Explain
+        idea="Order of attack on a new song: home, bright or sad, three melody notes, family, capo. That sentence is the whole course, compressed."
+        example="You found home is A and the 3rd is C (sad). Next test the 6th: F vs F#, and the 7th: G vs G#. F = natural minor. F# = Dorian. G# in an E chord = harmonic minor. Phone recording, no tab. Walk the method. Then, if it is in the lab, compare."
+      />
       <ChordMethod />
-      <p>
-        Pick a song you have never opened in this lab. Phone recording, no tab. Walk the method. Then, if it is in the lab, compare. If it is not, you still have a map.
-      </p>
       <p>
         The <Link to="/songs">song lab</Link> is allowed as a check, not as the first look.
       </p>
@@ -778,9 +807,10 @@ function Day30() {
   ];
   return (
     <>
-      <p>
-        Ten questions. Eight is a pass. Then live in the gym, the ear room, and the song lab. Mastery is reps on those three, not a certificate.
-      </p>
+      <Explain
+        idea="Ten questions. Eight is a pass. Then live in the gym, the ear room, and the song lab. Mastery is reps on those three, not a certificate."
+        example="A new song still starts with one question: which note can end the line, and is its 3rd 4 frets (bright) or 3 (sad)? Then three melody notes, then family, then capo."
+      />
       <h2>Check</h2>
       <Quiz day={30} questions={questions} passAt={0.8} />
     </>

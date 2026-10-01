@@ -1,65 +1,118 @@
 import { useEffect, useState } from "react";
-import { stopDrone } from "./audio.ts";
-import { bufferRms, detectPitch } from "./pitch.ts";
+import { hush, stopDrone } from "./audio.ts";
+import { idleFrame, PitchTracker } from "./pitch.ts";
+import type { PitchFrame } from "./pitch.ts";
 
-export function useMic(listening: boolean): { freq: number | null; rms: number; error: string } {
-  const [freq, setFreq] = useState<number | null>(null);
-  const [rms, setRms] = useState(0);
+type Listener = (frame: PitchFrame, error: string) => void;
+
+const listeners = new Set<Listener>();
+const tracker = new PitchTracker();
+
+let stream: MediaStream | null = null;
+let actx: AudioContext | null = null;
+let analyser: AnalyserNode | null = null;
+let buf: Float32Array | null = null;
+let raf = 0;
+let lastTick = 0;
+let startLock: Promise<void> | null = null;
+let lastError = "";
+
+function broadcast(frame: PitchFrame) {
+  for (const listener of listeners) listener(frame, lastError);
+}
+
+function stopEngine() {
+  cancelAnimationFrame(raf);
+  raf = 0;
+  lastTick = 0;
+  analyser = null;
+  buf = null;
+  stream?.getTracks().forEach((track) => track.stop());
+  stream = null;
+  if (actx) {
+    void actx.close();
+    actx = null;
+  }
+  tracker.reset();
+}
+
+function tick(time: number) {
+  raf = requestAnimationFrame(tick);
+  if (!actx || !analyser || !buf || time - lastTick < 36) return;
+  lastTick = time;
+  analyser.getFloatTimeDomainData(buf as Float32Array<ArrayBuffer>);
+  broadcast(tracker.push(buf, actx.sampleRate, time));
+}
+
+async function startEngine(): Promise<void> {
+  if (stream && actx) return;
+  stopDrone();
+  hush();
+  lastError = "";
+  const next = await navigator.mediaDevices.getUserMedia({
+    audio: {
+      echoCancellation: false,
+      noiseSuppression: false,
+      autoGainControl: false,
+      channelCount: 1,
+    },
+  });
+  stream = next;
+  actx = new AudioContext();
+  if (actx.state === "suspended") await actx.resume();
+  const source = actx.createMediaStreamSource(next);
+  const hip = actx.createBiquadFilter();
+  hip.type = "highpass";
+  hip.frequency.value = 65;
+  hip.Q.value = 0.7;
+  analyser = actx.createAnalyser();
+  analyser.fftSize = 4096;
+  analyser.smoothingTimeConstant = 0;
+  source.connect(hip);
+  hip.connect(analyser);
+  buf = new Float32Array(analyser.fftSize);
+  tracker.reset();
+  raf = requestAnimationFrame(tick);
+}
+
+async function subscribe(listener: Listener): Promise<void> {
+  listeners.add(listener);
+  if (!startLock) {
+    startLock = startEngine().catch(() => {
+      lastError = "The browser did not open the microphone. Allow it in the address bar, or keep using the written checks. The course does not depend on a mic.";
+      broadcast(idleFrame());
+    });
+  }
+  await startLock;
+  if (lastError) listener(idleFrame(), lastError);
+}
+
+function unsubscribe(listener: Listener) {
+  listeners.delete(listener);
+  if (listeners.size === 0) {
+    startLock = null;
+    lastError = "";
+    stopEngine();
+  }
+}
+
+export function useMic(listening: boolean): PitchFrame & { error: string } {
+  const [frame, setFrame] = useState<PitchFrame>(idleFrame);
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (!listening) {
-      setFreq(null);
-      setRms(0);
+      setFrame(idleFrame());
+      setError("");
       return;
     }
-    let dead = false;
-    let raf = 0;
-    let stream: MediaStream | null = null;
-    let actx: AudioContext | null = null;
-    stopDrone();
-    setError("");
-
-    const start = async () => {
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
-        });
-        if (dead) {
-          stream.getTracks().forEach((track) => track.stop());
-          return;
-        }
-        actx = new AudioContext();
-        const source = actx.createMediaStreamSource(stream);
-        const analyser = actx.createAnalyser();
-        analyser.fftSize = 2048;
-        source.connect(analyser);
-        const buf = new Float32Array(analyser.fftSize);
-        let last = 0;
-        const tick = (time: number) => {
-          raf = requestAnimationFrame(tick);
-          if (time - last < 70) return;
-          last = time;
-          analyser.getFloatTimeDomainData(buf);
-          const level = bufferRms(buf);
-          const heard = detectPitch(buf, actx?.sampleRate ?? 44100);
-          setRms(level);
-          setFreq(heard);
-        };
-        raf = requestAnimationFrame(tick);
-      } catch {
-        if (!dead) setError("The browser did not open the microphone. Allow it in the address bar, or keep using the written checks. The course does not depend on a mic.");
-      }
+    const listener: Listener = (next, nextError) => {
+      setFrame(next);
+      setError(nextError);
     };
-
-    void start();
-    return () => {
-      dead = true;
-      cancelAnimationFrame(raf);
-      stream?.getTracks().forEach((track) => track.stop());
-      void actx?.close();
-    };
+    void subscribe(listener);
+    return () => unsubscribe(listener);
   }, [listening]);
 
-  return { freq, rms, error };
+  return { ...frame, error };
 }

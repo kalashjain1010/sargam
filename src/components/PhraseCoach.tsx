@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { playPhrase, unlock } from "../audio.ts";
 import { comparePhrases } from "../coach.ts";
-import { analyzeFreq, nearestMidi, noteName } from "../theory.ts";
+import { nearestMidi, noteName } from "../theory.ts";
 import { useMic } from "../useMic.ts";
 
 export type PhraseJob = {
@@ -12,25 +12,27 @@ export type PhraseJob = {
   offsets: number[];
 };
 
-const JOBS: PhraseJob[] = [
-  { id: "fifth", name: "Home then 5th", hint: "Two notes. Seven frets, or the next string two frets higher from E/A.", homePc: 4, offsets: [0, 7] },
-  { id: "maj3", name: "Major 3rd", hint: "Home, then 4 frets up.", homePc: 0, offsets: [0, 4] },
-  { id: "min3", name: "Minor 3rd", hint: "Home, then 3 frets up.", homePc: 9, offsets: [0, 3] },
-  { id: "triad", name: "Major triad, one note at a time", hint: "C, E, G. Arpeggiate. Do not strum.", homePc: 0, offsets: [0, 4, 7] },
-  { id: "minor-triad", name: "Minor triad", hint: "A, C, E.", homePc: 9, offsets: [0, 3, 7] },
-  { id: "major-walk", name: "Major scale, first five", hint: "C D E F G. Whole whole half whole.", homePc: 0, offsets: [0, 2, 4, 5, 7] },
-  { id: "pent", name: "A minor pentatonic, one octave", hint: "A C D E G A. The box.", homePc: 9, offsets: [0, 3, 5, 7, 10, 12] },
-  { id: "lydian", name: "Lydian tell", hint: "C then F#. Raised 4th. Six frets.", homePc: 0, offsets: [0, 6] },
+export const PHRASE_JOBS: PhraseJob[] = [
+  { id: "fifth", name: "Home then 5th", hint: "Two notes. Seven frets on one string. Or: next string, two frets higher, from E or A.", homePc: 4, offsets: [0, 7] },
+  { id: "maj3", name: "Bright 3rd", hint: "Home, then 4 frets up. Like C to E. A smile.", homePc: 0, offsets: [0, 4] },
+  { id: "min3", name: "Sad 3rd", hint: "Home, then 3 frets up. Like A to C.", homePc: 9, offsets: [0, 3] },
+  { id: "triad", name: "Major chord, one note at a time", hint: "C, then E, then G. Do not strum. Walk the three letters.", homePc: 0, offsets: [0, 4, 7] },
+  { id: "minor-triad", name: "Minor chord, one note at a time", hint: "A, then C, then E.", homePc: 9, offsets: [0, 3, 7] },
+  { id: "major-walk", name: "Major scale, first five", hint: "C D E F G. Skip, skip, next, skip.", homePc: 0, offsets: [0, 2, 4, 5, 7] },
+  { id: "pent", name: "A minor pentatonic, one octave", hint: "A C D E G A. The first rock box.", homePc: 9, offsets: [0, 3, 5, 7, 10, 12] },
+  { id: "lydian", name: "Lydian tell", hint: "C then F#. The raised 4th. Six frets. The dreamy stair.", homePc: 0, offsets: [0, 6] },
 ];
 
-export function PhraseCoach({ jobs = JOBS }: { jobs?: PhraseJob[] }) {
+export function PhraseCoach({ jobs = PHRASE_JOBS }: { jobs?: PhraseJob[] }) {
   const [jobId, setJobId] = useState(jobs[0]?.id ?? "fifth");
+  useEffect(() => {
+    if (jobs[0] && !jobs.some((item) => item.id === jobId)) setJobId(jobs[0].id);
+  }, [jobs, jobId]);
   const job = jobs.find((item) => item.id === jobId) ?? jobs[0];
   const [recording, setRecording] = useState(false);
   const [heard, setHeard] = useState<number[]>([]);
   const [result, setResult] = useState<{ ok: boolean; lines: string[] } | null>(null);
-  const { freq, rms, error } = useMic(recording);
-  const stable = useRef({ pc: -1, n: 0 });
+  const { event, pc, error } = useMic(recording);
   const heardRef = useRef<number[]>([]);
 
   useEffect(() => {
@@ -38,27 +40,9 @@ export function PhraseCoach({ jobs = JOBS }: { jobs?: PhraseJob[] }) {
   }, [heard]);
 
   useEffect(() => {
-    if (!recording) {
-      stable.current = { pc: -1, n: 0 };
-      return;
-    }
-    if (freq === null) {
-      if (rms < 0.01) stable.current.n = 0;
-      return;
-    }
-    const info = analyzeFreq(freq);
-    if (!info || Math.abs(info.cents) > 35) {
-      stable.current.n = 0;
-      return;
-    }
-    if (stable.current.pc === info.pc) stable.current.n += 1;
-    else {
-      stable.current = { pc: info.pc, n: 1 };
-    }
-    if (stable.current.n === 4) {
-      setHeard((current) => (current.at(-1) === info.pc ? current : [...current, info.pc]));
-    }
-  }, [freq, recording, rms]);
+    if (!recording || event !== "onset" || pc === null) return;
+    setHeard((current) => (current.at(-1) === pc ? current : [...current, pc]));
+  }, [event, pc, recording]);
 
   useEffect(() => {
     if (!recording) return;
@@ -80,7 +64,7 @@ export function PhraseCoach({ jobs = JOBS }: { jobs?: PhraseJob[] }) {
     <div className="widget studio">
       <h3>Play it back. I will say what went wrong.</h3>
       <p>
-        The mic is monophonic. Arpeggiate. Chords look like noise. Slow is better than fast. Twelve seconds, then a report.
+        Think of the mic as a person who can hear one speaker at a time. Pluck one string, let it speak, then the next. A strum is a crowd. Slow is better than fast. Twelve seconds, then a report.
       </p>
       <div className="chips">
         {jobs.map((item) => (

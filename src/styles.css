@@ -79,6 +79,14 @@ p { margin: 0.55rem 0; }
 .home.wide { max-width: 1080px; }
 .lesson { max-width: 820px; }
 .lede { font-size: 1.12rem; color: var(--ink); max-width: 42rem; }
+.example {
+  background: var(--gold-soft);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 8px 0 16px;
+}
+.explain p { margin: 0.4rem 0; }
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -725,6 +733,64 @@ th { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; colo
   color: #f6efe4;
   text-shadow: 0 1px 8px #000;
 }
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0;
+}
+.bubble {
+  max-width: min(38rem, 100%);
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.bubble p { margin: 0; white-space: pre-wrap; }
+.bubble small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.bubble.you {
+  align-self: flex-end;
+  background: var(--indigo);
+  color: #f6efe4;
+  border-color: transparent;
+}
+.bubble.you small { color: #d9c7ae; }
+.bubble.coach { align-self: flex-start; }
+.train-compose {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: end;
+  margin: 12px 0 18px;
+}
+.train-compose textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: var(--card);
+  resize: vertical;
+  min-height: 72px;
+}
+.key-field {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.key-field input {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+}
 .verdict { font-weight: 600; }
 .verdict.ok { color: var(--leaf); }
 .verdict.wrong, .verdict.outside, .verdict.chord { color: var(--rose); }
@@ -739,4 +805,5 @@ th { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; colo
   .note-pad { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .gym-target { font-size: 1.2rem; }
   .nav { width: 100%; }
+  .train-compose { grid-template-columns: 1fr; }
 }

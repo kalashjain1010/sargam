@@ -70,36 +70,36 @@ export type DayMeta = {
 };
 
 export const DAYS: DayMeta[] = [
-  { id: 1, unit: "Foundation", title: "Half the string", kicker: "Pitch", minutes: 12, promise: "Fret 12 is the exact middle of the string. Same letter, double the frequency." },
-  { id: 2, unit: "Foundation", title: "Home is a choice", kicker: "Keys", minutes: 14, promise: "C D E F G A B are fixed letters. The home of a song can be any of them. A capo just moves home." },
-  { id: 3, unit: "Foundation", title: "Songs are distances", kicker: "Intervals", minutes: 15, promise: "A fifth is 7 frets. A major 3rd is 4. A minor 3rd is 3. Count, do not guess." },
-  { id: 4, unit: "Foundation", title: "The major scale", kicker: "Major", minutes: 14, promise: "2 2 1 2 2 2 1 from any letter. Open G, C, D, A, and E all use this walk." },
-  { id: 5, unit: "Foundation", title: "Three different minors", kicker: "Minor", minutes: 16, promise: "Dorian, natural minor, and Phrygian flatten different notes. One minor box cannot cover all three." },
-  { id: 6, unit: "Foundation", title: "A chord is a stack", kicker: "Harmony", minutes: 15, promise: "The shapes you already grab are every other note of a scale, sounded together." },
-  { id: 7, unit: "Songs", title: "The loop under the song", kicker: "Progressions", minutes: 14, promise: "G–D–Em–C and Am–F–C–G are the same family with home in a different place." },
-  { id: 8, unit: "Songs", title: "Find the key yourself", kicker: "Method", minutes: 16, promise: "You do not need a chart. You need the note a line can end on, then three more melody notes." },
-  { id: 9, unit: "Songs", title: "The box, and the pentatonic", kicker: "Pentatonic", minutes: 14, promise: "A minor pentatonic and C major pentatonic are the same frets. Home moved three steps." },
-  { id: 10, unit: "Songs", title: "Modes: same notes, new home", kicker: "Modes", minutes: 18, promise: "Play C major, then rest on D, E, F, G, A, or B. You did not change notes. You changed which letter feels like home." },
-  { id: 11, unit: "Songs", title: "Three songs, slowly", kicker: "Tells", minutes: 16, promise: "Raised 4th, flat 7th, and a minor guitar loop. One tell each, then you can test a record without a tab." },
-  { id: 12, unit: "Songs", title: "Play it back", kicker: "Check", minutes: 15, promise: "Name the distance, name the letter, and hold the note. A new song starts with a question." },
-  { id: 13, unit: "Harmony", title: "Find the chords", kicker: "By ear", minutes: 18, promise: "Bass first, then major or minor, then the family. Tabs are optional after this." },
-  { id: 14, unit: "Harmony", title: "Barre: two shapes, twelve keys", kicker: "Barre", minutes: 16, promise: "The open E and A shapes, slid. That is most of the neck." },
-  { id: 15, unit: "Harmony", title: "Sevenths", kicker: "Color", minutes: 15, promise: "Add one note to a triad. Dominant 7 pulls. Major 7 sits. Minor 7 smokes." },
-  { id: 16, unit: "Harmony", title: "The circle of fifths", kicker: "Keys", minutes: 16, promise: "Each step clockwise adds a sharp. Neighbors are the chords a song actually uses." },
-  { id: 17, unit: "Harmony", title: "Cadences: how a phrase ends", kicker: "Cadence", minutes: 14, promise: "V–I finishes. IV–I amen. V–vi ducks. Hear the last two chords and you hear the sentence." },
-  { id: 18, unit: "Harmony", title: "CAGED on one letter", kicker: "CAGED", minutes: 18, promise: "Five grips for the same C major chord. Connect them and the neck stops being five islands." },
+  { id: 1, unit: "Foundation", title: "Fret 12 is the same letter", kicker: "Pitch", minutes: 12, promise: "Open E, then fret 12. Same letter, just higher — like folding a string in half." },
+  { id: 2, unit: "Foundation", title: "Home is a choice", kicker: "Keys", minutes: 14, promise: "C D E F G A B never move. Home can. A capo is just “start the song two stairs higher.”" },
+  { id: 3, unit: "Foundation", title: "Songs are distances", kicker: "Intervals", minutes: 15, promise: "A 5th is 7 frets. A major 3rd is 4. A minor 3rd is 3. Count on one string. Do not guess." },
+  { id: 4, unit: "Foundation", title: "The major scale walk", kicker: "Major", minutes: 14, promise: "From any letter: skip, skip, next, skip, skip, skip, next. That walk is G, C, D, A, and E." },
+  { id: 5, unit: "Foundation", title: "Three different minors", kicker: "Minor", minutes: 16, promise: "“Sad” is not one box. Check the 6th and the 2nd. One fret changes the whole mood." },
+  { id: 6, unit: "Foundation", title: "A chord is three letters", kicker: "Harmony", minutes: 15, promise: "C major is C, E, and G. The cowboy shape is just one way to grab those three." },
+  { id: 7, unit: "Songs", title: "The loop under the song", kicker: "Progressions", minutes: 14, promise: "G–D–Em–C and Am–F–C–G are the same family with a different front door." },
+  { id: 8, unit: "Songs", title: "Find the key yourself", kicker: "Method", minutes: 16, promise: "Find the note a line can rest on. Then count three melody notes in frets. That is the key." },
+  { id: 9, unit: "Songs", title: "The five-note box", kicker: "Pentatonic", minutes: 14, promise: "A minor pentatonic and C major pentatonic are the same dots. Home moved three frets." },
+  { id: 10, unit: "Songs", title: "Same notes, new home", kicker: "Modes", minutes: 18, promise: "Play C major, then rest on D. You did not learn new notes. You moved home. That is a mode." },
+  { id: 11, unit: "Songs", title: "Three songs, one test each", kicker: "Tells", minutes: 16, promise: "Raised 4th, flat 7th, or a minor home. One check each. Romance is not a scale." },
+  { id: 12, unit: "Songs", title: "Play it back", kicker: "Check", minutes: 15, promise: "Name the distance, name the letter, hold the note. A new song starts with a question." },
+  { id: 13, unit: "Harmony", title: "How to find the chords", kicker: "By ear", minutes: 18, promise: "Bass first, then happy or sad (the 3rd), then the family. Tabs become optional." },
+  { id: 14, unit: "Harmony", title: "Two shapes, twelve keys", kicker: "Barre", minutes: 16, promise: "Slide the open E shape. Slide the open A shape. That is most of the neck." },
+  { id: 15, unit: "Harmony", title: "Add one more note", kicker: "Sevenths", minutes: 15, promise: "A triad plus one extra. Dominant 7 pulls. Major 7 sits. Minor 7 is smoky." },
+  { id: 16, unit: "Harmony", title: "The circle of fifths", kicker: "Keys", minutes: 16, promise: "Clockwise is 7 frets up. Neighbors are the chords a song actually uses." },
+  { id: 17, unit: "Harmony", title: "How a phrase ends", kicker: "Cadence", minutes: 14, promise: "V–I finishes. IV–I says amen. V–vi ducks. The last two chords are the period." },
+  { id: 18, unit: "Harmony", title: "The same C, five photos", kicker: "CAGED", minutes: 18, promise: "Five grips for one C major chord along the neck. Two is enough to start." },
   { id: 19, unit: "Groove", title: "Count before you strum", kicker: "Rhythm", minutes: 14, promise: "4/4, 3/4, and 6/8 are different rooms. The right hand only makes sense after the count." },
-  { id: 20, unit: "Groove", title: "Harmonic minor and the V7", kicker: "Minor V", minutes: 16, promise: "Raise the 7th of a minor scale and the V chord becomes major. That is why Am songs use E or E7." },
-  { id: 21, unit: "Ear", title: "Hear the distance", kicker: "Intervals", minutes: 16, promise: "Melodic, then harmonic. Name it in frets before you name it in English." },
-  { id: 22, unit: "Ear", title: "Hear the quality", kicker: "Chords", minutes: 15, promise: "Major, minor, dominant 7, diminished. The 3rd and the 7th are the whole story." },
-  { id: 23, unit: "Ear", title: "Hear the loop", kicker: "Progressions", minutes: 16, promise: "I–V–vi–IV versus i–VI–III–VII versus I–bVII–IV. Three families cover most of the song lab." },
-  { id: 24, unit: "Ear", title: "Power chords", kicker: "Rock", minutes: 12, promise: "Root and 5th. No 3rd, so no major or minor. Move the two-fret shape." },
-  { id: 25, unit: "Mastery", title: "Suspended and add9", kicker: "Color", minutes: 14, promise: "Replace or add one note. Sus4 wants to fall. Add9 sparkles. Same grip, new vowel." },
-  { id: 26, unit: "Mastery", title: "One string, seven modes", kicker: "Modes", minutes: 16, promise: "Walk 2 2 1 2 2 2 1, then start on a different fret. That is every church mode." },
-  { id: 27, unit: "Mastery", title: "Capo as a machine", kicker: "Capo", minutes: 12, promise: "Capo 2 on G shapes is A. The song did not change. Your hands did." },
-  { id: 28, unit: "Mastery", title: "Secondary dominants", kicker: "Borrow", minutes: 16, promise: "A D major chord in C major is V of V. It is a visitor with a job: point at G." },
-  { id: 29, unit: "Mastery", title: "A new song, no chart", kicker: "By ear", minutes: 18, promise: "Home, quality, three melody notes, family, capo. That is the whole method, in order." },
-  { id: 30, unit: "Mastery", title: "Master check", kicker: "Exam", minutes: 20, promise: "Intervals, modes, loops, barre math, and a song you have never been handed." },
+  { id: 20, unit: "Groove", title: "Why Am songs use E7", kicker: "Minor V", minutes: 16, promise: "Raise one note in a minor scale and V becomes major. That is the E or E7 in Am songs." },
+  { id: 21, unit: "Ear", title: "Hear the distance", kicker: "Intervals", minutes: 16, promise: "Two notes. Count the frets in your head. Then name it in English." },
+  { id: 22, unit: "Ear", title: "Hear happy or sad", kicker: "Chords", minutes: 15, promise: "Major, minor, dominant 7, diminished. Listen for the 3rd, then the extra note." },
+  { id: 23, unit: "Ear", title: "Hear the loop", kicker: "Progressions", minutes: 16, promise: "Three families cover most of the song lab. Name which one you are in." },
+  { id: 24, unit: "Ear", title: "Power chords", kicker: "Rock", minutes: 12, promise: "Two notes: root and 5th. No 3rd, so not major or minor. Move the two-fret shape." },
+  { id: 25, unit: "Mastery", title: "One finger changes the vowel", kicker: "Color", minutes: 14, promise: "Sus4 wants to fall. Add9 sparkles. Same grip, one finger moved." },
+  { id: 26, unit: "Mastery", title: "One string, seven modes", kicker: "Modes", minutes: 16, promise: "Walk skip-skip-next on one string. Start on a new fret. That is every church mode." },
+  { id: 27, unit: "Mastery", title: "Capo is addition", kicker: "Capo", minutes: 12, promise: "Capo 2 plus G shapes = A. The song did not change. Your hands did." },
+  { id: 28, unit: "Mastery", title: "A visitor that points", kicker: "Borrow", minutes: 16, promise: "A D major chord in C major is “V of V.” It is not random. It points at G." },
+  { id: 29, unit: "Mastery", title: "A new song, no chart", kicker: "By ear", minutes: 18, promise: "Home, quality, three melody notes, family, capo. That is the whole method." },
+  { id: 30, unit: "Mastery", title: "Master check", kicker: "Exam", minutes: 20, promise: "Intervals, modes, loops, barre math, and a song nobody handed you." },
 ];
 
 export const DAY_COUNT = DAYS.length;
@@ -1328,25 +1328,25 @@ const MORE_SONGS: Song[] = [
 export const SONGS: Song[] = [...CORE_SONGS, ...MORE_SONGS];
 
 export const KEY_STEPS: string[] = [
-  "Find the note or chord the line can end on. That rest is home. Its chord is I, or i if it is minor.",
-  "Hum it and match it on the low E or the A string. That letter is the key for this song.",
-  "Pick three more melody notes. Count frets up from home on one string.",
-  "Frets 0, 2, 4, 7, 9 only: major pentatonic.",
-  "Fret 6 instead of fret 5, in an otherwise major scale: Lydian. The tell is the raised 4th.",
-  "Fret 10 instead of fret 11, with a major 3rd: Mixolydian. The tell is the flat 7th.",
-  "Fret 3 as the 3rd: some kind of minor. Then test fret 8 against fret 9. Fret 8 is natural minor. Fret 9 is Dorian.",
-  "Fret 1 as the 2nd, under a minor 3rd: Phrygian.",
-  "Capo, or slide the whole shape, until the chords land on shapes you can sing. Home moved. The distances did not.",
+  "Find the note or chord the line can end on. That rest is home — like the last word of a sentence. Its chord is I, or i if it is minor (sad).",
+  "Hum that note and match it on the low E or the A string. That letter is the key for this song. Example: if it matches open A, home is A.",
+  "Pick three more melody notes. Count frets up from home on one string, like counting stairs.",
+  "If you only used frets 0, 2, 4, 7, 9: that is major pentatonic. Five notes. Folk-safe.",
+  "If a major-sounding song leans on fret 6 instead of fret 5: Lydian. That raised 4th is the tell. In C it is F# instead of F.",
+  "If the 3rd is bright (4 frets) but the 7th is one fret low (fret 10 not 11): Mixolydian. In D that tell is C instead of C#.",
+  "If the 3rd is 3 frets (sad): some kind of minor. Then test fret 8 vs fret 9. Fret 8 = natural minor. Fret 9 = Dorian. In A that is F vs F#.",
+  "If the 2nd is only 1 fret above home, under a minor 3rd: Phrygian. In A that is Bb instead of B.",
+  "Capo, or slide the whole shape, until the chords land on shapes you can sing. Home moved. The distances did not. Example: capo 2 on G shapes sounds as A.",
 ];
 
 export const CHORD_STEPS: string[] = [
-  "Find the bass. In most pop and film guitar, the bass is the root of the chord.",
-  "Ask whether the 3rd is major (4 frets up) or minor (3 frets up). That is the quality.",
-  "Name the chord: letter plus major or minor. G or G major. Em or E minor.",
-  "Write the next bass the same way. You now have a loop in letters.",
-  "Turn the letters into roman numerals from the chord that can end the chorus. That chord is I or i.",
-  "If every chord sits in one major or natural-minor scale, you have the family. If one chord does not, it is a visitor: secondary dominant, borrowed minor, or a mode color.",
-  "Capo until the shapes are comfortable. The numerals travel.",
+  "Find the lowest note you hear. In most guitar songs that bass note is the name of the chord. Example: if the bass is G, start by calling it a G chord.",
+  "Ask if the chord sounds bright or sad. Bright = major 3rd (4 frets up from the bass). Sad = minor 3rd (3 frets up). Example: G to B is major. G to Bb is minor.",
+  "Write the name: letter plus major or minor. Example: G, or Em. That is already enough to play along.",
+  "Do the same for the next bass. Now you have a loop in letters. Example: G, D, Em, C.",
+  "Find which chord can end the chorus. Call that one I (or i if it is minor). Number the others from there. Example: G D Em C in G is I V vi IV.",
+  "If every chord sits in one scale, you have the family. If one chord does not, it is a visitor with a job — often pointing at the next chord. Example: a B major in G is pointing at C or Em.",
+  "Capo until the shapes feel easy. The numbers travel. Example: capo 2 on G shapes sounds as A. Same song, easier hands.",
 ];
 
 export const CIRCLE: { name: string; pc: number }[] = [
@@ -1471,7 +1471,7 @@ export function analyzeFreq(freq: number): {
   pc: number;
   name: string;
 } | null {
-  if (!Number.isFinite(freq) || freq < 70 || freq > 1400) return null;
+  if (!Number.isFinite(freq) || freq < 65 || freq > 1400) return null;
   const midiFloat = 69 + 12 * Math.log2(freq / 440);
   const midi = Math.round(midiFloat);
   return {

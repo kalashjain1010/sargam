@@ -7,19 +7,21 @@ export function diagnosePitch(opts: {
   targetPc?: number;
   scale?: number[];
   listening: boolean;
+  clarity?: number;
+  chordish?: boolean;
 }): { kind: "idle" | "quiet" | "chord" | "ok" | "sharp" | "flat" | "wrong" | "outside"; line: string } {
-  const { freq, rms, saPc, targetPc, scale, listening } = opts;
-  if (!listening) return { kind: "idle", line: "Mic is off. Written lessons still work." };
-  if (rms > 0.09 && freq === null) {
-    return { kind: "chord", line: "That sounded like more than one string, or a scrape. Mute the extras. One note at a time." };
+  const { freq, rms, saPc, targetPc, scale, listening, clarity = 0, chordish = false } = opts;
+  if (!listening) return { kind: "idle", line: "Mic is off. Written lessons still work — like reading before you speak." };
+  if (chordish || (rms > 0.04 && (freq === null || clarity < 0.4))) {
+    return { kind: "chord", line: "That sounded like more than one string, or a scrape. Mute the extras. One note at a time — like one person talking." };
   }
-  if (freq === null) {
-    return { kind: "quiet", line: "Too quiet, or still dying off. Play one string and let it ring." };
+  if (freq === null || clarity < 0.35) {
+    return { kind: "quiet", line: "Too quiet, or still dying off. Play one string nearer the mic and let it ring." };
   }
   const info = analyzeFreq(freq);
   if (!info) return { kind: "quiet", line: "Could not lock a pitch. Play nearer the mic, or pluck harder and let it speak." };
 
-  const letter = `${info.name}`;
+  const letter = info.name;
   if (targetPc !== undefined && info.pc !== targetPc) {
     const want = noteName(targetPc);
     const up = (targetPc - info.pc + 12) % 12;
@@ -41,7 +43,7 @@ export function diagnosePitch(opts: {
     if (!scale.includes(interval)) {
       return {
         kind: "outside",
-        line: `${letter} is ${degreeOf(interval)} from home. It is not in this scale. If you wanted that color, keep it. If you wanted the scale, move one fret.`,
+        line: `${letter} is ${degreeOf(interval)} from home. It is not in this scale. If you wanted that color, keep it. If you wanted the scale, move one fret — like stepping onto the next stair.`,
       };
     }
   }
@@ -58,7 +60,7 @@ export function comparePhrases(
   const target = collapse(want.map((semi) => ((homePc + semi) % 12 + 12) % 12));
   const got = collapse(heard);
   if (got.length === 0) {
-    return { ok: false, lines: ["I did not catch a clear single-note line. Play slower, one string at a time, and let each note speak."] };
+    return { ok: false, lines: ["I did not catch a clear single-note line. Play slower, one string at a time, and let each note speak — like saying one word, then the next."] };
   }
   const lines: string[] = [];
   const extras: string[] = [];
