@@ -129,6 +129,10 @@ export function Shell({ children }: { children: ReactNode }) {
         </div>
       </div>
       <main className="page">{children}</main>
+      <footer className="foot">
+        Twelve letters. Twelve frets until the letter comes back. A scale is a walking recipe. A chord is three letters stacked. A song is a loop that can rest on one home. Count frets. Do not guess.
+      </footer>
+      <div className="dock-clear" aria-hidden="true" />
       <nav className="dock" aria-label="Quick">
         <div className="dock-board">
           <p className="dock-rail" aria-hidden="true">
@@ -146,9 +150,6 @@ export function Shell({ children }: { children: ReactNode }) {
           </div>
         </div>
       </nav>
-      <footer className="foot">
-        Twelve letters. Twelve frets until the letter comes back. A scale is a walking recipe. A chord is three letters stacked. A song is a loop that can rest on one home. Count frets. Do not guess.
-      </footer>
     </>
   );
 }
