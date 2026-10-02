@@ -130,14 +130,21 @@ export function Shell({ children }: { children: ReactNode }) {
       </div>
       <main className="page">{children}</main>
       <nav className="dock" aria-label="Quick">
-        {DOCK.map((link) => (
-          <NavLink key={link.to} to={link.to} className={({ isActive }) => (isActive ? "active" : "")}>
-            {link.label}
-          </NavLink>
-        ))}
-        <button type="button" className={menu ? "on" : ""} aria-expanded={menu} onClick={() => setMenu((on) => !on)}>
-          Menu
-        </button>
+        <div className="dock-board">
+          <p className="dock-rail" aria-hidden="true">
+            Menu
+          </p>
+          <div className="dock-slots">
+            {DOCK.map((link) => (
+              <NavLink key={link.to} to={link.to} className={({ isActive }) => (isActive ? "active" : "")}>
+                {link.label}
+              </NavLink>
+            ))}
+            <button type="button" className={menu ? "on" : ""} aria-expanded={menu} onClick={() => setMenu((on) => !on)}>
+              More
+            </button>
+          </div>
+        </div>
       </nav>
       <footer className="foot">
         Twelve letters. Twelve frets until the letter comes back. A scale is a walking recipe. A chord is three letters stacked. A song is a loop that can rest on one home. Count frets. Do not guess.
